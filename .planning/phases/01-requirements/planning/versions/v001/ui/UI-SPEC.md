@@ -66,10 +66,12 @@ Five-step gradient anchored to unified severity score. Colorblind-safe — teste
 | Level | Unified Score | Hex | Name | APCA Contrast (on white) |
 |-------|--------------|-----|------|--------------------------|
 | None | 0 | `#F1F5F9` | Slate 100 | N/A (empty cell) |
-| Low | 0.01–0.8 | `#BBF7D0` | Green 200 | Lc 15 (pattern fill for text) |
-| Medium | 0.8–1.5 | `#FDE68A` | Amber 200 | Lc 12 |
-| High | 1.5–3.0 | `#FDBA74` | Orange 300 | Lc 20 |
-| Critical | >3.0 | `#FCA5A5` | Red 300 | Lc 22 |
+| Low | 0.42–0.8 | `#BBF7D0` | Green 200 | Lc 15 (pattern fill for text) |
+| Medium | 0.8–1.2 | `#FDE68A` | Amber 200 | Lc 12 |
+| High | 1.2–1.8 | `#FDBA74` | Orange 300 | Lc 20 |
+| Critical | >1.8 | `#FCA5A5` | Red 300 | Lc 22 |
+
+**Note**: The unified severity formula produces scores in the range [0.42, 2.26]. Thresholds are calibrated accordingly. The maximum achievable unified score is ~2.26 (level 4 escalation + 365 days + maximum visibility + recency).
 
 **Text on severity tiles**: Always `#0F172A` (dark text on light background). No white-on-color text. Achieves 4.5:1+ contrast ratio on all severity levels.
 
@@ -181,9 +183,11 @@ Five-step gradient anchored to unified severity score. Colorblind-safe — teste
 | Filter | Control Type | Behavior | Default |
 |--------|-------------|----------|---------|
 | State | Multi-select dropdown | Shows only states with incidents | All selected |
+| Governor | Searchable select | Populated from `governors.json` | All selected |
+| Constitutional era | Select dropdown | Populated from `metadata/eras.json` | All selected |
 | Transgression type | Checkbox group | 6 types from `TransgressionType` enum | All checked |
 | Verification status | Radio group | All / Verified only / Include unverified | All |
-| Severity threshold | Range slider | Min 0 – Max 4.0, step 0.1 | 0 (show all) |
+| Severity threshold | Range slider | Min 0 – Max 2.3, step 0.1 (aligned to [0.42, 2.26] domain) | 0 (show all) |
 | Date range | Dual year picker | 2010 – current year | Full range |
 
 **Filter interactions**:
@@ -318,6 +322,15 @@ Five-step gradient anchored to unified severity score. Colorblind-safe — teste
 - Badge: Confirmed / Partial / Unverified (colored per verification status palette)
 - Confidence score: Horizontal bar (0-1) with numeric label
 - If unverified: Italic note "Capped at Escalation Level 2 per verification policy"
+
+#### Section 5.5: Official Response (Conditional)
+- **Visibility**: Only rendered if `raj_bhavan_response` or `legislative_pushback` fields are present in incident data
+- **Layout**: Collapsed accordion panel with header "Official Response"
+- **Content**: Raw text from the respective fields, no editorial framing
+- **Typography**: `text-body-sm`, `--text-secondary`
+- **Background**: `--bg-tertiary` (subtle differentiation from evidence chain)
+- **If both fields present**: Show as two subsections with labels "Raj Bhavan Statement" and "Legislative Response"
+- **If fields absent/null**: Section is omitted entirely (no empty state)
 
 #### Section 6: Actions
 - **Export button**: Copy to clipboard (plain text or markdown)
@@ -504,10 +517,10 @@ Land on page
 | State | Visual | Trigger |
 |-------|--------|---------|
 | Empty | `#F1F5F9`, no interaction | No incidents |
-| Low severity | `#BBF7D0` fill | Unified 0.01–0.8 |
-| Medium severity | `#FDE68A` fill | Unified 0.8–1.5 |
-| High severity | `#FDBA74` fill | Unified 1.5–3.0 |
-| Critical severity | `#FCA5A5` fill | Unified >3.0 |
+| Low severity | `#BBF7D0` fill | Unified 0.42–0.8 |
+| Medium severity | `#FDE68A` fill | Unified 0.8–1.2 |
+| High severity | `#FDBA74` fill | Unified 1.2–1.8 |
+| Critical severity | `#FCA5A5` fill | Unified >1.8 |
 | Hover | +brightness, slight scale | Mouse enter |
 | Focus | Blue outline ring | Keyboard focus |
 | Selected | Solid dark border | Tile open in drawer |
@@ -751,9 +764,11 @@ Filters are encoded in URL query parameters for shareability:
 | Parameter | Format | Default |
 |-----------|--------|---------|
 | `states` | Comma-separated state codes | (all) |
+| `governors` | Comma-separated governor IDs | (all) |
+| `eras` | Comma-separated era IDs (e.g., `coalition,post_2014`) | (all) |
 | `types` | Comma-separated transgression types | (all) |
 | `status` | `all`, `confirmed`, `include_unverified` | `all` |
-| `severity` | Float, minimum threshold | `0` |
+| `severity` | Float, minimum threshold (max 2.3) | `0` |
 | `from` | Year (YYYY) | `2010` |
 | `to` | Year (YYYY) | Current year |
 | `incident` | Incident ID (opens drawer) | (none) |

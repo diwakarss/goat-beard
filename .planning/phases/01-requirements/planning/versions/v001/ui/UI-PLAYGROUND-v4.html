@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Goat Beard Dashboard — Tasklyn Style</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            surface: '#FFFFFF',
+            muted: '#F8FAFC',
+            border: '#E2E8F0',
+            accent: '#6366F1',
+            'accent-light': '#EEF2FF',
+            severity: {
+              low: '#22C55E',
+              medium: '#EAB308',
+              high: '#F97316',
+              critical: '#DC2626'
+            }
+          },
+          fontFamily: {
+            sans: ['Nunito', 'system-ui', 'sans-serif'],
+            mono: ['JetBrains Mono', 'ui-monospace', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      background: linear-gradient(135deg, #E8EDF5 0%, #F0E8F5 50%, #E8EDF5 100%);
+      color: #1E293B;
+      font-family: 'Nunito', system-ui, sans-serif;
+    }
+    .quote-text {
+      font-family: 'Nunito', system-ui, sans-serif;
+      font-style: italic;
+    }
+    .kpi-number {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .card {
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.6);
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+      transition: box-shadow 150ms ease, transform 150ms ease;
+    }
+    .card:hover {
+      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    }
+    .card-clickable:hover {
+      transform: translateY(-1px);
+      cursor: pointer;
+    }
+    .timeline-track {
+      height: 6px;
+      background: rgba(99,102,241,0.15);
+      border-radius: 3px;
+      position: relative;
+    }
+    .timeline-fill {
+      position: absolute;
+      height: 100%;
+      background: linear-gradient(90deg, #818CF8, #6366F1);
+      border-radius: 3px;
+    }
+    .timeline-handle {
+      width: 16px;
+      height: 16px;
+      background: #6366F1;
+      border: 3px solid white;
+      border-radius: 50%;
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      cursor: grab;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    .timeline-handle:active { cursor: grabbing; }
+    .progress-bar {
+      height: 8px;
+      background: rgba(0,0,0,0.06);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 300ms ease-out;
+    }
+    .beard-meter {
+      display: flex;
+      gap: 2px;
+    }
+    .beard-segment {
+      width: 8px;
+      height: 16px;
+      background: rgba(0,0,0,0.08);
+      border-radius: 2px;
+    }
+    .beard-segment.active { background: currentColor; }
+    .state-cell {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: transform 100ms ease, box-shadow 100ms ease;
+    }
+    .state-cell:hover {
+      transform: scale(1.1);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      z-index: 10;
+    }
+    .donut-segment {
+      transition: transform 150ms ease;
+      transform-origin: center;
+      cursor: pointer;
+    }
+    .donut-segment:hover {
+      transform: scale(1.03);
+    }
+    .horizontal-scroll {
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+    }
+    .horizontal-scroll::-webkit-scrollbar { height: 4px; }
+    .horizontal-scroll::-webkit-scrollbar-track { background: rgba(99,102,241,0.1); }
+    .horizontal-scroll::-webkit-scrollbar-thumb { background: rgba(99,102,241,0.3); border-radius: 2px; }
+    .snap-card { scroll-snap-align: start; }
+    .severity-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .pulse { animation: pulse 2s infinite; }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen">
+
+  <!-- Compact Header with Quote + Timeline -->
+  <header class="card mx-3 lg:mx-5 mt-3 sticky top-3 z-50">
+    <div class="px-4 lg:px-6 py-3">
+      <!-- Top row: Quote + KPIs -->
+      <div class="flex flex-wrap items-center justify-between gap-4 mb-3">
+        <div class="flex items-center gap-4">
+          <h1 class="text-lg font-bold text-slate-800">Goat Beard</h1>
+          <blockquote class="quote-text text-sm text-slate-600 hidden md:block">
+            "A goat's beard is as worthless as a state's governor." <span class="text-slate-400">— Aringar Anna</span>
+          </blockquote>
+        </div>
+
+        <!-- Inline KPIs -->
+        <div class="flex items-center gap-6">
+          <button class="text-center cursor-pointer hover:bg-indigo-50 px-3 py-1 rounded-lg transition-colors">
+            <div class="kpi-number text-xl font-semibold text-slate-800">127</div>
+            <div class="text-[10px] text-slate-500 uppercase tracking-wide font-semibold">Incidents</div>
+          </button>
+          <button class="text-center cursor-pointer hover:bg-indigo-50 px-3 py-1 rounded-lg transition-colors">
+            <div class="kpi-number text-xl font-semibold text-slate-800">34</div>
+            <div class="text-[10px] text-slate-500 uppercase tracking-wide font-semibold">Governors</div>
+          </button>
+          <button class="text-center cursor-pointer hover:bg-indigo-50 px-3 py-1 rounded-lg transition-colors">
+            <div class="kpi-number text-xl font-semibold text-slate-800">18</div>
+            <div class="text-[10px] text-slate-500 uppercase tracking-wide font-semibold">States</div>
+          </button>
+          <button class="text-center cursor-pointer hover:bg-indigo-50 px-3 py-1 rounded-lg border-l border-slate-200 pl-6 transition-colors">
+            <div class="kpi-number text-xl font-semibold text-indigo-600">243</div>
+            <div class="text-[10px] text-slate-500 uppercase tracking-wide font-semibold">Avg Days</div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Timeline Slider -->
+      <div class="flex items-center gap-4">
+        <span class="text-xs text-slate-500 font-medium w-10">2010</span>
+        <div class="flex-1 relative">
+          <div class="timeline-track">
+            <!-- Era backgrounds -->
+            <div class="absolute inset-0 flex rounded overflow-hidden opacity-30">
+              <div class="w-[25%] bg-blue-400"></div>
+              <div class="w-[75%] bg-indigo-400"></div>
+            </div>
+            <!-- Selected range -->
+            <div class="timeline-fill" style="left: 56%; width: 44%;"></div>
+          </div>
+          <!-- Handles -->
+          <div class="timeline-handle" style="left: 56%;"></div>
+          <div class="timeline-handle" style="left: 100%;"></div>
+        </div>
+        <span class="text-xs text-slate-500 font-medium w-10 text-right">2026</span>
+        <div class="text-xs text-indigo-600 font-semibold bg-indigo-50 px-2 py-1 rounded-lg">2019–2026</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Dashboard Grid - FULL WIDTH -->
+  <main class="p-3 lg:p-5">
+
+    <!-- Row 1: 4 columns -->
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mb-4">
+
+      <!-- Col 1: Top Governors (Compact List) -->
+      <div class="card p-4">
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="text-sm font-bold text-slate-700">Worst Offenders</h2>
+          <button class="text-xs text-indigo-600 hover:underline cursor-pointer font-semibold">View all →</button>
+        </div>
+        <div class="space-y-2">
+          <!-- Gov 1 -->
+          <button class="card-clickable w-full flex items-center gap-3 p-2 rounded-xl hover:bg-rose-50/50 text-left transition-colors">
+            <div class="relative">
+              <div class="w-10 h-10 rounded-full bg-gradient-to-br from-rose-200 to-pink-300 flex items-center justify-center text-sm">👤</div>
+              <div class="absolute -bottom-1 -right-1 text-sm">🐐</div>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-mono text-indigo-600 font-bold">1</span>
+                <span class="text-sm font-semibold text-slate-800 truncate">A.M. Khan</span>
+                <span class="tag bg-red-100 text-red-700">Knee-Dragger</span>
+              </div>
+              <div class="text-xs text-slate-500">Kerala • 12 incidents</div>
+            </div>
+            <div class="beard-meter text-red-500">
+              <div class="beard-segment active"></div>
+              <div class="beard-segment active"></div>
+              <div class="beard-segment active"></div>
+              <div class="beard-segment active"></div>
+            </div>
+          </button>
+          <!-- Gov 2 -->
+          <button class="card-clickable w-full flex items-center gap-3 p-2 rounded-xl hover:bg-orange-50/50 text-left transition-colors">
+            <div class="relative">
+              <div class="w-10 h-10 rounded-full bg-gradient-to-br from-orange-200 to-amber-300 flex items-center justify-center text-sm">👤</div>
+              <div class="absolute -bottom-1 -right-1 text-xs">🐐</div>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-mono text-indigo-600 font-bold">2</span>
+                <span class="text-sm font-semibold text-slate-800 truncate">R.N. Ravi</span>
+                <span class="tag bg-orange-100 text-orange-700">Billy Beard</span>
+              </div>
+              <div class="text-xs text-slate-500">Tamil Nadu • 8 incidents</div>
+            </div>
+            <div class="beard-meter text-orange-500">
+              <div class="beard-segment active"></div>
+              <div class="beard-segment active"></div>
+              <div class="beard-segment active"></div>
+              <div class="beard-segment"></div>
+            </div>
+          </button>
+          <!-- Gov 3 -->
+          <button class="card-clickable w-full flex items-center gap-3 p-2 rounded-xl hover:bg-amber-50/50 text-left transition-colors">
+            <div class="relative">
+              <div class="w-10 h-10 rounded-full bg-gradient-to-br from-amber-200 to-yellow-300 flex items-center justify-center text-sm">👤</div>
+              <div class="absolute -bottom-1 -right-1 text-xs">🐐</div>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-mono text-indigo-600 font-bold">3</span>
+                <span class="text-sm font-semibold text-slate-800 truncate">J. Dhankhar</span>
+                <span class="tag bg-yellow-100 text-yellow-700">Tuft</span>
+              </div>
+              <div class="text-xs text-slate-500">West Bengal • 5 incidents</div>
+            </div>
+            <div class="beard-meter text-yellow-500">
+              <div class="beard-segment active"></div>
+              <div class="beard-segment active"></div>
+              <div class="beard-segment"></div>
+              <div class="beard-segment"></div>
+            </div>
+          </button>
+          <!-- Gov 4 -->
+          <button class="card-clickable w-full flex items-center gap-3 p-2 rounded-xl hover:bg-violet-50/50 text-left transition-colors">
+            <div class="relative">
+              <div class="w-10 h-10 rounded-full bg-gradient-to-br from-violet-200 to-purple-300 flex items-center justify-center text-sm">👤</div>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-mono text-indigo-600 font-bold">4</span>
+                <span class="text-sm font-semibold text-slate-800 truncate">B.S. Koshyari</span>
+                <span class="tag bg-yellow-100 text-yellow-700">Tuft</span>
+              </div>
+              <div class="text-xs text-slate-500">Maharashtra • 4 incidents</div>
+            </div>
+            <div class="beard-meter text-yellow-500">
+              <div class="beard-segment active"></div>
+              <div class="beard-segment active"></div>
+              <div class="beard-segment"></div>
+              <div class="beard-segment"></div>
+            </div>
+          </button>
+          <!-- Gov 5 -->
+          <button class="card-clickable w-full flex items-center gap-3 p-2 rounded-xl hover:bg-emerald-50/50 text-left transition-colors">
+            <div class="relative">
+              <div class="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-200 to-green-300 flex items-center justify-center text-sm">👤</div>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-mono text-indigo-600 font-bold">5</span>
+                <span class="text-sm font-semibold text-slate-800 truncate">T. Soundararajan</span>
+                <span class="tag bg-green-100 text-green-700">Wisp</span>
+              </div>
+              <div class="text-xs text-slate-500">Telangana • 3 incidents</div>
+            </div>
+            <div class="beard-meter text-green-500">
+              <div class="beard-segment active"></div>
+              <div class="beard-segment"></div>
+              <div class="beard-segment"></div>
+              <div class="beard-segment"></div>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Col 2: Bills in Limbo -->
+      <div class="card p-4">
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="text-sm font-bold text-slate-700">Bills in Limbo</h2>
+          <button class="text-xs text-indigo-600 hover:underline cursor-pointer font-semibold">View all →</button>
+        </div>
+        <div class="space-y-3">
+          <!-- Bill 1 -->
+          <button class="card-clickable w-full text-left">
+            <div class="flex justify-between items-start mb-1">
+              <span class="text-sm font-semibold text-slate-800 truncate pr-2">Kerala University Bill</span>
+              <span class="kpi-number text-sm font-semibold text-red-600 pulse">847d</span>
+            </div>
+            <div class="text-xs text-slate-500 mb-2">Kerala • A.M. Khan</div>
+            <div class="progress-bar">
+              <div class="progress-fill bg-gradient-to-r from-red-400 to-red-500" style="width: 100%"></div>
+            </div>
+          </button>
+          <!-- Bill 2 -->
+          <button class="card-clickable w-full text-left">
+            <div class="flex justify-between items-start mb-1">
+              <span class="text-sm font-semibold text-slate-800 truncate pr-2">TN NEET Exemption</span>
+              <span class="kpi-number text-sm font-semibold text-orange-600">423d</span>
+            </div>
+            <div class="text-xs text-slate-500 mb-2">Tamil Nadu • R.N. Ravi</div>
+            <div class="progress-bar">
+              <div class="progress-fill bg-gradient-to-r from-orange-400 to-orange-500" style="width: 70%"></div>
+            </div>
+          </button>
+          <!-- Bill 3 -->
+          <button class="card-clickable w-full text-left">
+            <div class="flex justify-between items-start mb-1">
+              <span class="text-sm font-semibold text-slate-800 truncate pr-2">Punjab Farm Bills</span>
+              <span class="kpi-number text-sm font-semibold text-yellow-600">198d</span>
+            </div>
+            <div class="text-xs text-slate-500 mb-2">Punjab • B.L. Purohit</div>
+            <div class="progress-bar">
+              <div class="progress-fill bg-gradient-to-r from-yellow-400 to-amber-500" style="width: 45%"></div>
+            </div>
+          </button>
+          <!-- Bill 4 -->
+          <button class="card-clickable w-full text-left">
+            <div class="flex justify-between items-start mb-1">
+              <span class="text-sm font-semibold text-slate-800 truncate pr-2">Telangana Education</span>
+              <span class="kpi-number text-sm font-semibold text-yellow-600">156d</span>
+            </div>
+            <div class="text-xs text-slate-500 mb-2">Telangana • T. Soundararajan</div>
+            <div class="progress-bar">
+              <div class="progress-fill bg-gradient-to-r from-yellow-400 to-amber-500" style="width: 35%"></div>
+            </div>
+          </button>
+          <!-- Bill 5 -->
+          <button class="card-clickable w-full text-left">
+            <div class="flex justify-between items-start mb-1">
+              <span class="text-sm font-semibold text-slate-800 truncate pr-2">WB Amendment Bill</span>
+              <span class="kpi-number text-sm font-semibold text-green-600">89d</span>
+            </div>
+            <div class="text-xs text-slate-500 mb-2">West Bengal • C.V.A. Bose</div>
+            <div class="progress-bar">
+              <div class="progress-fill bg-gradient-to-r from-green-400 to-emerald-500" style="width: 20%"></div>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Col 3: State Heat Map + Transgression Donut -->
+      <div class="space-y-4">
+        <!-- India Map (SVG) -->
+        <div class="card p-4">
+          <h2 class="text-sm font-bold text-slate-700 mb-3">By State</h2>
+          <div class="relative">
+            <svg viewBox="0 0 200 220" class="w-full h-40">
+              <!-- Simplified India Map with key states -->
+              <style>
+                .state-path {
+                  stroke: rgba(255,255,255,0.8);
+                  stroke-width: 0.5;
+                  cursor: pointer;
+                  transition: all 150ms ease;
+                }
+                .state-path:hover {
+                  filter: brightness(0.9);
+                  stroke-width: 1.5;
+                }
+                .state-label {
+                  font-size: 5px;
+                  font-weight: 600;
+                  fill: #334155;
+                  pointer-events: none;
+                }
+              </style>
+
+              <!-- J&K - North -->
+              <path class="state-path" fill="#E2E8F0" d="M70,5 L90,8 L95,20 L85,30 L70,25 L65,15 Z"/>
+              <text class="state-label" x="77" y="18">J&K</text>
+
+              <!-- HP -->
+              <path class="state-path" fill="#E2E8F0" d="M85,30 L95,28 L100,40 L90,45 L82,38 Z"/>
+              <text class="state-label" x="88" y="38">HP</text>
+
+              <!-- Punjab - Medium -->
+              <path class="state-path" fill="#FEF08A" d="M65,28 L82,32 L80,45 L65,48 L58,38 Z"/>
+              <text class="state-label" x="68" y="40">PB</text>
+
+              <!-- Uttarakhand -->
+              <path class="state-path" fill="#E2E8F0" d="M90,40 L105,38 L110,50 L95,55 L88,48 Z"/>
+              <text class="state-label" x="95" y="48">UK</text>
+
+              <!-- Haryana -->
+              <path class="state-path" fill="#E2E8F0" d="M65,48 L80,50 L78,62 L62,60 Z"/>
+              <text class="state-label" x="68" y="56">HR</text>
+
+              <!-- Delhi -->
+              <path class="state-path" fill="#E2E8F0" d="M78,55 L84,54 L85,60 L79,61 Z"/>
+              <text class="state-label" x="79" y="59">DL</text>
+
+              <!-- UP -->
+              <path class="state-path" fill="#E2E8F0" d="M85,52 L130,48 L140,70 L120,85 L85,80 L80,65 Z"/>
+              <text class="state-label" x="105" y="68">UP</text>
+
+              <!-- Rajasthan -->
+              <path class="state-path" fill="#E2E8F0" d="M30,55 L65,52 L68,85 L55,100 L25,95 L20,70 Z"/>
+              <text class="state-label" x="42" y="78">RJ</text>
+
+              <!-- Gujarat -->
+              <path class="state-path" fill="#E2E8F0" d="M10,85 L30,82 L35,105 L25,125 L5,120 L0,100 Z"/>
+              <text class="state-label" x="15" y="105">GJ</text>
+
+              <!-- MP -->
+              <path class="state-path" fill="#E2E8F0" d="M55,85 L100,82 L105,110 L60,115 L50,100 Z"/>
+              <text class="state-label" x="75" y="100">MP</text>
+
+              <!-- Bihar -->
+              <path class="state-path" fill="#E2E8F0" d="M130,70 L155,68 L158,85 L135,88 L125,80 Z"/>
+              <text class="state-label" x="140" y="80">BR</text>
+
+              <!-- Jharkhand -->
+              <path class="state-path" fill="#E2E8F0" d="M125,88 L155,85 L158,102 L130,105 Z"/>
+              <text class="state-label" x="138" y="96">JH</text>
+
+              <!-- West Bengal - High -->
+              <path class="state-path" fill="#FED7AA" d="M155,70 L175,65 L180,100 L165,115 L155,105 Z"/>
+              <text class="state-label" x="163" y="90">WB</text>
+
+              <!-- Chhattisgarh -->
+              <path class="state-path" fill="#E2E8F0" d="M105,105 L130,102 L135,130 L110,135 Z"/>
+              <text class="state-label" x="115" y="120">CG</text>
+
+              <!-- Maharashtra - High -->
+              <path class="state-path" fill="#FED7AA" d="M25,115 L70,110 L80,145 L45,155 L20,140 Z"/>
+              <text class="state-label" x="48" y="135">MH</text>
+
+              <!-- Odisha -->
+              <path class="state-path" fill="#E2E8F0" d="M130,105 L160,100 L165,130 L135,140 Z"/>
+              <text class="state-label" x="145" y="122">OD</text>
+
+              <!-- Telangana - Medium -->
+              <path class="state-path" fill="#FEF08A" d="M70,145 L105,140 L110,165 L75,170 Z"/>
+              <text class="state-label" x="85" y="158">TS</text>
+
+              <!-- Andhra Pradesh -->
+              <path class="state-path" fill="#E2E8F0" d="M105,140 L140,135 L150,170 L110,180 L100,165 Z"/>
+              <text class="state-label" x="120" y="160">AP</text>
+
+              <!-- Karnataka -->
+              <path class="state-path" fill="#E2E8F0" d="M45,155 L75,150 L80,185 L50,190 L40,175 Z"/>
+              <text class="state-label" x="58" y="175">KA</text>
+
+              <!-- Kerala - Critical (pulsing) -->
+              <path class="state-path pulse" fill="#FCA5A5" d="M50,190 L60,188 L58,215 L48,218 L45,200 Z"/>
+              <text class="state-label" x="50" y="205">KL</text>
+
+              <!-- Tamil Nadu - High -->
+              <path class="state-path" fill="#FECACA" d="M60,185 L95,180 L100,210 L70,218 L58,205 Z"/>
+              <text class="state-label" x="78" y="200">TN</text>
+
+              <!-- Northeast (simplified) -->
+              <path class="state-path" fill="#E2E8F0" d="M175,50 L195,45 L200,75 L180,80 Z"/>
+              <text class="state-label" x="183" y="65">NE</text>
+            </svg>
+          </div>
+          <div class="flex justify-center gap-3 text-[10px] mt-2 text-slate-500 font-medium">
+            <span class="flex items-center gap-1"><span class="w-2 h-2 rounded bg-slate-200"></span>None</span>
+            <span class="flex items-center gap-1"><span class="w-2 h-2 rounded bg-green-200"></span>Low</span>
+            <span class="flex items-center gap-1"><span class="w-2 h-2 rounded bg-yellow-200"></span>Med</span>
+            <span class="flex items-center gap-1"><span class="w-2 h-2 rounded bg-orange-200"></span>High</span>
+            <span class="flex items-center gap-1"><span class="w-2 h-2 rounded bg-red-300"></span>Critical</span>
+          </div>
+        </div>
+
+        <!-- Transgression Donut (Compact) -->
+        <div class="card p-4">
+          <h2 class="text-sm font-bold text-slate-700 mb-2">By Type</h2>
+          <div class="flex items-center gap-4">
+            <svg viewBox="0 0 100 100" class="w-24 h-24 flex-shrink-0">
+              <circle cx="50" cy="50" r="35" fill="none" stroke="rgba(0,0,0,0.06)" stroke-width="15"/>
+              <circle cx="50" cy="50" r="35" fill="none" stroke="#6366F1" stroke-width="15"
+                      stroke-dasharray="99 220" stroke-dashoffset="0" class="donut-segment" transform="rotate(-90 50 50)"/>
+              <circle cx="50" cy="50" r="35" fill="none" stroke="#F97316" stroke-width="15"
+                      stroke-dasharray="55 220" stroke-dashoffset="-99" class="donut-segment" transform="rotate(-90 50 50)"/>
+              <circle cx="50" cy="50" r="35" fill="none" stroke="#DC2626" stroke-width="15"
+                      stroke-dasharray="33 220" stroke-dashoffset="-154" class="donut-segment" transform="rotate(-90 50 50)"/>
+              <circle cx="50" cy="50" r="35" fill="none" stroke="#EAB308" stroke-width="15"
+                      stroke-dasharray="22 220" stroke-dashoffset="-187" class="donut-segment" transform="rotate(-90 50 50)"/>
+              <text x="50" y="54" text-anchor="middle" class="fill-slate-800 text-lg font-mono font-semibold">127</text>
+            </svg>
+            <div class="text-xs space-y-1">
+              <button class="flex items-center gap-2 cursor-pointer hover:bg-indigo-50 p-1 rounded-lg w-full transition-colors">
+                <span class="w-2 h-2 rounded-full bg-indigo-500"></span>
+                <span class="text-slate-600">Withholding</span>
+                <span class="ml-auto font-mono text-slate-800 font-semibold">45%</span>
+              </button>
+              <button class="flex items-center gap-2 cursor-pointer hover:bg-orange-50 p-1 rounded-lg w-full transition-colors">
+                <span class="w-2 h-2 rounded-full bg-orange-500"></span>
+                <span class="text-slate-600">Delay</span>
+                <span class="ml-auto font-mono text-slate-800 font-semibold">25%</span>
+              </button>
+              <button class="flex items-center gap-2 cursor-pointer hover:bg-red-50 p-1 rounded-lg w-full transition-colors">
+                <span class="w-2 h-2 rounded-full bg-red-600"></span>
+                <span class="text-slate-600">Overreach</span>
+                <span class="ml-auto font-mono text-slate-800 font-semibold">15%</span>
+              </button>
+              <button class="flex items-center gap-2 cursor-pointer hover:bg-yellow-50 p-1 rounded-lg w-full transition-colors">
+                <span class="w-2 h-2 rounded-full bg-yellow-500"></span>
+                <span class="text-slate-600">Assembly</span>
+                <span class="ml-auto font-mono text-slate-800 font-semibold">10%</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Col 4: Constitutional Articles + Trends -->
+      <div class="space-y-4">
+        <!-- Articles Bar Chart -->
+        <div class="card p-4">
+          <h2 class="text-sm font-bold text-slate-700 mb-3">Articles Invoked</h2>
+          <div class="space-y-2">
+            <button class="flex items-center gap-2 cursor-pointer hover:bg-indigo-50/50 p-1 rounded-lg w-full transition-colors">
+              <span class="text-xs text-slate-500 w-14 font-medium">Art. 200</span>
+              <div class="flex-1 h-4 bg-slate-100 rounded-full overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-indigo-400 to-indigo-500 rounded-full" style="width: 80%"></div>
+              </div>
+              <span class="kpi-number text-xs text-slate-700 w-6 text-right font-semibold">42</span>
+            </button>
+            <button class="flex items-center gap-2 cursor-pointer hover:bg-indigo-50/50 p-1 rounded-lg w-full transition-colors">
+              <span class="text-xs text-slate-500 w-14 font-medium">Art. 356</span>
+              <div class="flex-1 h-4 bg-slate-100 rounded-full overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-indigo-400 to-indigo-500 rounded-full" style="width: 53%"></div>
+              </div>
+              <span class="kpi-number text-xs text-slate-700 w-6 text-right font-semibold">28</span>
+            </button>
+            <button class="flex items-center gap-2 cursor-pointer hover:bg-indigo-50/50 p-1 rounded-lg w-full transition-colors">
+              <span class="text-xs text-slate-500 w-14 font-medium">Art. 163</span>
+              <div class="flex-1 h-4 bg-slate-100 rounded-full overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-indigo-400 to-indigo-500 rounded-full" style="width: 28%"></div>
+              </div>
+              <span class="kpi-number text-xs text-slate-700 w-6 text-right font-semibold">15</span>
+            </button>
+            <button class="flex items-center gap-2 cursor-pointer hover:bg-indigo-50/50 p-1 rounded-lg w-full transition-colors">
+              <span class="text-xs text-slate-500 w-14 font-medium">Art. 168</span>
+              <div class="flex-1 h-4 bg-slate-100 rounded-full overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-indigo-400 to-indigo-500 rounded-full" style="width: 15%"></div>
+              </div>
+              <span class="kpi-number text-xs text-slate-700 w-6 text-right font-semibold">8</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Trend Sparkline -->
+        <div class="card p-4">
+          <div class="flex items-center justify-between mb-2">
+            <h2 class="text-sm font-bold text-slate-700">Trend</h2>
+            <span class="text-xs text-red-600 font-semibold">+47% vs 2023</span>
+          </div>
+          <svg viewBox="0 0 200 60" class="w-full h-16">
+            <!-- Area fill -->
+            <path d="M0,55 L20,50 L40,48 L60,45 L80,42 L100,35 L120,30 L140,20 L160,25 L180,15 L200,10 L200,60 L0,60 Z"
+                  fill="url(#gradient)" opacity="0.3"/>
+            <!-- Line -->
+            <path d="M0,55 L20,50 L40,48 L60,45 L80,42 L100,35 L120,30 L140,20 L160,25 L180,15 L200,10"
+                  fill="none" stroke="#6366F1" stroke-width="2" stroke-linecap="round"/>
+            <defs>
+              <linearGradient id="gradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#6366F1"/>
+                <stop offset="100%" stop-color="#EEF2FF"/>
+              </linearGradient>
+            </defs>
+          </svg>
+          <div class="flex justify-between text-[10px] text-slate-400 mt-1 font-medium">
+            <span>2019</span>
+            <span>2020</span>
+            <span>2021</span>
+            <span>2022</span>
+            <span>2023</span>
+            <span>2024</span>
+          </div>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="card p-4">
+          <h2 class="text-sm font-bold text-slate-700 mb-3">Verification</h2>
+          <div class="flex gap-2">
+            <div class="flex-1 text-center p-2 bg-gradient-to-br from-green-50 to-emerald-100 rounded-xl">
+              <div class="kpi-number text-lg font-semibold text-green-700">78</div>
+              <div class="text-[10px] text-green-600 font-semibold">Verified</div>
+            </div>
+            <div class="flex-1 text-center p-2 bg-gradient-to-br from-yellow-50 to-amber-100 rounded-xl">
+              <div class="kpi-number text-lg font-semibold text-yellow-700">34</div>
+              <div class="text-[10px] text-yellow-600 font-semibold">Partial</div>
+            </div>
+            <div class="flex-1 text-center p-2 bg-gradient-to-br from-red-50 to-rose-100 rounded-xl">
+              <div class="kpi-number text-lg font-semibold text-red-700">15</div>
+              <div class="text-[10px] text-red-600 font-semibold">Unverified</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 2: Incident Stream (Full Width) -->
+    <div class="card p-4 mb-4">
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="text-sm font-bold text-slate-700">Recent Incidents</h2>
+        <div class="flex items-center gap-2">
+          <button class="text-xs px-2 py-1 bg-indigo-500 text-white rounded-lg cursor-pointer font-semibold">All</button>
+          <button class="text-xs px-2 py-1 hover:bg-slate-100 text-slate-600 rounded-lg cursor-pointer font-medium transition-colors">Withholding</button>
+          <button class="text-xs px-2 py-1 hover:bg-slate-100 text-slate-600 rounded-lg cursor-pointer font-medium transition-colors">Delay</button>
+          <button class="text-xs px-2 py-1 hover:bg-slate-100 text-slate-600 rounded-lg cursor-pointer font-medium transition-colors">Overreach</button>
+        </div>
+      </div>
+      <div class="horizontal-scroll flex gap-3 pb-2 -mx-1 px-1">
+        <!-- Card 1 -->
+        <button class="snap-card card-clickable flex-shrink-0 w-56 bg-gradient-to-br from-rose-50 to-pink-100 border border-rose-200/50 rounded-xl p-3 text-left">
+          <div class="flex items-center justify-between mb-2">
+            <span class="tag bg-indigo-100 text-indigo-700">Mar 2024</span>
+            <div class="flex gap-0.5">
+              <span class="severity-dot bg-red-500"></span>
+              <span class="severity-dot bg-red-500"></span>
+              <span class="severity-dot bg-red-500"></span>
+              <span class="severity-dot bg-red-500"></span>
+            </div>
+          </div>
+          <div class="text-sm font-semibold text-slate-800 mb-1">University Bill Held</div>
+          <div class="text-xs text-slate-500 mb-2">Kerala • Withholding Assent</div>
+          <div class="flex items-center gap-2 pt-2 border-t border-rose-200/50">
+            <div class="w-6 h-6 rounded-full bg-gradient-to-br from-rose-200 to-pink-300 flex items-center justify-center text-[10px]">👤</div>
+            <span class="text-xs text-slate-600 font-medium">A.M. Khan</span>
+            <span class="ml-auto text-xs text-red-600 font-mono font-semibold">847d</span>
+          </div>
+        </button>
+        <!-- Card 2 -->
+        <button class="snap-card card-clickable flex-shrink-0 w-56 bg-gradient-to-br from-orange-50 to-amber-100 border border-orange-200/50 rounded-xl p-3 text-left">
+          <div class="flex items-center justify-between mb-2">
+            <span class="tag bg-slate-200 text-slate-600">Feb 2024</span>
+            <div class="flex gap-0.5">
+              <span class="severity-dot bg-orange-500"></span>
+              <span class="severity-dot bg-orange-500"></span>
+              <span class="severity-dot bg-orange-500"></span>
+              <span class="severity-dot bg-slate-300"></span>
+            </div>
+          </div>
+          <div class="text-sm font-semibold text-slate-800 mb-1">Assembly Address Walkout</div>
+          <div class="text-xs text-slate-500 mb-2">Tamil Nadu • Constitutional Overreach</div>
+          <div class="flex items-center gap-2 pt-2 border-t border-orange-200/50">
+            <div class="w-6 h-6 rounded-full bg-gradient-to-br from-orange-200 to-amber-300 flex items-center justify-center text-[10px]">👤</div>
+            <span class="text-xs text-slate-600 font-medium">R.N. Ravi</span>
+            <span class="ml-auto text-xs text-orange-600 font-mono font-semibold">Art.163</span>
+          </div>
+        </button>
+        <!-- Card 3 -->
+        <button class="snap-card card-clickable flex-shrink-0 w-56 bg-gradient-to-br from-emerald-50 to-green-100 border border-emerald-200/50 rounded-xl p-3 text-left">
+          <div class="flex items-center justify-between mb-2">
+            <span class="tag bg-slate-200 text-slate-600">Jan 2024</span>
+            <div class="flex gap-0.5">
+              <span class="severity-dot bg-yellow-500"></span>
+              <span class="severity-dot bg-yellow-500"></span>
+              <span class="severity-dot bg-slate-300"></span>
+              <span class="severity-dot bg-slate-300"></span>
+            </div>
+          </div>
+          <div class="text-sm font-semibold text-slate-800 mb-1">Farm Bill Stalled</div>
+          <div class="text-xs text-slate-500 mb-2">Punjab • Delay Tactics</div>
+          <div class="flex items-center gap-2 pt-2 border-t border-emerald-200/50">
+            <div class="w-6 h-6 rounded-full bg-gradient-to-br from-emerald-200 to-green-300 flex items-center justify-center text-[10px]">👤</div>
+            <span class="text-xs text-slate-600 font-medium">B.L. Purohit</span>
+            <span class="ml-auto text-xs text-yellow-600 font-mono font-semibold">198d</span>
+          </div>
+        </button>
+        <!-- Card 4 -->
+        <button class="snap-card card-clickable flex-shrink-0 w-56 bg-gradient-to-br from-violet-50 to-purple-100 border border-violet-200/50 rounded-xl p-3 text-left">
+          <div class="flex items-center justify-between mb-2">
+            <span class="tag bg-slate-200 text-slate-600">Dec 2023</span>
+            <div class="flex gap-0.5">
+              <span class="severity-dot bg-red-500"></span>
+              <span class="severity-dot bg-red-500"></span>
+              <span class="severity-dot bg-red-500"></span>
+              <span class="severity-dot bg-red-500"></span>
+            </div>
+          </div>
+          <div class="text-sm font-semibold text-slate-800 mb-1">CM Office Confrontation</div>
+          <div class="text-xs text-slate-500 mb-2">West Bengal • Constitutional Overreach</div>
+          <div class="flex items-center gap-2 pt-2 border-t border-violet-200/50">
+            <div class="w-6 h-6 rounded-full bg-gradient-to-br from-violet-200 to-purple-300 flex items-center justify-center text-[10px]">👤</div>
+            <span class="text-xs text-slate-600 font-medium">C.V.A. Bose</span>
+            <span class="ml-auto text-xs text-red-600 font-mono font-semibold">Art.163</span>
+          </div>
+        </button>
+        <!-- Card 5 -->
+        <button class="snap-card card-clickable flex-shrink-0 w-56 bg-gradient-to-br from-cyan-50 to-sky-100 border border-cyan-200/50 rounded-xl p-3 text-left">
+          <div class="flex items-center justify-between mb-2">
+            <span class="tag bg-slate-200 text-slate-600">Nov 2023</span>
+            <div class="flex gap-0.5">
+              <span class="severity-dot bg-orange-500"></span>
+              <span class="severity-dot bg-orange-500"></span>
+              <span class="severity-dot bg-orange-500"></span>
+              <span class="severity-dot bg-slate-300"></span>
+            </div>
+          </div>
+          <div class="text-sm font-semibold text-slate-800 mb-1">Education Bill Returned</div>
+          <div class="text-xs text-slate-500 mb-2">Kerala • Withholding Assent</div>
+          <div class="flex items-center gap-2 pt-2 border-t border-cyan-200/50">
+            <div class="w-6 h-6 rounded-full bg-gradient-to-br from-cyan-200 to-sky-300 flex items-center justify-center text-[10px]">👤</div>
+            <span class="text-xs text-slate-600 font-medium">A.M. Khan</span>
+            <span class="ml-auto text-xs text-orange-600 font-mono font-semibold">Art.200</span>
+          </div>
+        </button>
+        <!-- Card 6 -->
+        <button class="snap-card card-clickable flex-shrink-0 w-56 bg-gradient-to-br from-amber-50 to-yellow-100 border border-amber-200/50 rounded-xl p-3 text-left">
+          <div class="flex items-center justify-between mb-2">
+            <span class="tag bg-slate-200 text-slate-600">Oct 2023</span>
+            <div class="flex gap-0.5">
+              <span class="severity-dot bg-yellow-500"></span>
+              <span class="severity-dot bg-yellow-500"></span>
+              <span class="severity-dot bg-slate-300"></span>
+              <span class="severity-dot bg-slate-300"></span>
+            </div>
+          </div>
+          <div class="text-sm font-semibold text-slate-800 mb-1">VC Appointment Dispute</div>
+          <div class="text-xs text-slate-500 mb-2">Tamil Nadu • Constitutional Overreach</div>
+          <div class="flex items-center gap-2 pt-2 border-t border-amber-200/50">
+            <div class="w-6 h-6 rounded-full bg-gradient-to-br from-amber-200 to-yellow-300 flex items-center justify-center text-[10px]">👤</div>
+            <span class="text-xs text-slate-600 font-medium">R.N. Ravi</span>
+            <span class="ml-auto text-xs text-yellow-600 font-mono font-semibold">Art.168</span>
+          </div>
+        </button>
+        <!-- View All -->
+        <button class="snap-card flex-shrink-0 w-40 bg-white/80 border-2 border-dashed border-indigo-300 rounded-xl p-3 flex items-center justify-center cursor-pointer hover:border-indigo-500 hover:bg-indigo-50 transition-colors">
+          <span class="text-sm text-indigo-600 font-semibold">View all 127 →</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Row 3: Data Table (Full Width) -->
+    <div class="card overflow-hidden">
+      <div class="p-4 border-b border-slate-200/50 flex items-center justify-between">
+        <h2 class="text-sm font-bold text-slate-700">All Incidents</h2>
+        <div class="flex items-center gap-3">
+          <input type="text" placeholder="Search..." class="text-sm px-3 py-1.5 bg-white/60 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/50">
+          <select class="text-sm px-3 py-1.5 bg-white/60 border border-slate-200 rounded-lg cursor-pointer">
+            <option>All States</option>
+            <option>Kerala</option>
+            <option>Tamil Nadu</option>
+            <option>West Bengal</option>
+          </select>
+          <select class="text-sm px-3 py-1.5 bg-white/60 border border-slate-200 rounded-lg cursor-pointer">
+            <option>All Types</option>
+            <option>Withholding Assent</option>
+            <option>Delay</option>
+            <option>Overreach</option>
+          </select>
+        </div>
+      </div>
+      <table class="w-full text-sm">
+        <thead class="bg-slate-50/80 text-slate-600 text-xs uppercase tracking-wider">
+          <tr>
+            <th class="px-4 py-3 text-left cursor-pointer hover:bg-slate-100 transition-colors font-semibold">Date ↓</th>
+            <th class="px-4 py-3 text-left cursor-pointer hover:bg-slate-100 transition-colors font-semibold">Incident</th>
+            <th class="px-4 py-3 text-left cursor-pointer hover:bg-slate-100 transition-colors font-semibold">State</th>
+            <th class="px-4 py-3 text-left cursor-pointer hover:bg-slate-100 transition-colors font-semibold">Governor</th>
+            <th class="px-4 py-3 text-left cursor-pointer hover:bg-slate-100 transition-colors font-semibold">Type</th>
+            <th class="px-4 py-3 text-left cursor-pointer hover:bg-slate-100 transition-colors font-semibold">Article</th>
+            <th class="px-4 py-3 text-left cursor-pointer hover:bg-slate-100 transition-colors font-semibold">Severity</th>
+            <th class="px-4 py-3 text-left cursor-pointer hover:bg-slate-100 transition-colors font-semibold">Status</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100">
+          <tr class="hover:bg-slate-50 cursor-pointer transition-colors">
+            <td class="px-4 py-3 text-slate-500">Mar 2024</td>
+            <td class="px-4 py-3 font-semibold text-slate-800">University Bill Held</td>
+            <td class="px-4 py-3"><span class="tag bg-red-100 text-red-700">Kerala</span></td>
+            <td class="px-4 py-3 text-slate-600">A.M. Khan</td>
+            <td class="px-4 py-3 text-slate-600">Withholding</td>
+            <td class="px-4 py-3 font-mono text-xs text-slate-500">Art. 200</td>
+            <td class="px-4 py-3">
+              <div class="flex gap-0.5">
+                <span class="severity-dot bg-red-500"></span>
+                <span class="severity-dot bg-red-500"></span>
+                <span class="severity-dot bg-red-500"></span>
+                <span class="severity-dot bg-red-500"></span>
+              </div>
+            </td>
+            <td class="px-4 py-3"><span class="tag bg-green-100 text-green-700">Verified</span></td>
+          </tr>
+          <tr class="hover:bg-slate-50 cursor-pointer transition-colors">
+            <td class="px-4 py-3 text-slate-500">Feb 2024</td>
+            <td class="px-4 py-3 font-semibold text-slate-800">Assembly Address Walkout</td>
+            <td class="px-4 py-3"><span class="tag bg-orange-100 text-orange-700">Tamil Nadu</span></td>
+            <td class="px-4 py-3 text-slate-600">R.N. Ravi</td>
+            <td class="px-4 py-3 text-slate-600">Overreach</td>
+            <td class="px-4 py-3 font-mono text-xs text-slate-500">Art. 163</td>
+            <td class="px-4 py-3">
+              <div class="flex gap-0.5">
+                <span class="severity-dot bg-orange-500"></span>
+                <span class="severity-dot bg-orange-500"></span>
+                <span class="severity-dot bg-orange-500"></span>
+                <span class="severity-dot bg-slate-300"></span>
+              </div>
+            </td>
+            <td class="px-4 py-3"><span class="tag bg-green-100 text-green-700">Verified</span></td>
+          </tr>
+          <tr class="hover:bg-slate-50 cursor-pointer transition-colors">
+            <td class="px-4 py-3 text-slate-500">Jan 2024</td>
+            <td class="px-4 py-3 font-semibold text-slate-800">Farm Bill Stalled</td>
+            <td class="px-4 py-3"><span class="tag bg-yellow-100 text-yellow-700">Punjab</span></td>
+            <td class="px-4 py-3 text-slate-600">B.L. Purohit</td>
+            <td class="px-4 py-3 text-slate-600">Delay</td>
+            <td class="px-4 py-3 font-mono text-xs text-slate-500">Art. 200</td>
+            <td class="px-4 py-3">
+              <div class="flex gap-0.5">
+                <span class="severity-dot bg-yellow-500"></span>
+                <span class="severity-dot bg-yellow-500"></span>
+                <span class="severity-dot bg-slate-300"></span>
+                <span class="severity-dot bg-slate-300"></span>
+              </div>
+            </td>
+            <td class="px-4 py-3"><span class="tag bg-yellow-100 text-yellow-700">Partial</span></td>
+          </tr>
+          <tr class="hover:bg-slate-50 cursor-pointer transition-colors">
+            <td class="px-4 py-3 text-slate-500">Dec 2023</td>
+            <td class="px-4 py-3 font-semibold text-slate-800">CM Office Confrontation</td>
+            <td class="px-4 py-3"><span class="tag bg-orange-100 text-orange-700">West Bengal</span></td>
+            <td class="px-4 py-3 text-slate-600">C.V.A. Bose</td>
+            <td class="px-4 py-3 text-slate-600">Overreach</td>
+            <td class="px-4 py-3 font-mono text-xs text-slate-500">Art. 163</td>
+            <td class="px-4 py-3">
+              <div class="flex gap-0.5">
+                <span class="severity-dot bg-red-500"></span>
+                <span class="severity-dot bg-red-500"></span>
+                <span class="severity-dot bg-red-500"></span>
+                <span class="severity-dot bg-red-500"></span>
+              </div>
+            </td>
+            <td class="px-4 py-3"><span class="tag bg-green-100 text-green-700">Verified</span></td>
+          </tr>
+          <tr class="hover:bg-slate-50 cursor-pointer transition-colors">
+            <td class="px-4 py-3 text-slate-500">Nov 2023</td>
+            <td class="px-4 py-3 font-semibold text-slate-800">Education Bill Returned</td>
+            <td class="px-4 py-3"><span class="tag bg-red-100 text-red-700">Kerala</span></td>
+            <td class="px-4 py-3 text-slate-600">A.M. Khan</td>
+            <td class="px-4 py-3 text-slate-600">Withholding</td>
+            <td class="px-4 py-3 font-mono text-xs text-slate-500">Art. 200</td>
+            <td class="px-4 py-3">
+              <div class="flex gap-0.5">
+                <span class="severity-dot bg-orange-500"></span>
+                <span class="severity-dot bg-orange-500"></span>
+                <span class="severity-dot bg-orange-500"></span>
+                <span class="severity-dot bg-slate-300"></span>
+              </div>
+            </td>
+            <td class="px-4 py-3"><span class="tag bg-green-100 text-green-700">Verified</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="p-4 border-t border-slate-200/50 flex items-center justify-between text-sm text-slate-500">
+        <span>Showing 1-5 of 127 incidents</span>
+        <div class="flex items-center gap-2">
+          <button class="px-3 py-1 bg-white/60 border border-slate-200 rounded-lg hover:bg-slate-50 cursor-pointer transition-colors">Previous</button>
+          <button class="px-3 py-1 bg-indigo-500 text-white rounded-lg cursor-pointer font-semibold">1</button>
+          <button class="px-3 py-1 bg-white/60 border border-slate-200 rounded-lg hover:bg-slate-50 cursor-pointer transition-colors">2</button>
+          <button class="px-3 py-1 bg-white/60 border border-slate-200 rounded-lg hover:bg-slate-50 cursor-pointer transition-colors">3</button>
+          <button class="px-3 py-1 bg-white/60 border border-slate-200 rounded-lg hover:bg-slate-50 cursor-pointer transition-colors">Next</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="card mx-3 lg:mx-5 mt-4 mb-4 py-4 px-4">
+    <div class="flex flex-wrap items-center justify-between gap-4 text-xs text-slate-500">
+      <div>
+        Data: The Hindu, Indian Express, Deccan Chronicle • Last updated: March 2024
+      </div>
+      <div class="flex items-center gap-4">
+        <button class="hover:text-indigo-600 cursor-pointer font-medium transition-colors">About</button>
+        <button class="hover:text-indigo-600 cursor-pointer font-medium transition-colors">Methodology</button>
+        <button class="hover:text-indigo-600 cursor-pointer font-medium transition-colors">API</button>
+        <button class="hover:text-indigo-600 cursor-pointer font-medium transition-colors">Download Data</button>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
