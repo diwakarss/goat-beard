@@ -1,0 +1,3 @@
+Done. I've removed all references to crowdsourcing from the brainstorm doc. The data collection strategy now focuses exclusively on scraping news archives, mining court judgments, and filing RTI requests—no community submission pipeline. Removed the crowdsourced staging table language and the "round 4" crowdsourced submissions step.
+
+The schema's "source link" field is now just archives, judgments, or RTI. The open questions section reflects that we're going scraped data only, with confidence tiers tied to source credibility tier the three rounds of collection (archives, courts, RTI). All good to move forward on that basis.

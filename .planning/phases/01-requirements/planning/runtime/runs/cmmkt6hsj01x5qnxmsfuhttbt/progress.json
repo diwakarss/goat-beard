@@ -1,0 +1,36 @@
+{
+  "run_id": "cmmkt6hsj01x5qnxmsfuhttbt",
+  "updated_at": "2026-03-10T17:37:58Z",
+  "tasks": [
+    {
+      "id": "plan-phase",
+      "title": "Plan phase orchestration",
+      "state": "failed",
+      "status": "error",
+      "stage": "error",
+      "updated_at": "2026-03-10T17:37:58Z"
+    }
+  ],
+  "meta": {
+    "phase": "1",
+    "version": null,
+    "round_id": null,
+    "stage": "error",
+    "run_state": "failed",
+    "current_step": "error",
+    "step_label": "error",
+    "started_at": "2026-03-10T16:46:39Z",
+    "last_heartbeat_at": "2026-03-10T17:37:58Z",
+    "error_code": "spawn:verifier:nvidia failed (1): Launcher failure log tail:\nAPI Error: HTTP 500: {\"type\":\"urn:inference-connection:prob",
+    "retry_count": 0,
+    "active_agents": 0,
+    "total_tasks": 1,
+    "completed_tasks": 0,
+    "failed_tasks": 1,
+    "running_tasks": 0,
+    "blocked_tasks": 0,
+    "state_counts": {
+      "failed": 1
+    }
+  }
+}

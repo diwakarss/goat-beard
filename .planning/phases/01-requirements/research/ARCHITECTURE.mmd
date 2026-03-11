@@ -1,0 +1,59 @@
+flowchart TD
+    subgraph DataCollection["Data Collection Pipeline"]
+        S1[("The Hindu\nArchive")]
+        S2[("Indian Express\nArchive")]
+        S3[("Deccan Chronicle\nArchive")]
+
+        SC["Scraper\n(Crawlee/Scrapling)"]
+        S1 --> SC
+        S2 --> SC
+        S3 --> SC
+
+        SC --> RAW["Raw Incidents\n(JSON)"]
+        RAW --> DEDUP["Entity Resolution\n& Deduplication"]
+        DEDUP --> VERIFY["Source Verification\n& Confidence Scoring"]
+    end
+
+    subgraph DataStore["JSON Data Layer"]
+        VERIFY --> GOV["governors.json\n(Governor profiles)"]
+        VERIFY --> INC["incidents.json\n(Incident records)"]
+        VERIFY --> META["metadata.json\n(States, Articles, Eras)"]
+
+        INC --> SCORE["Severity Calculator"]
+        SCORE --> INC
+    end
+
+    subgraph SeverityModel["Severity Model"]
+        SCORE --> CS["Constitutional Severity\n(escalation × 0.6 + duration × 0.4)"]
+        SCORE --> PS["Public Salience\n(visibility × 0.5 + recency × 0.5)"]
+        CS --> US["Unified Score\n(CS × 0.7 + PS × 0.3)"]
+        PS --> US
+    end
+
+    subgraph Frontend["Next.js Static Site"]
+        GOV --> UI
+        INC --> UI
+        META --> UI
+
+        UI["Timeline-Matrix\nComponent"]
+        UI --> TL["Timeline View\n(1947-present)"]
+        UI --> SM["State Matrix\n(Heat tiles)"]
+        UI --> ED["Evidence Drawer\n(Drill-down)"]
+
+        TL --> FILTER["Filters\n(Era, State, Governor)"]
+        SM --> FILTER
+        ED --> CITE["Citation Links\n(Articles, SC Cases)"]
+    end
+
+    subgraph Deployment["AWS Static Hosting"]
+        Frontend --> BUILD["next build\n(static export)"]
+        BUILD --> S3["S3 Bucket\n(Static files)"]
+        S3 --> CF["CloudFront CDN"]
+        CF --> USER(("End User"))
+    end
+
+    style DataCollection fill:#1a1a2e,stroke:#16213e,color:#eee
+    style DataStore fill:#0f3460,stroke:#16213e,color:#eee
+    style SeverityModel fill:#533483,stroke:#16213e,color:#eee
+    style Frontend fill:#e94560,stroke:#16213e,color:#eee
+    style Deployment fill:#1a1a2e,stroke:#16213e,color:#eee

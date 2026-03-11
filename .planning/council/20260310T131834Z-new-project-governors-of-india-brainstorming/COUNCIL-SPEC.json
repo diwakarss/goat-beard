@@ -1,0 +1,36 @@
+{
+  "run_id": "20260310T131834Z-new-project-governors-of-india-brainstorming",
+  "topic": "new project governors of india brainstorming",
+  "rounds": 2,
+  "mentions": [],
+  "live": true,
+  "live_poll_seconds": 3.0,
+  "live_idle_timeout_seconds": 0.0,
+  "live_max_turns": 48,
+  "members": [
+    {
+      "name": "claude",
+      "provider": "anthropic",
+      "complexity": "simple",
+      "model": null
+    },
+    {
+      "name": "gemini",
+      "provider": "google",
+      "complexity": "simple",
+      "model": null
+    },
+    {
+      "name": "codex",
+      "provider": "openai",
+      "complexity": "simple",
+      "model": null
+    }
+  ],
+  "project_root": "/Users/b2sell/claude-projects/projects/goat-beard",
+  "scopes": [
+    "/Users/b2sell/claude-projects/projects/goat-beard"
+  ],
+  "dry_run": false,
+  "created_at_ms": 1773148714315
+}

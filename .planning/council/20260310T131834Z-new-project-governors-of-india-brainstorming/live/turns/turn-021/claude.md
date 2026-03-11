@@ -1,0 +1,11 @@
+I'd focus the UI on three principles: minimize cognitive load, surface evidence trails before jumping to judgment, and let scholars drill down without losing the big picture.
+
+**The Timeline-Matrix Foundation**: A horizontal timeline spanning 1947–present as the spine, with state rows as the y-axis. Each cell is a heat-map tile (constitutional severity color, opacity tied to recency/salience). Clicking a cell expands an incident drawer below—no modal takeover, keeps context. The timeline auto-segments by constitutional era (color bands underneath: Pre-Emergency, Coalition, etc.) so users immediately see historical rhythms. One toggle: "Show only verified incidents" or "Include staged claims"—lets researchers tune confidence thresholds on the fly.
+
+**Evidence-First Drill-Down**: When a user clicks an incident tile, the drawer shows: (1) a one-line transgression summary + severity scores broken out (constitutional vs. salience), (2) a narrow "evidence chain" card listing claim ID, primary sources, corroboration count, and last-verified timestamp, (3) the constitutional lever(s) invoked, linked directly to Article numbers + relevant SC precedent, and (4) a "counter-narrative" section if there's official pushback or contradiction flags—not hidden, front and center.
+
+**Lateral Pattern Detection**: A sidebar rail for "Governor Mobility" lets users spot roving appointments (click a governor's name, see prior/next postings highlighted on the state map). A second rail for "Legislative Pushback"—state assembly protests, CM statements. These aren't buried; they're first-class citizens because Gemini flagged them as key pattern signals.
+
+**Accessibility for Three Audiences**: Journalists see a "Hot Topics" feed (high salience, recent, trending), constitutional scholars see a "Precedent Explorer" (filter by articles/judgments), and policy researchers see "State Comparisons" (which state had the longest stretches of transgressions?). Same data, different entry ramps.
+
+One open question: Do we surface the "data completeness score" as a vertical confidence band next to each incident, or bury it in the evidence drawer? I'd lean toward a subtle visual—maybe a dashed underline for low-completeness incidents—so 1950s claims don't visually dominate just because they're sparse.

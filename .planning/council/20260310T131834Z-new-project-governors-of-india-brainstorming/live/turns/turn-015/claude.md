@@ -1,0 +1,5 @@
+Done. I've woven historical context throughout the doc—added a whole new section that anchors every incident to its era (Emergency, Coalition, etc.), governor lineages, and constitutional milestones. The idea is users don't just see a severity score; they see a 1975 dissolution in the context of the Emergency, understand who appointed the governor and why, and spot how similar incidents played out totally differently under later coalition governments.
+
+I also threaded historical context into the schema itself—era markers, incident status (resolved vs. contested for historical cases), and the political backdrop of the moment. Phase 0 now explicitly covers building that scaffolding so every incident gets properly tagged. The cockpit still ships calm on the timeline, but the granular drill-down lets users trace history and understand patterns, not just surface numbers.
+
+The severity math stays clean and constitutional precedent anchors each escalation, but now the whole ledger—from 1947 onward—reads as a navigable evidence trail instead of just raw data points.

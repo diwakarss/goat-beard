@@ -1,0 +1,22 @@
+{
+  "target": "codex",
+  "provider": "openai",
+  "model": null,
+  "timed_out": true,
+  "completed_via_output": false,
+  "spawn_status": null,
+  "return_code": -15,
+  "blocked": false,
+  "pending_question": null,
+  "status_snapshot": null,
+  "output_file": "/Users/b2sell/claude-projects/projects/goat-beard/.planning/council/20260310T131834Z-new-project-governors-of-india-brainstorming/live/turns/turn-020/codex.md",
+  "output_file_exists": false,
+  "output_file_size": 0,
+  "results_file": null,
+  "results_probe_paths": [],
+  "results_file_excerpt": "",
+  "launcher_stdout_excerpt": "",
+  "launcher_stderr_excerpt": "",
+  "spawn_stdout_excerpt": "",
+  "spawn_stderr_excerpt": ""
+}

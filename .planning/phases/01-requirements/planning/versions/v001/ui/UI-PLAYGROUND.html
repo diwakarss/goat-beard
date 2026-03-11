@@ -1,0 +1,935 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Goat Beard — UI Playground</title>
+<style>
+/* ── Reset & base ──────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  /* Base palette */
+  --bg-primary:#FFFFFF;--bg-secondary:#F8FAFC;--bg-tertiary:#F1F5F9;
+  --text-primary:#0F172A;--text-secondary:#475569;--text-muted:#94A3B8;
+  --border-default:#E2E8F0;--border-focus:#3B82F6;
+  /* Severity */
+  --sev-none:#F1F5F9;--sev-low:#BBF7D0;--sev-med:#FDE68A;--sev-high:#FDBA74;--sev-crit:#FCA5A5;
+  /* Beard */
+  --beard-0:#E2E8F0;--beard-1:#BBF7D0;--beard-2:#FDE68A;--beard-3:#FDBA74;--beard-4:#FCA5A5;
+  /* Verification */
+  --ver-confirmed-bg:#22C55E;--ver-confirmed-text:#14532D;--ver-confirmed-border:#16A34A;
+  --ver-partial-bg:#F59E0B;--ver-partial-text:#78350F;--ver-partial-border:#D97706;
+  --ver-unverified-bg:#EF4444;--ver-unverified-text:#7F1D1D;--ver-unverified-border:#DC2626;
+  /* Era bands */
+  --era-coalition:#34D399;--era-post2014:#FBBF24;
+  /* Transgression types */
+  --type-assent:#7C3AED;--type-delay:#D97706;--type-overreach:#DC2626;
+  --type-dissolution:#B91C1C;--type-countersign:#9333EA;--type-other:#64748B;
+  /* Spacing */
+  --space-xs:4px;--space-sm:8px;--space-md:16px;--space-lg:24px;--space-xl:32px;--space-2xl:48px;
+  /* Radius */
+  --radius-sm:4px;--radius-md:6px;--radius-lg:8px;--radius-full:9999px;
+  /* Animation */
+  --duration-fast:100ms;--duration-normal:200ms;
+  --ease-out:cubic-bezier(0.16,1,0.3,1);
+}
+
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+}
+
+body{
+  font-family:Inter,system-ui,-apple-system,sans-serif;
+  background:#F0F4F8;color:var(--text-primary);
+  line-height:1.5;
+}
+
+/* ── Playground controls ───────────────────────── */
+.pg-toolbar{
+  position:sticky;top:0;z-index:100;
+  display:flex;align-items:center;gap:12px;
+  padding:10px 20px;
+  background:#1E293B;color:#fff;
+  font-size:13px;
+  box-shadow:0 2px 8px rgba(0,0,0,.25);
+}
+.pg-toolbar b{font-size:14px;margin-right:auto}
+.pg-toolbar label{cursor:pointer;display:flex;align-items:center;gap:4px}
+.pg-toolbar select,.pg-toolbar button{
+  padding:4px 10px;border-radius:4px;border:1px solid #475569;
+  background:#334155;color:#fff;font-size:13px;cursor:pointer;
+}
+.pg-toolbar button:hover{background:#475569}
+
+/* ── Preview frames ────────────────────────────── */
+.pg-frames{
+  display:flex;gap:24px;padding:24px;justify-content:center;
+  flex-wrap:wrap;min-height:calc(100vh - 44px);
+  align-items:flex-start;
+}
+.pg-frame{
+  background:#fff;border-radius:12px;overflow:hidden;
+  box-shadow:0 4px 24px rgba(0,0,0,.12);
+  display:flex;flex-direction:column;
+  flex-shrink:0;
+}
+.pg-frame-label{
+  background:#334155;color:#94A3B8;
+  font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;
+  padding:6px 12px;text-align:center;
+}
+.pg-frame-body{
+  overflow:auto;position:relative;
+}
+
+/* ── Simulated app inside frames ───────────────── */
+.app{
+  --cell-w:48px;--cell-h:40px;--state-col:120px;--drawer-w:400px;
+  --header-h:64px;
+  background:var(--bg-primary);
+  font-family:Inter,system-ui,-apple-system,sans-serif;
+  color:var(--text-primary);
+  position:relative;
+  min-height:100%;
+}
+.app.mobile{
+  --cell-w:36px;--cell-h:32px;--state-col:56px;--drawer-w:100%;
+  --header-h:56px;
+}
+
+/* Header */
+.app-header{
+  height:var(--header-h);
+  display:flex;align-items:center;
+  padding:0 var(--space-lg);
+  border-bottom:1px solid var(--border-default);
+  position:sticky;top:0;z-index:50;
+  background:var(--bg-primary);
+  gap:12px;
+}
+.app-header .brand{display:flex;flex-direction:column;gap:0}
+.app-header .brand h1{font-size:20px;font-weight:700;line-height:1.2;white-space:nowrap}
+.app.mobile .app-header .brand h1{font-size:16px}
+.app-header .brand span{font-size:12px;color:var(--text-secondary);white-space:nowrap}
+.app.mobile .app-header .brand span{font-size:11px}
+.app-header .hdr-right{margin-left:auto;display:flex;align-items:center;gap:8px}
+.legend-btn{
+  font-size:12px;padding:4px 10px;border-radius:var(--radius-full);
+  border:1px solid var(--border-default);background:var(--bg-secondary);
+  cursor:pointer;white-space:nowrap;
+}
+.hamburger{
+  width:28px;height:28px;border:1px solid var(--border-default);border-radius:4px;
+  background:var(--bg-secondary);cursor:pointer;display:flex;align-items:center;
+  justify-content:center;font-size:16px;
+}
+
+/* Filter panel */
+.filter-panel{
+  background:var(--bg-secondary);
+  padding:var(--space-md);
+  display:flex;flex-wrap:wrap;gap:12px;
+  align-items:center;
+  border-bottom:1px solid var(--border-default);
+}
+.filter-group{
+  display:flex;align-items:center;gap:6px;
+  font-size:13px;color:var(--text-secondary);
+}
+.filter-group select,.filter-group input[type=range]{
+  font-size:12px;padding:3px 6px;border:1px solid var(--border-default);
+  border-radius:var(--radius-sm);background:#fff;
+}
+.filter-group input[type=range]{width:80px;accent-color:var(--border-focus)}
+.filter-chip{
+  font-size:11px;padding:2px 8px;border-radius:var(--radius-full);
+  border:1px solid var(--border-default);background:#fff;
+  cursor:pointer;
+}
+.filter-chip.active{background:var(--border-focus);color:#fff;border-color:var(--border-focus)}
+.filter-clear{
+  font-size:11px;color:var(--border-focus);cursor:pointer;
+  text-decoration:underline;margin-left:auto;
+}
+
+/* Mobile collapsed filter */
+.filter-collapsed{
+  display:none;
+  padding:8px var(--space-md);
+  background:var(--bg-secondary);
+  border-bottom:1px solid var(--border-default);
+  font-size:12px;color:var(--text-secondary);
+  cursor:pointer;
+  align-items:center;gap:8px;
+}
+.filter-collapsed .badge{
+  background:var(--border-focus);color:#fff;
+  font-size:10px;padding:1px 6px;border-radius:var(--radius-full);
+}
+.app.mobile .filter-panel{display:none}
+.app.mobile .filter-collapsed{display:flex}
+
+/* Timeline-matrix */
+.matrix-wrap{
+  overflow-x:auto;overflow-y:visible;
+  position:relative;
+}
+
+.matrix{
+  display:grid;
+  gap:2px;
+  padding:var(--space-md);
+  width:max-content;
+}
+
+/* Year header row */
+.matrix .year-hdr{
+  font-size:12px;color:var(--text-muted);font-weight:500;
+  display:flex;align-items:center;justify-content:center;
+  height:32px;position:sticky;top:var(--header-h);z-index:10;
+  background:var(--bg-primary);
+}
+
+/* State labels */
+.matrix .state-label{
+  font-size:13px;color:var(--text-primary);font-weight:500;
+  display:flex;align-items:center;
+  width:var(--state-col);
+  position:sticky;left:0;z-index:10;
+  background:var(--bg-primary);
+  padding-right:8px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.app.mobile .matrix .state-label{font-size:11px}
+
+/* Heat tiles */
+.heat-tile{
+  width:var(--cell-w);height:var(--cell-h);
+  border-radius:var(--radius-sm);
+  cursor:pointer;
+  transition:transform var(--duration-fast) ease, filter var(--duration-fast) ease;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'JetBrains Mono',ui-monospace,monospace;
+  font-size:11px;font-weight:500;color:var(--text-primary);
+  position:relative;
+}
+.heat-tile:hover{transform:scale(1.08);filter:brightness(1.04)}
+.heat-tile:focus{outline:2px solid var(--border-focus);outline-offset:2px}
+.heat-tile.selected{box-shadow:inset 0 0 0 2px var(--text-primary)}
+.heat-tile .multi-dot{
+  position:absolute;bottom:3px;right:3px;
+  width:5px;height:5px;border-radius:50%;background:var(--text-primary);
+}
+
+/* Evidence drawer */
+.drawer-overlay{
+  display:none;
+  position:absolute;top:0;right:0;bottom:0;
+  width:var(--drawer-w);
+  background:var(--bg-primary);
+  box-shadow:-4px 0 24px rgba(0,0,0,.08);
+  z-index:40;
+  overflow-y:auto;
+  animation:slideInRight var(--duration-normal) var(--ease-out);
+}
+@keyframes slideInRight{from{transform:translateX(100%)}to{transform:translateX(0)}}
+@keyframes slideInUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.drawer-overlay.open{display:block}
+
+.app.mobile .drawer-overlay{
+  top:auto;left:0;right:0;bottom:0;
+  width:100%;max-height:70vh;
+  box-shadow:0 -4px 24px rgba(0,0,0,.08);
+  animation-name:slideInUp;
+  border-radius:12px 12px 0 0;
+}
+.drawer-drag-handle{
+  display:none;width:40px;height:4px;border-radius:2px;
+  background:var(--border-default);margin:8px auto;
+}
+.app.mobile .drawer-drag-handle{display:block}
+
+.drawer-header{
+  padding:var(--space-md) var(--space-lg);
+  border-bottom:1px solid var(--border-default);
+  display:flex;justify-content:space-between;align-items:flex-start;
+}
+.drawer-header h3{font-size:18px;font-weight:600}
+.drawer-close{
+  width:28px;height:28px;border:1px solid var(--border-default);border-radius:4px;
+  background:var(--bg-secondary);cursor:pointer;font-size:14px;
+  display:flex;align-items:center;justify-content:center;
+}
+.drawer-section{padding:var(--space-md) var(--space-lg);border-bottom:1px solid var(--border-default)}
+.drawer-section:last-child{border-bottom:none}
+.drawer-section h4{font-size:14px;font-weight:600;margin-bottom:8px;color:var(--text-secondary)}
+
+/* Severity display */
+.severity-big{
+  font-family:'JetBrains Mono',ui-monospace,monospace;
+  font-size:28px;font-weight:700;line-height:1.2;
+}
+.severity-bar{
+  display:flex;height:8px;border-radius:4px;overflow:hidden;margin:8px 0;
+  background:var(--bg-tertiary);
+}
+.severity-bar .seg{height:100%}
+.severity-detail{font-size:12px;color:var(--text-muted);font-family:'JetBrains Mono',ui-monospace,monospace}
+
+/* Beard badge */
+.beard-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:13px;padding:3px 10px;border-radius:var(--radius-full);
+}
+.beard-icon{width:16px;height:16px;border-radius:50%;border:2px solid var(--text-primary)}
+
+/* Transgression type badge */
+.type-badge{
+  display:inline-block;font-size:11px;font-weight:600;
+  padding:2px 8px;border-radius:var(--radius-full);color:#fff;
+}
+
+/* Verification badge */
+.ver-badge{
+  display:inline-flex;align-items:center;gap:4px;
+  font-size:12px;font-weight:600;
+  padding:3px 10px;border-radius:var(--radius-full);
+}
+.confidence-bar{
+  width:100%;height:6px;border-radius:3px;background:var(--bg-tertiary);
+  margin:6px 0;overflow:hidden;
+}
+.confidence-bar .fill{height:100%;border-radius:3px;background:var(--border-focus)}
+
+/* Source card */
+.source-card{
+  background:var(--bg-secondary);border-radius:var(--radius-md);
+  padding:12px;margin-bottom:8px;
+  border-left:4px solid var(--sev-low);
+}
+.source-card .outlet{font-size:13px;font-weight:600;display:flex;align-items:center;gap:6px}
+.source-card .tier{
+  font-size:10px;padding:1px 6px;border-radius:var(--radius-full);
+  font-weight:600;
+}
+.source-card .title-link{font-size:12px;color:var(--border-focus);margin:4px 0;cursor:pointer}
+.source-card .meta{font-size:11px;color:var(--text-muted)}
+.cred-bar{width:100%;height:3px;border-radius:2px;background:var(--bg-tertiary);margin-top:4px;overflow:hidden}
+.cred-bar .fill{height:100%;border-radius:2px;background:var(--border-focus)}
+
+/* Constitutional lever */
+.lever-item{
+  font-size:13px;padding:6px 0;
+  border-bottom:1px solid var(--bg-tertiary);
+}
+.lever-item:last-child{border-bottom:none}
+.lever-item .article{font-weight:600;color:var(--text-primary)}
+.lever-item .note{font-size:12px;color:var(--text-muted)}
+
+/* Export button */
+.export-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:6px 14px;border-radius:var(--radius-md);
+  border:1px solid var(--border-default);background:var(--bg-secondary);
+  font-size:12px;cursor:pointer;
+}
+.export-btn:hover{background:var(--bg-tertiary)}
+
+/* Beard scale legend */
+.legend-panel{
+  background:var(--bg-secondary);border-radius:var(--radius-lg);
+  padding:var(--space-md);margin:var(--space-md);
+  display:none;
+}
+.legend-panel.show{display:block}
+.legend-row{
+  display:flex;align-items:center;gap:12px;padding:4px 0;font-size:13px;
+}
+.legend-swatch{
+  width:24px;height:18px;border-radius:var(--radius-sm);flex-shrink:0;
+}
+.legend-name{font-weight:600;min-width:100px}
+.legend-criteria{color:var(--text-muted);font-size:12px}
+
+/* Toast */
+.toast{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%);
+  background:#1E293B;color:#fff;font-size:13px;
+  padding:8px 20px;border-radius:var(--radius-full);
+  box-shadow:0 4px 16px rgba(0,0,0,.2);
+  z-index:200;display:none;
+  animation:fadeInUp .2s ease;
+}
+@keyframes fadeInUp{from{opacity:0;transform:translateX(-50%) translateY(8px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+.toast.show{display:block}
+
+/* Scroll indicator */
+.scroll-indicator{
+  position:absolute;right:0;top:50%;
+  transform:translateY(-50%);
+  width:24px;height:48px;
+  background:linear-gradient(to right,transparent,rgba(0,0,0,.06));
+  pointer-events:none;display:none;
+}
+.app.mobile .scroll-indicator{display:block}
+</style>
+</head>
+<body>
+
+<!-- ── Playground toolbar ────────────────────── -->
+<div class="pg-toolbar">
+  <b>Goat Beard &mdash; UI Playground</b>
+  <label>
+    View:
+    <select id="viewMode">
+      <option value="both">Desktop + Mobile</option>
+      <option value="desktop">Desktop only</option>
+      <option value="mobile">Mobile only</option>
+    </select>
+  </label>
+  <label>
+    State:
+    <select id="appState">
+      <option value="loaded">Loaded (default)</option>
+      <option value="empty">Empty data</option>
+      <option value="filtered-empty">Filtered empty</option>
+      <option value="drawer-open">Drawer open</option>
+      <option value="loading">Loading skeleton</option>
+    </select>
+  </label>
+  <button id="toggleLegendBtn">Toggle Legend</button>
+</div>
+
+<!-- ── Preview frames ────────────────────────── -->
+<div class="pg-frames" id="frames">
+  <!-- Desktop frame -->
+  <div class="pg-frame" id="desktopFrame" style="width:1080px">
+    <div class="pg-frame-label">Desktop &mdash; 1440 px viewport (scaled)</div>
+    <div class="pg-frame-body" id="desktopBody" style="height:700px"></div>
+  </div>
+
+  <!-- Mobile frame -->
+  <div class="pg-frame" id="mobileFrame" style="width:375px">
+    <div class="pg-frame-label">Mobile &mdash; 375 px viewport</div>
+    <div class="pg-frame-body" id="mobileBody" style="height:740px"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast">Copied to clipboard</div>
+
+<script>
+(function(){
+"use strict";
+
+/* ── Sample data ─────────────────────────────── */
+var STATES = [
+  {code:'KL',name:'Kerala'},
+  {code:'TN',name:'Tamil Nadu'},
+  {code:'WB',name:'West Bengal'},
+  {code:'MH',name:'Maharashtra'},
+  {code:'RJ',name:'Rajasthan'},
+  {code:'PB',name:'Punjab'},
+  {code:'DL',name:'Delhi'},
+  {code:'TG',name:'Telangana'},
+  {code:'JH',name:'Jharkhand'},
+  {code:'KA',name:'Karnataka'}
+];
+
+var YEARS = [];
+for(var y=2010;y<=2026;y++) YEARS.push(y);
+
+var TYPES = [
+  {key:'withholding_assent',label:'Assent Withheld',color:'#7C3AED'},
+  {key:'delay',label:'Delayed',color:'#D97706'},
+  {key:'overreach',label:'Overreach',color:'#DC2626'},
+  {key:'dissolution',label:'Dissolution',color:'#B91C1C'},
+  {key:'failure_to_countersign',label:'No Countersign',color:'#9333EA'},
+  {key:'other',label:'Other',color:'#64748B'}
+];
+
+var BEARD_LEVELS = [
+  {level:0,name:'Clean Chin',color:'#E2E8F0',fill:0},
+  {level:1,name:'Wisp',color:'#BBF7D0',fill:0.25},
+  {level:2,name:'Tuft',color:'#FDE68A',fill:0.5},
+  {level:3,name:'Billy Beard',color:'#FDBA74',fill:0.75},
+  {level:4,name:'Knee-Dragger',color:'#FCA5A5',fill:1}
+];
+
+function sevColor(s){
+  if(s<=0) return '#F1F5F9';
+  if(s<=0.8) return '#BBF7D0';
+  if(s<=1.5) return '#FDE68A';
+  if(s<=3) return '#FDBA74';
+  return '#FCA5A5';
+}
+function beardLevel(s){
+  if(s<=0) return BEARD_LEVELS[0];
+  if(s<=0.8) return BEARD_LEVELS[1];
+  if(s<=1.5) return BEARD_LEVELS[2];
+  if(s<=3) return BEARD_LEVELS[3];
+  return BEARD_LEVELS[4];
+}
+
+/* Deterministic pseudo-random from seed */
+function seededRand(seed){
+  var h = seed;
+  return function(){
+    h = Math.imul(h ^ (h >>> 16), 0x45d9f3b);
+    h = Math.imul(h ^ (h >>> 13), 0x45d9f3b);
+    return ((h ^= h >>> 16) >>> 0) / 4294967296;
+  };
+}
+
+/* Generate incident map */
+var incidents = {};
+var rng = seededRand(42);
+STATES.forEach(function(st){
+  YEARS.forEach(function(yr){
+    if(rng() > 0.65){
+      var count = rng() > 0.85 ? 2 : 1;
+      var sev = +(rng() * 4).toFixed(2);
+      var type = TYPES[Math.floor(rng() * TYPES.length)];
+      var constit = +(sev * 0.7).toFixed(2);
+      var salience = +(sev * 0.3).toFixed(2);
+      var verified = rng() > 0.3 ? 'confirmed' : rng() > 0.5 ? 'partial' : 'unverified';
+      var confidence = +(rng() * 0.4 + 0.6).toFixed(2);
+      incidents[st.code + '-' + yr] = {
+        state: st, year: yr, count: count, severity: sev, type: type,
+        constitutional: constit, salience: salience,
+        verified: verified, confidence: confidence,
+        governor: 'Gov. ' + st.name.split(' ')[0] + ' (' + yr + ')',
+        dateStart: yr + '-03-15', dateEnd: rng() > 0.2 ? yr + '-09-20' : null,
+        sources: Math.floor(rng() * 4) + 1
+      };
+    }
+  });
+});
+
+/* ── Safe DOM builder helpers ────────────────── */
+function el(tag, attrs, children){
+  var e = document.createElement(tag);
+  if(attrs){
+    Object.keys(attrs).forEach(function(k){
+      if(k === 'className') e.className = attrs[k];
+      else if(k === 'textContent') e.textContent = attrs[k];
+      else if(k.indexOf('on') === 0) e.addEventListener(k.slice(2).toLowerCase(), attrs[k]);
+      else e.setAttribute(k, attrs[k]);
+    });
+  }
+  if(children){
+    children.forEach(function(c){
+      if(typeof c === 'string') e.appendChild(document.createTextNode(c));
+      else if(c) e.appendChild(c);
+    });
+  }
+  return e;
+}
+
+function text(t){ return document.createTextNode(t); }
+
+/* ── Render functions (DOM-based) ────────────── */
+
+function renderApp(container, isMobile, state){
+  container.textContent = '';
+  var showDrawer = state === 'drawer-open';
+  var isEmpty = state === 'empty';
+  var isFilteredEmpty = state === 'filtered-empty';
+  var isLoading = state === 'loading';
+
+  var app = el('div', {className: isMobile ? 'app mobile' : 'app'});
+
+  /* Header */
+  var header = el('div', {className: 'app-header'});
+  var brand = el('div', {className: 'brand'}, [
+    el('h1', {textContent: 'Goat Beard'}),
+    el('span', {textContent: 'Tracking Gubernatorial Transgressions'})
+  ]);
+  header.appendChild(brand);
+
+  var hdrRight = el('div', {className: 'hdr-right'});
+  if(isMobile){
+    hdrRight.appendChild(el('button', {className: 'hamburger', 'aria-label': 'Menu', textContent: '\u2630'}));
+  } else {
+    hdrRight.appendChild(el('button', {className: 'legend-btn', textContent: 'Beard Scale', onClick: toggleLegend}));
+  }
+  header.appendChild(hdrRight);
+  app.appendChild(header);
+
+  /* Legend */
+  var legendId = isMobile ? 'legendMob' : 'legendDsk';
+  var legend = el('div', {className: 'legend-panel', id: legendId});
+  BEARD_LEVELS.forEach(function(b){
+    legend.appendChild(el('div', {className: 'legend-row'}, [
+      el('div', {className: 'legend-swatch', style: 'background:' + b.color}),
+      el('span', {className: 'legend-name', textContent: b.name}),
+      el('span', {style: 'font-size:12px;color:#475569', textContent: 'Level ' + b.level}),
+      el('span', {className: 'legend-criteria', textContent:
+        b.level === 0 ? 'No incidents' : b.level === 1 ? 'Score 0.01\u20130.8' :
+        b.level === 2 ? 'Score 0.8\u20131.5' : b.level === 3 ? 'Score 1.5\u20133.0' : 'Score >3.0'
+      })
+    ]));
+  });
+  app.appendChild(legend);
+
+  /* Filters */
+  if(!isMobile){
+    var fp = el('div', {className: 'filter-panel'});
+
+    var fg1 = el('div', {className: 'filter-group'}, [
+      el('span', {textContent: 'State'}),
+      el('select', {}, [el('option', {textContent: 'All States'})])
+    ]);
+    fp.appendChild(fg1);
+
+    var fg2 = el('div', {className: 'filter-group'}, [el('span', {textContent: 'Type'})]);
+    TYPES.slice(0, 3).forEach(function(t){
+      fg2.appendChild(el('span', {className: 'filter-chip active', textContent: t.label}));
+    });
+    fg2.appendChild(el('span', {className: 'filter-chip', textContent: '+3 more'}));
+    fp.appendChild(fg2);
+
+    var fg3 = el('div', {className: 'filter-group'}, [
+      el('span', {textContent: 'Status'}),
+      el('span', {className: 'filter-chip active', textContent: 'All'}),
+      el('span', {className: 'filter-chip', textContent: 'Verified'}),
+      el('span', {className: 'filter-chip', textContent: 'Unverified'})
+    ]);
+    fp.appendChild(fg3);
+
+    var fg4 = el('div', {className: 'filter-group'}, [
+      el('span', {textContent: 'Severity'}),
+      el('input', {type: 'range', min: '0', max: '4', step: '0.1', value: '0'}),
+      el('span', {style: 'font-size:11px;color:#94A3B8', textContent: '0.0'})
+    ]);
+    fp.appendChild(fg4);
+
+    var fg5 = el('div', {className: 'filter-group'}, [
+      el('span', {textContent: 'Year'}),
+      el('select', {}, [el('option', {textContent: '2010 \u2013 2026'})])
+    ]);
+    fp.appendChild(fg5);
+
+    fp.appendChild(el('span', {className: 'filter-clear', textContent: 'Clear all'}));
+    app.appendChild(fp);
+  } else {
+    var fc = el('div', {className: 'filter-collapsed'}, [
+      el('span', {textContent: 'Filters'}),
+      el('span', {className: 'badge', textContent: '5'}),
+      el('span', {style: 'margin-left:auto;font-size:11px', textContent: '\u25BE'})
+    ]);
+    app.appendChild(fc);
+  }
+
+  /* Filtered-empty banner */
+  if(isFilteredEmpty){
+    var banner = el('div', {style: 'background:#FEF3C7;padding:12px 24px;font-size:13px;color:#92400E;border-bottom:1px solid #FDE68A;display:flex;align-items:center;gap:8px'}, [
+      el('span', {style: 'font-size:16px', textContent: '\u26A0'}),
+      text(' No incidents match your filters. Try broadening your criteria.'),
+      el('span', {style: 'margin-left:auto;color:#3B82F6;cursor:pointer;font-size:12px;text-decoration:underline', textContent: 'Clear filters'})
+    ]);
+    app.appendChild(banner);
+  }
+
+  /* Main content */
+  if(isLoading){
+    app.appendChild(renderSkeleton(isMobile));
+  } else if(isEmpty){
+    app.appendChild(renderEmpty());
+  } else if(isFilteredEmpty){
+    app.appendChild(renderFilteredEmptyBody());
+  } else {
+    var selectedKey = showDrawer ? 'KL-2023' : null;
+    app.appendChild(renderMatrix(isMobile, selectedKey));
+    if(showDrawer){
+      var incData = incidents['KL-2023'] || {
+        state: STATES[0], year: 2023, count: 2, severity: 2.4,
+        type: TYPES[0], constitutional: 1.68, salience: 0.72,
+        verified: 'confirmed', confidence: 0.87,
+        governor: 'Gov. Kerala (2023)', dateStart: '2023-03-15', dateEnd: '2023-09-20', sources: 3
+      };
+      app.appendChild(renderDrawer(isMobile, incData));
+    }
+  }
+
+  container.appendChild(app);
+}
+
+function renderMatrix(isMobile, selectedKey){
+  var wrap = el('div', {className: 'matrix-wrap', style: 'position:relative'});
+  if(isMobile) wrap.appendChild(el('div', {className: 'scroll-indicator'}));
+
+  var grid = el('div', {
+    className: 'matrix',
+    style: 'grid-template-columns:var(--state-col) repeat(' + YEARS.length + ', var(--cell-w))',
+    role: 'grid',
+    'aria-label': 'Incident timeline matrix by state and year'
+  });
+
+  /* Year header row */
+  grid.appendChild(el('div', {className: 'state-label', style: 'height:32px'}));
+  YEARS.forEach(function(yr){
+    var label = isMobile ? (yr % 100 < 10 ? '0' : '') + (yr % 100) : String(yr);
+    grid.appendChild(el('div', {className: 'year-hdr', role: 'columnheader', textContent: label}));
+  });
+
+  /* Data rows */
+  STATES.forEach(function(st){
+    var stText = isMobile ? st.code : st.name;
+    grid.appendChild(el('div', {className: 'state-label', role: 'rowheader', textContent: stText}));
+
+    YEARS.forEach(function(yr){
+      var key = st.code + '-' + yr;
+      var inc = incidents[key];
+      var bg = inc ? sevColor(inc.severity) : '#F1F5F9';
+      var cls = 'heat-tile' + (key === selectedKey ? ' selected' : '');
+      var ariaText = inc
+        ? st.name + ', ' + yr + ': ' + inc.count + ' incident(s), Severity ' + inc.severity + ', ' + beardLevel(inc.severity).name
+        : st.name + ', ' + yr + ': No incidents';
+
+      var tile = el('div', {
+        className: cls,
+        style: 'background:' + bg,
+        tabindex: '0',
+        role: 'gridcell',
+        'aria-label': ariaText,
+        'data-key': key
+      });
+
+      if(inc && inc.count > 1){
+        tile.appendChild(el('span', {className: 'multi-dot'}));
+        tile.appendChild(el('span', {style: 'font-size:10px', textContent: String(inc.count)}));
+      }
+
+      grid.appendChild(tile);
+    });
+  });
+
+  wrap.appendChild(grid);
+  return wrap;
+}
+
+function renderDrawer(isMobile, inc){
+  if(!inc) return document.createDocumentFragment();
+  var bl = beardLevel(inc.severity);
+  var verColors = {
+    confirmed: {bg:'#22C55E', text:'#14532D', border:'#16A34A'},
+    partial: {bg:'#F59E0B', text:'#78350F', border:'#D97706'},
+    unverified: {bg:'#EF4444', text:'#7F1D1D', border:'#DC2626'}
+  };
+  var vc = verColors[inc.verified] || verColors.unverified;
+  var dateEndText = inc.dateEnd || 'Ongoing';
+
+  var drawer = el('div', {
+    className: 'drawer-overlay open',
+    role: 'dialog',
+    'aria-label': 'Incident details for ' + inc.state.name + ', ' + inc.year,
+    'aria-modal': 'false'
+  });
+
+  drawer.appendChild(el('div', {className: 'drawer-drag-handle'}));
+
+  /* Header */
+  var hdr = el('div', {className: 'drawer-header'});
+  var hdrLeft = el('div', {}, [
+    el('h3', {textContent: inc.state.name + ', ' + inc.year}),
+    el('div', {style: 'font-size:13px;color:#475569;margin:4px 0', textContent: inc.governor}),
+    el('span', {className: 'type-badge', style: 'background:' + inc.type.color, textContent: inc.type.label}),
+    el('div', {style: 'font-size:12px;color:#94A3B8;margin-top:6px', textContent: inc.dateStart + ' \u2013 ' + dateEndText})
+  ]);
+  hdr.appendChild(hdrLeft);
+  hdr.appendChild(el('button', {className: 'drawer-close', 'aria-label': 'Close', textContent: '\u2715'}));
+  drawer.appendChild(hdr);
+
+  /* Severity section */
+  var constitPct = Math.round(inc.constitutional / inc.severity * 100) || 70;
+  var sevSection = el('div', {className: 'drawer-section'});
+  sevSection.appendChild(el('h4', {textContent: 'Severity Breakdown'}));
+
+  var sevRow = el('div', {style: 'display:flex;align-items:center;gap:12px'});
+  sevRow.appendChild(el('div', {className: 'severity-big', textContent: inc.severity.toFixed(2)}));
+
+  var badge = el('span', {className: 'beard-badge', style: 'background:' + bl.color});
+  badge.appendChild(el('span', {className: 'beard-icon',
+    style: 'background:linear-gradient(to top,' + bl.color + ' ' + (bl.fill * 100) + '%, transparent ' + (bl.fill * 100) + '%)'}));
+  badge.appendChild(text(' ' + bl.name));
+  sevRow.appendChild(badge);
+  sevSection.appendChild(sevRow);
+
+  var bar = el('div', {className: 'severity-bar'});
+  bar.appendChild(el('div', {className: 'seg', style: 'width:' + constitPct + '%;background:#3B82F6'}));
+  bar.appendChild(el('div', {className: 'seg', style: 'width:' + (100 - constitPct) + '%;background:#F59E0B'}));
+  sevSection.appendChild(bar);
+
+  sevSection.appendChild(el('div', {className: 'severity-detail',
+    textContent: 'Constitutional: ' + inc.constitutional.toFixed(2) + '  |  Salience: ' + inc.salience.toFixed(2)}));
+  drawer.appendChild(sevSection);
+
+  /* Evidence chain */
+  var evSection = el('div', {className: 'drawer-section'});
+  evSection.appendChild(el('h4', {textContent: 'Evidence Chain'}));
+  evSection.appendChild(el('div', {style: 'font-size:12px;color:#94A3B8;margin-bottom:8px',
+    textContent: inc.sources + ' sources'}));
+
+  var outlets = ['The Hindu', 'Indian Express', 'NDTV', 'The Wire'];
+  for(var i = 0; i < Math.min(inc.sources, 3); i++){
+    var isPrimary = i < 2;
+    var card = el('div', {className: 'source-card',
+      style: 'border-left-color:' + (isPrimary ? '#22C55E' : '#F59E0B')});
+
+    var outletRow = el('div', {className: 'outlet'}, [text(outlets[i % outlets.length])]);
+    outletRow.appendChild(el('span', {className: 'tier',
+      style: 'background:' + (isPrimary ? '#DCFCE7' : '#FEF3C7') + ';color:' + (isPrimary ? '#14532D' : '#78350F'),
+      textContent: isPrimary ? 'Primary' : 'Secondary'}));
+    card.appendChild(outletRow);
+
+    card.appendChild(el('div', {className: 'title-link',
+      textContent: 'Governor faces scrutiny over ' + inc.type.label.toLowerCase() + ' allegations'}));
+    card.appendChild(el('div', {className: 'meta',
+      textContent: inc.dateStart + ' \u00B7 Credibility: 0.' + (75 + i * 5)}));
+
+    var credBar = el('div', {className: 'cred-bar'});
+    credBar.appendChild(el('div', {className: 'fill', style: 'width:' + (75 + i * 5) + '%'}));
+    card.appendChild(credBar);
+    evSection.appendChild(card);
+  }
+  if(inc.sources > 1){
+    evSection.appendChild(el('div', {style: 'font-size:12px;color:#94A3B8;margin-top:4px',
+      textContent: 'Corroborated by ' + inc.sources + ' independent sources'}));
+  }
+  drawer.appendChild(evSection);
+
+  /* Constitutional levers */
+  var levSection = el('div', {className: 'drawer-section'});
+  levSection.appendChild(el('h4', {textContent: 'Constitutional Levers'}));
+  var levers = [
+    {art: 'Article 163', note: 'Governor to act on aid/advice of Council of Ministers'},
+    {art: 'Article 200', note: 'Assent to Bills passed by state legislature'},
+    {art: 'Article 356', note: "President's Rule provisions"}
+  ];
+  levers.forEach(function(lv){
+    levSection.appendChild(el('div', {className: 'lever-item'}, [
+      el('span', {className: 'article', textContent: lv.art}),
+      text(' \u2014 '),
+      el('span', {className: 'note', textContent: lv.note})
+    ]));
+  });
+  drawer.appendChild(levSection);
+
+  /* Verification */
+  var verSection = el('div', {className: 'drawer-section'});
+  verSection.appendChild(el('h4', {textContent: 'Verification Status'}));
+  verSection.appendChild(el('span', {className: 'ver-badge',
+    style: 'background:' + vc.bg + ';color:' + vc.text + ';border:1px solid ' + vc.border,
+    textContent: inc.verified.charAt(0).toUpperCase() + inc.verified.slice(1)}));
+  verSection.appendChild(el('div', {style: 'font-size:12px;color:#94A3B8;margin-top:8px',
+    textContent: 'Confidence: ' + inc.confidence}));
+
+  var confBar = el('div', {className: 'confidence-bar'});
+  confBar.appendChild(el('div', {className: 'fill', style: 'width:' + (inc.confidence * 100) + '%'}));
+  verSection.appendChild(confBar);
+
+  if(inc.verified === 'unverified'){
+    verSection.appendChild(el('div', {
+      style: 'font-size:12px;color:#D97706;font-style:italic;margin-top:4px',
+      textContent: 'Capped at Escalation Level 2 per verification policy'
+    }));
+  }
+  drawer.appendChild(verSection);
+
+  /* Actions */
+  var actSection = el('div', {className: 'drawer-section'});
+  actSection.appendChild(el('h4', {textContent: 'Actions'}));
+  actSection.appendChild(el('button', {className: 'export-btn', onClick: showToast, textContent: '\uD83D\uDCCB Copy as Text'}));
+  actSection.appendChild(el('button', {className: 'export-btn', style: 'margin-left:8px', onClick: showToast, textContent: '\uD83D\uDCCB Copy as Markdown'}));
+  drawer.appendChild(actSection);
+
+  return drawer;
+}
+
+function renderSkeleton(isMobile){
+  var wrap = el('div', {style: 'padding:16px'});
+  /* Skeleton filter row */
+  var fRow = el('div', {style: 'display:flex;gap:12px;margin-bottom:16px'});
+  var count = isMobile ? 2 : 5;
+  for(var i = 0; i < count; i++){
+    fRow.appendChild(el('div', {style: 'width:' + (60 + i * 20) + 'px;height:28px;background:#F1F5F9;border-radius:4px;animation:pulse 1.5s infinite'}));
+  }
+  wrap.appendChild(fRow);
+  /* Skeleton grid */
+  var rows = isMobile ? 6 : 8;
+  var cols = isMobile ? 8 : YEARS.length;
+  for(var r = 0; r < rows; r++){
+    var row = el('div', {style: 'display:flex;gap:2px;margin-bottom:2px'});
+    row.appendChild(el('div', {style: 'width:var(--state-col);height:var(--cell-h);background:#F1F5F9;border-radius:4px;animation:pulse 1.5s infinite'}));
+    for(var c = 0; c < cols; c++){
+      row.appendChild(el('div', {style: 'width:var(--cell-w);height:var(--cell-h);background:#F1F5F9;border-radius:4px;animation:pulse 1.5s infinite'}));
+    }
+    wrap.appendChild(row);
+  }
+  return wrap;
+}
+
+function renderEmpty(){
+  return el('div', {style: 'display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 24px;text-align:center'}, [
+    el('div', {style: 'font-size:64px;margin-bottom:16px;opacity:.3', textContent: '\uD83D\uDCCA'}),
+    el('div', {style: 'font-size:18px;font-weight:600;margin-bottom:8px', textContent: 'No incidents recorded yet'}),
+    el('div', {style: 'font-size:14px;color:#475569;max-width:360px',
+      textContent: 'Data collection is in progress. Incidents will appear in the timeline matrix once available.'})
+  ]);
+}
+
+function renderFilteredEmptyBody(){
+  return el('div', {style: 'display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 24px;text-align:center'}, [
+    el('div', {style: 'font-size:48px;margin-bottom:16px;opacity:.3', textContent: '\uD83D\uDD0D'}),
+    el('div', {style: 'font-size:16px;font-weight:600;margin-bottom:8px', textContent: 'No matching incidents'}),
+    el('div', {style: 'font-size:14px;color:#475569', textContent: 'Try adjusting your filter criteria.'})
+  ]);
+}
+
+/* ── Interaction helpers ─────────────────────── */
+
+function showToast(){
+  var t = document.getElementById('toast');
+  t.classList.add('show');
+  setTimeout(function(){ t.classList.remove('show'); }, 3000);
+}
+
+function toggleLegend(){
+  var panels = document.querySelectorAll('.legend-panel');
+  for(var i = 0; i < panels.length; i++){
+    panels[i].classList.toggle('show');
+  }
+}
+
+/* ── State management ────────────────────────── */
+
+function refresh(){
+  var view = document.getElementById('viewMode').value;
+  var state = document.getElementById('appState').value;
+  var df = document.getElementById('desktopFrame');
+  var mf = document.getElementById('mobileFrame');
+
+  df.style.display = (view === 'mobile') ? 'none' : '';
+  mf.style.display = (view === 'desktop') ? 'none' : '';
+
+  if(view !== 'mobile') renderApp(document.getElementById('desktopBody'), false, state);
+  if(view !== 'desktop') renderApp(document.getElementById('mobileBody'), true, state);
+}
+
+document.getElementById('viewMode').addEventListener('change', refresh);
+document.getElementById('appState').addEventListener('change', refresh);
+document.getElementById('toggleLegendBtn').addEventListener('click', toggleLegend);
+
+/* Skeleton pulse animation */
+var styleEl = document.createElement('style');
+styleEl.textContent = '@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}';
+document.head.appendChild(styleEl);
+
+/* Initial render */
+refresh();
+
+})();
+</script>
+</body>
+</html>

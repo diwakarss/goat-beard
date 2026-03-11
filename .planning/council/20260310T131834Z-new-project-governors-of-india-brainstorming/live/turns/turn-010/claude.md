@@ -1,0 +1,5 @@
+Absolutely right—data has to be the foundation. Polishing a UI on empty data is just theater. Codex's framing is spot-on: incident schema first, then the pipeline. Once we have governor/state/transgression type/duration/constitutional lever/source link and confidence scores baked in, the severity model and leaderboard snap into place with credibility built in.
+
+The phased roadmap makes sense: Phase 0 locks in the schema and wires up collection; Phase 1 calibrates the beard scale once we see real severity distributions; Phase 2 lands the cockpit (timeline, state matrix, flashpoints); Phase 3 adds drill-down drawers and citations; Phase 4 QA validates with spot-checks per state. By the time we ship, users see numbers they can trust, not speculation.
+
+One quick clarification: for Phase 0 data collection, are we hand-curating incidents from public news archives and court records, or are you planning a crowdsourced submission pipeline (like users flagging shenanigans as they surface)? The schema stays the same either way, but it shapes how we prioritize source verification and confidence scoring.

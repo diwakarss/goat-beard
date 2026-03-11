@@ -1,0 +1,4 @@
+{
+  "status": "error",
+  "error": "Live mode failed to read timeline: GET:/v1/collab/rooms/cmmkmyoa8011fqnxm0aav7gla/timeline?limit=220 request-error: <urlopen error [Errno 61] Connection refused>"
+}

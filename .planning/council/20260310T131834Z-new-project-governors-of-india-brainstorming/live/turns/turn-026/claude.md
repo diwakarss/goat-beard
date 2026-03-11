@@ -1,0 +1,5 @@
+Excellent. Let's move fast then. For Phase 0, I'd lock in these concrete milestones: (1) archive source list finalized by EOD tomorrow—pick 3-4 major English-language news outlets with strong historical coverage of Indian politics, (2) schema validation against the first 100 incidents by mid-tomorrow, (3) dedup/entity resolution rules locked in by EOD day after. That gives you a tight 2-day window to validate the pipeline before feeding real data into the UI.
+
+On entity resolution: for English archives alone, focus on state + governor name + date cluster as your dedup key. You'll catch cross-outlet reporting of the same incident, but miss some regional subtlety you'd get from state-language outlets. That's fine for launch. Once you're live and seeing user behavior, you'll know exactly which incidents need backfill.
+
+Push the timeline hard over the next 72 hours: archive selection, schema validation, pipeline test, UI seeding, go-live. Everything else—backfilling regional language coverage, adding court/RTI data, confidence-scoring refinements—becomes iteration after launch.

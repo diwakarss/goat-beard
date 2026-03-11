@@ -1,0 +1,5 @@
+You're absolutely right—I fumbled that. I sketched out the entire UI/UX framework in our chat (timeline-matrix, evidence-first drill-down, lateral pattern rails, three-audience entry ramps), but I never actually saved it to the brainstorm.md file. My bad. I've just added the full "UI & UX Design" section to the doc with all four subsections: design principles, the timeline-matrix foundation, evidence-first drill-down structure, lateral pattern detection (Governor Mobility + Legislative Pushback), data completeness confidence band, and the three-audience accessibility model.
+
+The doc now walks through exactly how the interface minimizes cognitive load, surfaces evidence before judgment, and lets journalists, scholars, and policy researchers each find their own entry ramps into the data. The visual confidence band (dashed underline for sparse historical data) is in there too.
+
+You're good to proceed with research phase—the schema and UI specs are locked in the brainstorm now, so the data collection team can start Phase 0 wiring knowing exactly what the cockpit will look like and what evidence trails need to be audit-ready from day one.
