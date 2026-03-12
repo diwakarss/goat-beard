@@ -43,6 +43,15 @@ const avatarGradients: Record<number, string> = {
   4: 'from-rose-200 to-pink-300',
 };
 
+// Map beard levels to goat icons
+const goatIcons: Record<number, string> = {
+  0: '/tuft.png',
+  1: '/tuft.png',
+  2: '/tuft.png',
+  3: '/billy.png',
+  4: '/knee-dragger.png',
+};
+
 interface WorstOffendersProps {
   governors: Governor[];
   onViewAll?: () => void;
@@ -68,13 +77,10 @@ export function WorstOffenders({ governors, onViewAll, onGovernorClick }: WorstO
             onClick={() => onGovernorClick?.(gov)}
             className={`card-clickable w-full flex items-center gap-3 p-2 rounded-xl ${hoverBgColors[gov.beardLevel]} text-left transition-colors`}
           >
-            <div className="relative">
-              <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${avatarGradients[gov.beardLevel]} flex items-center justify-center text-sm`}>
-                👤
+            <div className="relative flex-shrink-0">
+              <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${avatarGradients[gov.beardLevel]} flex items-center justify-center overflow-hidden`}>
+                <img src={goatIcons[gov.beardLevel]} alt="" className="w-10 h-10 object-contain" />
               </div>
-              {gov.beardLevel >= 3 && (
-                <div className="absolute -bottom-1 -right-1 text-sm">🐐</div>
-              )}
             </div>
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2">
