@@ -1,0 +1,196 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    background: linear-gradient(135deg, #E8EDF5 0%, #F0E8F5 50%, #E8EDF5 100%);
+    color: #1E293B;
+    font-family: 'Nunito', system-ui, sans-serif;
+    min-height: 100vh;
+  }
+}
+
+@layer components {
+  .card {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+    transition: box-shadow 150ms ease, transform 150ms ease;
+  }
+
+  .card:hover {
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  }
+
+  .card-clickable:hover {
+    transform: translateY(-1px);
+    cursor: pointer;
+  }
+
+  .quote-text {
+    font-family: 'Nunito', system-ui, sans-serif;
+    font-style: italic;
+  }
+
+  .kpi-number {
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .timeline-track {
+    height: 6px;
+    background: rgba(99, 102, 241, 0.15);
+    border-radius: 3px;
+    position: relative;
+  }
+
+  .timeline-fill {
+    position: absolute;
+    height: 100%;
+    background: linear-gradient(90deg, #818CF8, #6366F1);
+    border-radius: 3px;
+  }
+
+  .timeline-handle {
+    width: 16px;
+    height: 16px;
+    background: #6366F1;
+    border: 3px solid white;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    cursor: grab;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  .timeline-handle:active {
+    cursor: grabbing;
+  }
+
+  .progress-bar {
+    height: 8px;
+    background: rgba(0, 0, 0, 0.06);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 300ms ease-out;
+  }
+
+  .beard-meter {
+    display: flex;
+    gap: 2px;
+  }
+
+  .beard-segment {
+    width: 8px;
+    height: 16px;
+    background: rgba(0, 0, 0, 0.08);
+    border-radius: 2px;
+  }
+
+  .beard-segment.active {
+    background: currentColor;
+  }
+
+  .severity-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  .horizontal-scroll {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .horizontal-scroll::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  .horizontal-scroll::-webkit-scrollbar-track {
+    background: rgba(99, 102, 241, 0.1);
+  }
+
+  .horizontal-scroll::-webkit-scrollbar-thumb {
+    background: rgba(99, 102, 241, 0.3);
+    border-radius: 2px;
+  }
+
+  .snap-card {
+    scroll-snap-align: start;
+  }
+
+  .donut-segment {
+    transition: transform 150ms ease;
+    transform-origin: center;
+    cursor: pointer;
+  }
+
+  .donut-segment:hover {
+    transform: scale(1.03);
+  }
+
+  .state-path {
+    stroke: rgba(255, 255, 255, 0.8);
+    stroke-width: 0.5;
+    cursor: pointer;
+    transition: all 150ms ease;
+  }
+
+  .state-path:hover {
+    filter: brightness(0.9);
+    stroke-width: 1.5;
+  }
+
+  .state-label {
+    font-size: 5px;
+    font-weight: 600;
+    fill: #334155;
+    pointer-events: none;
+  }
+
+  .pulse {
+    animation: pulse 2s infinite;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

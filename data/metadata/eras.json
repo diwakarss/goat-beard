@@ -1,0 +1,32 @@
+[
+  {
+    "id": "pre_emergency",
+    "name": "Pre-Emergency",
+    "period": "1950-06-26 to 1975-06-24",
+    "characteristics": "Foundational constitutional period with evolving centre-state conventions before the Emergency."
+  },
+  {
+    "id": "emergency",
+    "name": "Emergency",
+    "period": "1975-06-25 to 1977-03-21",
+    "characteristics": "Centralized executive control and constrained democratic institutions during the Internal Emergency."
+  },
+  {
+    "id": "post_emergency",
+    "name": "Post-Emergency",
+    "period": "1977-03-22 to 1989-12-01",
+    "characteristics": "Institutional recalibration after the Emergency, including renewed attention to federal safeguards."
+  },
+  {
+    "id": "coalition",
+    "name": "Coalition Era",
+    "period": "1989-12-02 to 2014-05-25",
+    "characteristics": "Frequent coalition governments and intensified centre-state bargaining with recurring gubernatorial disputes."
+  },
+  {
+    "id": "post_2014",
+    "name": "Post-2014",
+    "period": "2014-05-26 to present",
+    "characteristics": "Majoritarian national politics and high-salience federal friction in opposition-ruled states."
+  }
+]

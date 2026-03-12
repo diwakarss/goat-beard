@@ -1,0 +1,79 @@
+[
+  {
+    "id": "gov-amk-kl",
+    "name": "A.M. Khan",
+    "state": "KL",
+    "tenure_start": "2021-09-01",
+    "tenure_end": null,
+    "appointing_authority": "Modi Government (BJP)",
+    "party_affiliation": "BJP",
+    "prior_postings": [],
+    "next_postings": []
+  },
+  {
+    "id": "gov-rnr-tn",
+    "name": "R.N. Ravi",
+    "state": "TN",
+    "tenure_start": "2021-09-18",
+    "tenure_end": null,
+    "appointing_authority": "Modi Government (BJP)",
+    "party_affiliation": "IAS (Former)",
+    "prior_postings": ["Nagaland"],
+    "next_postings": []
+  },
+  {
+    "id": "gov-jd-wb",
+    "name": "J. Dhankhar",
+    "state": "WB",
+    "tenure_start": "2019-07-30",
+    "tenure_end": "2022-07-17",
+    "appointing_authority": "Modi Government (BJP)",
+    "party_affiliation": "BJP",
+    "prior_postings": [],
+    "next_postings": ["Vice President of India"]
+  },
+  {
+    "id": "gov-bsk-mh",
+    "name": "B.S. Koshyari",
+    "state": "MH",
+    "tenure_start": "2019-09-05",
+    "tenure_end": "2023-02-28",
+    "appointing_authority": "Modi Government (BJP)",
+    "party_affiliation": "BJP",
+    "prior_postings": ["Uttarakhand CM"],
+    "next_postings": []
+  },
+  {
+    "id": "gov-ts-ts",
+    "name": "T. Soundararajan",
+    "state": "TS",
+    "tenure_start": "2019-09-01",
+    "tenure_end": "2023-01-05",
+    "appointing_authority": "Modi Government (BJP)",
+    "party_affiliation": "BJP",
+    "prior_postings": [],
+    "next_postings": []
+  },
+  {
+    "id": "gov-blp-pb",
+    "name": "B.L. Purohit",
+    "state": "PB",
+    "tenure_start": "2021-08-31",
+    "tenure_end": "2024-02-28",
+    "appointing_authority": "Modi Government (BJP)",
+    "party_affiliation": "BJP",
+    "prior_postings": ["Tamil Nadu"],
+    "next_postings": []
+  },
+  {
+    "id": "gov-cvab-wb",
+    "name": "C.V.A. Bose",
+    "state": "WB",
+    "tenure_start": "2022-11-18",
+    "tenure_end": null,
+    "appointing_authority": "Modi Government (BJP)",
+    "party_affiliation": "IAS (Former)",
+    "prior_postings": [],
+    "next_postings": []
+  }
+]
