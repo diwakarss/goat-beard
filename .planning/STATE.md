@@ -1,60 +1,81 @@
 # Project State
 
-**Last Updated**: 2026-03-11
+**Last Updated**: 2026-03-12
 
 ---
 
 ## Current Phase
 
 **Phase 1: Requirements & MVP Foundation**
-**Status**: Planning Complete — Ready for Execution
+**Status**: Execution Complete ✓
 
 ---
 
-## Planning Phase Summary
+## Execution Phase Summary
 
-### Artifacts Produced
+### Commits
 
-| Document | Purpose | Status |
-|----------|---------|--------|
-| RESEARCH-BRIEF.md | Scoping and constraints | Complete |
-| RESEARCH.md | Domain research findings | Complete |
-| ARCHITECTURE.md | System architecture decisions | Complete |
-| PRD.md | Product requirements document | Complete |
-| RESEARCH-CHECK.md | Research validation gate | PASS |
-| PLAN.md | Phase 1 execution plan (4 waves) | Complete |
-| UI-SPEC.md | Component specifications | Complete |
-| UI-PLAYGROUND.html | Interactive prototype (v4) | Complete |
+| Commit | Description |
+|--------|-------------|
+| 7e599f3 | feat: initial project setup with UI playground v2 styling |
+| 4416f55 | docs: complete planning phase with project documentation |
+| ddd41fe | chore: add project configuration files |
+| cef53a7 | chore: add planning and quality gate artifacts |
+| 7808025 | feat: implement dashboard with governor tracking |
+| d636c7e | fix: stabilize dashboard layout and fix component rendering |
+| bf069a9 | feat: add branding assets and enhance header UI |
 
-### Review Rounds
+### Components Implemented
 
-| Round | Status | Key Outcomes |
-|-------|--------|--------------|
-| round-001 | Resolved | Initial plan reviewed by Claude, Codex, DeepSeek |
-| round-002 | Resolved | Severity domain alignment, filter surface gaps |
-| round-003 | Resolved | UI artifact alignment requirements (F1-F3) |
+| Component | Status | Notes |
+|-----------|--------|-------|
+| DashboardHeader | Complete | Logo, KPIs, timeline slider with beard icon handles |
+| IndiaMap | Complete | Interactive state heat map with react-simple-maps |
+| WorstOffenders | Complete | Governor leaderboard with goat icons by severity |
+| BillsInLimbo | Complete | Bills listing with days-held progress bars |
+| TransgressionDonut | Complete | Donut chart with colored segments and legend |
+| TrendSparkline | Complete | Area chart with year-over-year comparison |
+| ArticlesChart | Complete | Horizontal bar chart for article citations |
+| IncidentStream | Complete | Filterable incident cards with severity badges |
+| StateModal | Complete | State detail modal with incident list |
 
-### Alignment Fixes Applied
+### Layout Architecture
 
-1. **F1 Filter Surface**: Added Governor and Era filters to UI-SPEC.md
-2. **F2 Official Response**: Added Section 5.5 to evidence drawer spec
-3. **F3 Severity Domain**: Updated thresholds to [0.42, 2.26] range, slider max to 2.3
+- **Row 1 (440px)**: WorstOffenders, BillsInLimbo, IndiaMap, TransgressionDonut
+- **Row 2 (180px)**: TrendSparkline, ArticlesChart
+- **Row 3 (auto)**: IncidentStream (full width)
+
+### Assets Added
+
+| Asset | Location | Purpose |
+|-------|----------|---------|
+| logo.png | /public | App logo in header |
+| beard-icon.png | /public | Timeline slider handles |
+| tuft.png | /public | Governor icon (level 0-2) |
+| billy.png | /public | Governor icon (level 3) |
+| knee-dragger.png | /public | Governor icon (level 4) |
+
+---
+
+## Issues Resolved
+
+1. **Map SVG clipping**: Fixed projection scale/center for India bounds
+2. **Layout shift on filter**: Fixed with `[&>*]:h-[440px]` grid child heights
+3. **Donut colors not rendering**: Fixed segment calculation with for-loop
+4. **Dev server crashing**: Conditional static export for production only
+5. **Timeline handle clipping**: CSS clamp() keeps icons within bounds
 
 ---
 
 ## Next Steps
 
-### Execution Phase (Wave 1-4)
+### Phase 2: Data & Polish
 
-1. **Wave 1**: Initialize Next.js project, define TypeScript types, create JSON schema
-2. **Wave 2**: Implement severity calculator, curate 30+ seed incidents
-3. **Wave 3**: Build timeline-matrix UI, evidence drawer, filters
-4. **Wave 4**: Add export, accessibility audit, CI/CD pipeline, deploy
-
-### Immediate Actions
-
-- [ ] Run `/nalan:execute` to begin Wave 1
-- [ ] Or manually scaffold the Next.js project per Task 1.1
+- [ ] Curate 50+ real incidents with sources
+- [ ] Implement evidence drawer with official responses
+- [ ] Add export functionality (PNG/PDF/CSV)
+- [ ] Accessibility audit (WCAG 2.1 AA)
+- [ ] Deploy to production
 
 ---
 
@@ -64,20 +85,11 @@ None currently identified.
 
 ---
 
-## Recent Decisions
-
-| Decision | Date | Rationale |
-|----------|------|-----------|
-| Accept UI-PLAYGROUND v4 as final prototype | 2026-03-11 | Tasklyn-style design approved |
-| Close planning phase | 2026-03-11 | All artifacts complete, alignment verified |
-
----
-
 ## Metrics
 
 | Metric | Target | Current |
 |--------|--------|---------|
-| Incidents curated | 50+ | 0 (pending Wave 2) |
-| Components specified | 11 | 11 |
-| Review rounds | 3 | 3 |
-| UI prototype versions | 4 | 4 |
+| Incidents curated | 50+ | 12 (seed data) |
+| Components implemented | 11 | 9 |
+| Layout stable | Yes | Yes |
+| Branding complete | Yes | Yes |
