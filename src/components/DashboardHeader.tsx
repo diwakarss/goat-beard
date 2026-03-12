@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useRef, useCallback, useState, useEffect } from 'react';
 
 interface DashboardHeaderProps {
   incidents: number;
@@ -8,8 +8,12 @@ interface DashboardHeaderProps {
   states: number;
   avgDays: number;
   dateRange: { start: number; end: number };
-  onDateRangeChange?: (start: number, end: number) => void;
+  onDateRangeChange: (start: number, end: number) => void;
 }
+
+const MIN_YEAR = 2010;
+const MAX_YEAR = 2026;
+const TOTAL_YEARS = MAX_YEAR - MIN_YEAR;
 
 export function DashboardHeader({
   incidents,
@@ -17,10 +21,83 @@ export function DashboardHeader({
   states,
   avgDays,
   dateRange,
+  onDateRangeChange,
 }: DashboardHeaderProps) {
-  const totalYears = 2026 - 2010;
-  const startPercent = ((dateRange.start - 2010) / totalYears) * 100;
-  const endPercent = ((dateRange.end - 2010) / totalYears) * 100;
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [dragging, setDragging] = useState<'start' | 'end' | null>(null);
+
+  const startPercent = ((dateRange.start - MIN_YEAR) / TOTAL_YEARS) * 100;
+  const endPercent = ((dateRange.end - MIN_YEAR) / TOTAL_YEARS) * 100;
+
+  const getYearFromPosition = useCallback((clientX: number): number => {
+    if (!trackRef.current) return MIN_YEAR;
+    const rect = trackRef.current.getBoundingClientRect();
+    const percent = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+    return Math.round(MIN_YEAR + percent * TOTAL_YEARS);
+  }, []);
+
+  const handleMouseDown = useCallback((handle: 'start' | 'end') => (e: React.MouseEvent) => {
+    e.preventDefault();
+    setDragging(handle);
+  }, []);
+
+  const handleTouchStart = useCallback((handle: 'start' | 'end') => (e: React.TouchEvent) => {
+    e.preventDefault();
+    setDragging(handle);
+  }, []);
+
+  const handleMove = useCallback((clientX: number) => {
+    if (!dragging) return;
+    const year = getYearFromPosition(clientX);
+    if (dragging === 'start') {
+      const newStart = Math.min(year, dateRange.end - 1);
+      onDateRangeChange(Math.max(MIN_YEAR, newStart), dateRange.end);
+    } else {
+      const newEnd = Math.max(year, dateRange.start + 1);
+      onDateRangeChange(dateRange.start, Math.min(MAX_YEAR, newEnd));
+    }
+  }, [dragging, dateRange, getYearFromPosition, onDateRangeChange]);
+
+  const handleMouseMove = useCallback((e: MouseEvent) => {
+    handleMove(e.clientX);
+  }, [handleMove]);
+
+  const handleTouchMove = useCallback((e: TouchEvent) => {
+    if (e.touches.length > 0) {
+      handleMove(e.touches[0].clientX);
+    }
+  }, [handleMove]);
+
+  const handleEnd = useCallback(() => {
+    setDragging(null);
+  }, []);
+
+  useEffect(() => {
+    if (dragging) {
+      window.addEventListener('mousemove', handleMouseMove);
+      window.addEventListener('mouseup', handleEnd);
+      window.addEventListener('touchmove', handleTouchMove);
+      window.addEventListener('touchend', handleEnd);
+      return () => {
+        window.removeEventListener('mousemove', handleMouseMove);
+        window.removeEventListener('mouseup', handleEnd);
+        window.removeEventListener('touchmove', handleTouchMove);
+        window.removeEventListener('touchend', handleEnd);
+      };
+    }
+  }, [dragging, handleMouseMove, handleTouchMove, handleEnd]);
+
+  const handleTrackClick = useCallback((e: React.MouseEvent) => {
+    if (dragging) return;
+    const year = getYearFromPosition(e.clientX);
+    const distToStart = Math.abs(year - dateRange.start);
+    const distToEnd = Math.abs(year - dateRange.end);
+    if (distToStart < distToEnd) {
+      onDateRangeChange(Math.max(MIN_YEAR, Math.min(year, dateRange.end - 1)), dateRange.end);
+    } else {
+      onDateRangeChange(dateRange.start, Math.min(MAX_YEAR, Math.max(year, dateRange.start + 1)));
+    }
+  }, [dragging, dateRange, getYearFromPosition, onDateRangeChange]);
 
   return (
     <header className="card mx-3 lg:mx-5 mt-3 sticky top-3 z-50">
@@ -57,8 +134,12 @@ export function DashboardHeader({
 
         {/* Timeline Slider */}
         <div className="flex items-center gap-4">
-          <span className="text-xs text-slate-500 font-medium w-10">2010</span>
-          <div className="flex-1 relative">
+          <span className="text-xs text-slate-500 font-medium w-10">{MIN_YEAR}</span>
+          <div
+            ref={trackRef}
+            className="flex-1 relative cursor-pointer select-none"
+            onClick={handleTrackClick}
+          >
             <div className="timeline-track">
               {/* Era backgrounds */}
               <div className="absolute inset-0 flex rounded overflow-hidden opacity-30">
@@ -72,11 +153,21 @@ export function DashboardHeader({
               ></div>
             </div>
             {/* Handles */}
-            <div className="timeline-handle" style={{ left: `${startPercent}%` }}></div>
-            <div className="timeline-handle" style={{ left: `${endPercent}%` }}></div>
+            <div
+              className={`timeline-handle transition-transform ${dragging === 'start' ? 'scale-125' : ''}`}
+              style={{ left: `${startPercent}%` }}
+              onMouseDown={handleMouseDown('start')}
+              onTouchStart={handleTouchStart('start')}
+            ></div>
+            <div
+              className={`timeline-handle transition-transform ${dragging === 'end' ? 'scale-125' : ''}`}
+              style={{ left: `${endPercent}%` }}
+              onMouseDown={handleMouseDown('end')}
+              onTouchStart={handleTouchStart('end')}
+            ></div>
           </div>
-          <span className="text-xs text-slate-500 font-medium w-10 text-right">2026</span>
-          <div className="text-xs text-indigo-600 font-semibold bg-indigo-50 px-2 py-1 rounded-lg">
+          <span className="text-xs text-slate-500 font-medium w-10 text-right">{MAX_YEAR}</span>
+          <div className="text-xs text-indigo-600 font-semibold bg-indigo-50 px-2 py-1 rounded-lg min-w-[80px] text-center">
             {dateRange.start}–{dateRange.end}
           </div>
         </div>

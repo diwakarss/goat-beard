@@ -112,7 +112,12 @@ export default function Home() {
   const [searchQuery, setSearchQuery] = useState('');
   const [stateFilter, setStateFilter] = useState('');
   const [typeFilter, setTypeFilter] = useState('');
-  const [dateRange] = useState({ start: 2019, end: 2026 });
+  const [dateRange, setDateRange] = useState({ start: 2019, end: 2026 });
+
+  // Date range change handler
+  const handleDateRangeChange = useCallback((start: number, end: number) => {
+    setDateRange({ start, end });
+  }, []);
 
   // Modal states
   const [selectedGovernorId, setSelectedGovernorId] = useState<string | null>(null);
@@ -121,11 +126,51 @@ export default function Home() {
 
   // Load real data
   const governors = getGovernors();
-  const incidents = getIncidents();
-  const incidentCountByGovernor = getIncidentCountByGovernor();
-  const incidentCountByState = getIncidentCountByState();
+  const allIncidents = getIncidents();
   const states = getStates();
   const articles = getArticles();
+
+  // Filter incidents by date range
+  const filteredIncidents = useMemo(() => {
+    return allIncidents.filter(inc => {
+      const year = new Date(inc.date_start).getFullYear();
+      return year >= dateRange.start && year <= dateRange.end;
+    });
+  }, [allIncidents, dateRange]);
+
+  // Use filtered incidents as the base for all computations
+  const incidents = filteredIncidents;
+
+  // Compute filtered counts
+  const incidentCountByGovernor = useMemo(() => {
+    const counts = new Map<string, number>();
+    incidents.forEach(inc => {
+      counts.set(inc.governor_id, (counts.get(inc.governor_id) || 0) + 1);
+    });
+    return counts;
+  }, [incidents]);
+
+  const incidentCountByState = useMemo(() => {
+    const counts = new Map<string, number>();
+    incidents.forEach(inc => {
+      counts.set(inc.state, (counts.get(inc.state) || 0) + 1);
+    });
+    return counts;
+  }, [incidents]);
+
+  // Filtered stats for header
+  const filteredGovernorCount = useMemo(() => {
+    return new Set(incidents.map(inc => inc.governor_id)).size;
+  }, [incidents]);
+
+  const filteredStateCount = useMemo(() => {
+    return new Set(incidents.map(inc => inc.state)).size;
+  }, [incidents]);
+
+  const filteredAvgDays = useMemo(() => {
+    if (incidents.length === 0) return 0;
+    return Math.round(incidents.reduce((sum, inc) => sum + inc.duration_days, 0) / incidents.length);
+  }, [incidents]);
 
   // Get selected items for modals
   const selectedGovernor = selectedGovernorId ? getGovernorById(selectedGovernorId) : null;
@@ -428,16 +473,17 @@ export default function Home() {
       {/* Compact Header with Quote + Timeline */}
       <DashboardHeader
         incidents={incidents.length}
-        governors={governors.filter(g => incidentCountByGovernor.get(g.id)).length}
-        states={incidentCountByState.size}
-        avgDays={Math.round(incidents.reduce((sum, inc) => sum + inc.duration_days, 0) / incidents.length) || 0}
+        governors={filteredGovernorCount}
+        states={filteredStateCount}
+        avgDays={filteredAvgDays}
         dateRange={dateRange}
+        onDateRangeChange={handleDateRangeChange}
       />
 
       {/* Main Dashboard Grid */}
       <main className="p-3 lg:p-5">
-        {/* Row 1: 4 columns */}
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mb-4">
+        {/* Row 1: At-a-glance summary (4 columns, fixed height) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mb-4 [&>*]:h-[440px]">
           {/* Col 1: Top Governors */}
           <WorstOffenders
             governors={transformedGovernors}
@@ -452,22 +498,24 @@ export default function Home() {
             onBillClick={handleBillClick}
           />
 
-          {/* Col 3: State Heat Map (taller) */}
+          {/* Col 3: State Heat Map */}
           <IndiaMap
             stateData={stateData}
             onStateClick={handleStateClick}
           />
 
-          {/* Col 4: By Type Donut + Constitutional Articles + Trends */}
-          <div className="space-y-4">
-            <TransgressionDonut
-              total={incidents.length}
-              types={transgressionTypes}
-              onTypeClick={handleTransgressionClick}
-            />
-            <ArticlesChart articles={articleCounts} />
-            <TrendSparkline changePercent={trendChange} comparedTo={String(new Date().getFullYear() - 2)} />
-          </div>
+          {/* Col 4: By Type Breakdown */}
+          <TransgressionDonut
+            total={incidents.length}
+            types={transgressionTypes}
+            onTypeClick={handleTransgressionClick}
+          />
+        </div>
+
+        {/* Row 2: Deeper analysis (2 columns) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 [&>*]:h-[180px]">
+          <TrendSparkline changePercent={trendChange} comparedTo={String(new Date().getFullYear() - 2)} />
+          <ArticlesChart articles={articleCounts} />
         </div>
 
         {/* Row 2: Incident Stream (Full Width) */}

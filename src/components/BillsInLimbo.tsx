@@ -35,7 +35,7 @@ export function BillsInLimbo({ bills, onViewAll, onBillClick }: BillsInLimboProp
   const maxDays = Math.max(...bills.map(b => b.daysHeld), 1);
 
   return (
-    <div className="card p-4">
+    <div className="card p-4 h-full flex flex-col">
       <div className="flex items-center justify-between mb-3">
         <h2 className="text-sm font-bold text-slate-700">Bills in Limbo</h2>
         <button

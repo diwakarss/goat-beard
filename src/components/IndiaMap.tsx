@@ -139,7 +139,7 @@ export function IndiaMap({ stateData, onStateClick }: IndiaMapProps) {
 
   if (!statesGeoJson) {
     return (
-      <div className="card p-4 h-full flex flex-col">
+      <div className="card p-4 flex flex-col h-full">
         <h2 className="text-sm font-bold text-slate-700 mb-3">By State</h2>
         <div className="flex-1 flex items-center justify-center text-slate-400">
           Loading map...
@@ -151,17 +151,19 @@ export function IndiaMap({ stateData, onStateClick }: IndiaMapProps) {
   return (
     <div className="card p-4 h-full flex flex-col">
       <h2 className="text-sm font-bold text-slate-700 mb-3">By State</h2>
-      <div className="relative flex-1 min-h-0">
+      <div className="relative flex-1 flex items-center justify-center overflow-hidden">
         <ComposableMap
           projection="geoMercator"
           projectionConfig={{
-            scale: 800,
-            center: [82, 23],
+            scale: 680,
+            center: [82.7, 22.5],
           }}
-          width={400}
-          height={380}
-          className="w-full h-full"
-          style={{ width: '100%', height: '100%' }}
+          width={380}
+          height={400}
+          style={{
+            width: '100%',
+            height: '100%',
+          }}
         >
           <Geographies geography={statesGeoJson}>
             {({ geographies }) =>
