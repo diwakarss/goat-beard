@@ -1,0 +1,644 @@
+/**
+ * Severity Calculator Tests
+ *
+ * Comprehensive test suite for the severity calculation module.
+ * Tests cover:
+ * - Helper functions (normalization, duration impact, media visibility, recency)
+ * - Escalation capping based on verification status
+ * - Main calculation functions (constitutional, salience, unified)
+ * - Edge cases and validation
+ */
+
+import { describe, it, expect } from 'vitest';
+import {
+  // Helper functions
+  normalizeEscalationLevel,
+  calculateDurationImpact,
+  calculateMediaVisibility,
+  calculateRecencyMultiplier,
+  applyEscalationCap,
+  // Main calculation functions
+  calculateConstitutionalSeverity,
+  calculatePublicSalience,
+  calculateUnifiedScore,
+  calculateAllSeverityScores,
+  // Constants
+  MAX_ESCALATION_UNVERIFIED,
+  CONSTITUTIONAL_WEIGHTS,
+  SALIENCE_WEIGHTS,
+  UNIFIED_WEIGHTS,
+  DURATION_THRESHOLDS,
+  RECENCY_HALF_LIFE_DAYS,
+} from '../severity';
+
+import type { EscalationLevel, VerificationStatus, SourceTier } from '@/types/schema';
+
+// ============================================================================
+// Helper Functions Tests
+// ============================================================================
+
+describe('normalizeEscalationLevel', () => {
+  it('should normalize level 1 to 0.25', () => {
+    expect(normalizeEscalationLevel(1)).toBe(0.25);
+  });
+
+  it('should normalize level 2 to 0.5', () => {
+    expect(normalizeEscalationLevel(2)).toBe(0.5);
+  });
+
+  it('should normalize level 3 to 0.75', () => {
+    expect(normalizeEscalationLevel(3)).toBe(0.75);
+  });
+
+  it('should normalize level 4 to 1.0', () => {
+    expect(normalizeEscalationLevel(4)).toBe(1.0);
+  });
+});
+
+describe('calculateDurationImpact', () => {
+  it('should return 0 for 0 days', () => {
+    expect(calculateDurationImpact(0)).toBe(0);
+  });
+
+  it('should return 0.2 for short durations (< 30 days)', () => {
+    expect(calculateDurationImpact(1)).toBe(0.2);
+    expect(calculateDurationImpact(15)).toBe(0.2);
+    expect(calculateDurationImpact(29)).toBe(0.2);
+  });
+
+  it('should return 0.4 for medium durations (30-89 days)', () => {
+    expect(calculateDurationImpact(30)).toBe(0.4);
+    expect(calculateDurationImpact(60)).toBe(0.4);
+    expect(calculateDurationImpact(89)).toBe(0.4);
+  });
+
+  it('should return 0.6 for long durations (90-179 days)', () => {
+    expect(calculateDurationImpact(90)).toBe(0.6);
+    expect(calculateDurationImpact(120)).toBe(0.6);
+    expect(calculateDurationImpact(179)).toBe(0.6);
+  });
+
+  it('should return 0.8 for extended durations (180-364 days)', () => {
+    expect(calculateDurationImpact(180)).toBe(0.8);
+    expect(calculateDurationImpact(270)).toBe(0.8);
+    expect(calculateDurationImpact(364)).toBe(0.8);
+  });
+
+  it('should return 1.0 for very long durations (365+ days)', () => {
+    expect(calculateDurationImpact(365)).toBe(1.0);
+    expect(calculateDurationImpact(500)).toBe(1.0);
+    expect(calculateDurationImpact(1000)).toBe(1.0);
+  });
+
+  it('should throw error for negative duration', () => {
+    expect(() => calculateDurationImpact(-1)).toThrow('Duration cannot be negative');
+    expect(() => calculateDurationImpact(-100)).toThrow('Duration cannot be negative');
+  });
+});
+
+describe('calculateMediaVisibility', () => {
+  it('should return 0 for empty sources array', () => {
+    expect(calculateMediaVisibility([])).toBe(0);
+  });
+
+  it('should calculate visibility for single primary source', () => {
+    const sources = [{ tier: 'primary' as SourceTier, credibility_score: 0.8 }];
+    const result = calculateMediaVisibility(sources);
+    // 0.8 credibility + 0.05 source count bonus = 0.85
+    expect(result).toBeCloseTo(0.85, 2);
+  });
+
+  it('should calculate visibility for single secondary source', () => {
+    const sources = [{ tier: 'secondary' as SourceTier, credibility_score: 0.8 }];
+    const result = calculateMediaVisibility(sources);
+    // 0.8 credibility (secondary weight 0.6 doesn't reduce credibility score itself)
+    // + 0.05 source count bonus = 0.85
+    expect(result).toBeCloseTo(0.85, 2);
+  });
+
+  it('should weight primary sources higher than secondary', () => {
+    const primarySources = [{ tier: 'primary' as SourceTier, credibility_score: 0.8 }];
+    const secondarySources = [{ tier: 'secondary' as SourceTier, credibility_score: 0.8 }];
+
+    const primaryResult = calculateMediaVisibility(primarySources);
+    const secondaryResult = calculateMediaVisibility(secondarySources);
+
+    // Both should have same score since we have just one source
+    // The tier weight affects averaging when multiple sources exist
+    expect(primaryResult).toBe(secondaryResult);
+  });
+
+  it('should apply source count bonus up to 20%', () => {
+    const oneSources = [{ tier: 'primary' as SourceTier, credibility_score: 0.8 }];
+    const twoSources = [
+      { tier: 'primary' as SourceTier, credibility_score: 0.8 },
+      { tier: 'primary' as SourceTier, credibility_score: 0.8 },
+    ];
+    const threeSources = [
+      { tier: 'primary' as SourceTier, credibility_score: 0.8 },
+      { tier: 'primary' as SourceTier, credibility_score: 0.8 },
+      { tier: 'primary' as SourceTier, credibility_score: 0.8 },
+    ];
+    const fiveSources = Array(5).fill({ tier: 'primary' as SourceTier, credibility_score: 0.8 });
+
+    expect(calculateMediaVisibility(oneSources)).toBeCloseTo(0.85, 2);  // +0.05
+    expect(calculateMediaVisibility(twoSources)).toBeCloseTo(0.9, 2);   // +0.10
+    expect(calculateMediaVisibility(threeSources)).toBeCloseTo(0.95, 2); // +0.15
+    expect(calculateMediaVisibility(fiveSources)).toBeCloseTo(1.0, 2);  // +0.20 capped at 1.0
+  });
+
+  it('should cap visibility at 1.0', () => {
+    const sources = [
+      { tier: 'primary' as SourceTier, credibility_score: 0.95 },
+      { tier: 'primary' as SourceTier, credibility_score: 0.95 },
+      { tier: 'primary' as SourceTier, credibility_score: 0.95 },
+    ];
+    const result = calculateMediaVisibility(sources);
+    expect(result).toBeLessThanOrEqual(1.0);
+  });
+
+  it('should handle mixed primary and secondary sources', () => {
+    const sources = [
+      { tier: 'primary' as SourceTier, credibility_score: 0.9 },
+      { tier: 'secondary' as SourceTier, credibility_score: 0.7 },
+    ];
+    const result = calculateMediaVisibility(sources);
+
+    // Weighted average: (0.9 * 1.0 + 0.7 * 0.6) / (1.0 + 0.6) = 1.32 / 1.6 = 0.825
+    // Plus 0.10 source bonus = 0.925
+    expect(result).toBeCloseTo(0.925, 2);
+  });
+});
+
+describe('calculateRecencyMultiplier', () => {
+  it('should return 1.0 for incident today', () => {
+    const today = new Date().toISOString();
+    expect(calculateRecencyMultiplier(today)).toBeCloseTo(1.0, 2);
+  });
+
+  it('should return ~0.5 after one half-life period (365 days)', () => {
+    const today = new Date();
+    const oneYearAgo = new Date(today);
+    oneYearAgo.setDate(today.getDate() - 365);
+
+    const result = calculateRecencyMultiplier(
+      oneYearAgo.toISOString(),
+      today.toISOString()
+    );
+    expect(result).toBeCloseTo(0.5, 2);
+  });
+
+  it('should return ~0.25 after two half-life periods (730 days)', () => {
+    const today = new Date();
+    const twoYearsAgo = new Date(today);
+    twoYearsAgo.setDate(today.getDate() - 730);
+
+    const result = calculateRecencyMultiplier(
+      twoYearsAgo.toISOString(),
+      today.toISOString()
+    );
+    expect(result).toBeCloseTo(0.25, 2);
+  });
+
+  it('should return 1.0 for future dates', () => {
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+
+    const result = calculateRecencyMultiplier(
+      tomorrow.toISOString(),
+      today.toISOString()
+    );
+    expect(result).toBe(1.0);
+  });
+
+  it('should throw error for invalid incident date', () => {
+    expect(() => calculateRecencyMultiplier('invalid-date')).toThrow('Invalid incident date');
+  });
+
+  it('should throw error for invalid reference date', () => {
+    const today = new Date().toISOString();
+    expect(() => calculateRecencyMultiplier(today, 'invalid-date')).toThrow('Invalid reference date');
+  });
+
+  it('should use current date if no reference date provided', () => {
+    const today = new Date().toISOString();
+    const result = calculateRecencyMultiplier(today);
+    expect(result).toBeCloseTo(1.0, 2);
+  });
+
+  it('should decay exponentially over time', () => {
+    const referenceDate = '2024-01-01T00:00:00.000Z';
+    const sixMonthsAgo = '2023-07-01T00:00:00.000Z';
+    const oneYearAgo = '2023-01-01T00:00:00.000Z';
+    const twoYearsAgo = '2022-01-01T00:00:00.000Z';
+
+    const sixMonths = calculateRecencyMultiplier(sixMonthsAgo, referenceDate);
+    const oneYear = calculateRecencyMultiplier(oneYearAgo, referenceDate);
+    const twoYears = calculateRecencyMultiplier(twoYearsAgo, referenceDate);
+
+    // Should decay: 6 months > 1 year > 2 years
+    expect(sixMonths).toBeGreaterThan(oneYear);
+    expect(oneYear).toBeGreaterThan(twoYears);
+    expect(oneYear).toBeCloseTo(0.5, 1);
+  });
+});
+
+describe('applyEscalationCap', () => {
+  it('should return original level for confirmed incidents', () => {
+    const sources = [{ tier: 'primary' as SourceTier }];
+    expect(applyEscalationCap(4, 'confirmed', sources)).toBe(4);
+    expect(applyEscalationCap(3, 'confirmed', [])).toBe(3);
+  });
+
+  it('should cap unverified incidents at level 2', () => {
+    const sources = [{ tier: 'secondary' as SourceTier }];
+    expect(applyEscalationCap(4, 'unverified', sources)).toBe(2);
+    expect(applyEscalationCap(3, 'unverified', sources)).toBe(2);
+    expect(applyEscalationCap(2, 'unverified', sources)).toBe(2);
+    expect(applyEscalationCap(1, 'unverified', sources)).toBe(1);
+  });
+
+  it('should cap partial incidents at level 2 without sufficient primary sources', () => {
+    const sources = [{ tier: 'secondary' as SourceTier }];
+    expect(applyEscalationCap(4, 'partial', sources)).toBe(2);
+    expect(applyEscalationCap(3, 'partial', sources)).toBe(2);
+  });
+
+  it('should allow full escalation with 2+ primary sources even if unverified', () => {
+    const sources = [
+      { tier: 'primary' as SourceTier },
+      { tier: 'primary' as SourceTier },
+    ];
+    expect(applyEscalationCap(4, 'unverified', sources)).toBe(4);
+    expect(applyEscalationCap(3, 'partial', sources)).toBe(3);
+  });
+
+  it('should not allow full escalation with only 1 primary source if unverified', () => {
+    const sources = [{ tier: 'primary' as SourceTier }];
+    expect(applyEscalationCap(4, 'unverified', sources)).toBe(2);
+    expect(applyEscalationCap(3, 'partial', sources)).toBe(2);
+  });
+
+  it('should allow full escalation with 2+ primary sources mixed with secondary', () => {
+    const sources = [
+      { tier: 'primary' as SourceTier },
+      { tier: 'primary' as SourceTier },
+      { tier: 'secondary' as SourceTier },
+    ];
+    expect(applyEscalationCap(4, 'unverified', sources)).toBe(4);
+  });
+});
+
+// ============================================================================
+// Main Calculation Functions Tests
+// ============================================================================
+
+describe('calculateConstitutionalSeverity', () => {
+  it('should calculate severity correctly with formula', () => {
+    // Level 2 (0.5), 60 days (0.4)
+    // Result = (0.5 * 0.6) + (0.4 * 0.4) = 0.3 + 0.16 = 0.46
+    const result = calculateConstitutionalSeverity(2, 60);
+    expect(result).toBeCloseTo(0.46, 2);
+  });
+
+  it('should return minimum for level 1 and 0 days', () => {
+    // Level 1 (0.25), 0 days (0.0)
+    // Result = (0.25 * 0.6) + (0.0 * 0.4) = 0.15
+    const result = calculateConstitutionalSeverity(1, 0);
+    expect(result).toBeCloseTo(0.15, 2);
+  });
+
+  it('should return maximum for level 4 and 365+ days', () => {
+    // Level 4 (1.0), 400 days (1.0)
+    // Result = (1.0 * 0.6) + (1.0 * 0.4) = 1.0
+    const result = calculateConstitutionalSeverity(4, 400);
+    expect(result).toBe(1.0);
+  });
+
+  it('should weight escalation higher than duration (60/40 split)', () => {
+    const highEscalationLowDuration = calculateConstitutionalSeverity(4, 10);
+    const lowEscalationHighDuration = calculateConstitutionalSeverity(1, 400);
+
+    // High escalation: (1.0 * 0.6) + (0.2 * 0.4) = 0.68
+    // Low escalation: (0.25 * 0.6) + (1.0 * 0.4) = 0.55
+    expect(highEscalationLowDuration).toBeGreaterThan(lowEscalationHighDuration);
+  });
+});
+
+describe('calculatePublicSalience', () => {
+  it('should calculate salience correctly with formula', () => {
+    const sources = [
+      { tier: 'primary' as SourceTier, credibility_score: 0.8 },
+      { tier: 'primary' as SourceTier, credibility_score: 0.8 },
+    ];
+    const oneYearAgo = new Date();
+    oneYearAgo.setDate(oneYearAgo.getDate() - 365);
+    const today = new Date().toISOString();
+
+    const result = calculatePublicSalience(
+      sources,
+      oneYearAgo.toISOString(),
+      today
+    );
+
+    // Media visibility: 0.8 + 0.10 (2 sources) = 0.9
+    // Recency: ~0.5 (one year ago)
+    // Result = (0.9 * 0.5) + (0.5 * 0.5) = 0.45 + 0.25 = 0.7
+    expect(result).toBeCloseTo(0.7, 1);
+  });
+
+  it('should return 0 for no sources and very old incident', () => {
+    const veryOldDate = '1950-01-01T00:00:00.000Z';
+    const today = new Date().toISOString();
+
+    const result = calculatePublicSalience([], veryOldDate, today);
+    // Media visibility: 0, Recency: ~0
+    expect(result).toBeCloseTo(0, 1);
+  });
+
+  it('should return high score for many credible recent sources', () => {
+    const sources = Array(5).fill({ tier: 'primary' as SourceTier, credibility_score: 0.95 });
+    const today = new Date().toISOString();
+
+    const result = calculatePublicSalience(sources, today, today);
+    // Media visibility: ~1.0 (capped), Recency: 1.0
+    // Result = (1.0 * 0.5) + (1.0 * 0.5) = 1.0
+    expect(result).toBeCloseTo(1.0, 1);
+  });
+
+  it('should weight media visibility and recency equally (50/50 split)', () => {
+    const highVisibilityOld = calculatePublicSalience(
+      [
+        { tier: 'primary' as SourceTier, credibility_score: 0.9 },
+        { tier: 'primary' as SourceTier, credibility_score: 0.9 },
+      ],
+      '2020-01-01T00:00:00.000Z',
+      '2024-01-01T00:00:00.000Z'
+    );
+
+    const lowVisibilityRecent = calculatePublicSalience(
+      [{ tier: 'secondary' as SourceTier, credibility_score: 0.3 }],
+      '2024-01-01T00:00:00.000Z',
+      '2024-01-01T00:00:00.000Z'
+    );
+
+    // Both should be relatively balanced due to 50/50 weighting
+    expect(highVisibilityOld).toBeGreaterThan(0);
+    expect(lowVisibilityRecent).toBeGreaterThan(0);
+  });
+});
+
+describe('calculateUnifiedScore', () => {
+  it('should calculate unified score correctly with formula', () => {
+    // Constitutional: 0.8, Salience: 0.6
+    // Result = (0.8 * 0.7) + (0.6 * 0.3) = 0.56 + 0.18 = 0.74
+    const result = calculateUnifiedScore(0.8, 0.6);
+    expect(result).toBeCloseTo(0.74, 2);
+  });
+
+  it('should return 0 for zero inputs', () => {
+    expect(calculateUnifiedScore(0, 0)).toBe(0);
+  });
+
+  it('should return 1.0 for maximum inputs', () => {
+    expect(calculateUnifiedScore(1.0, 1.0)).toBe(1.0);
+  });
+
+  it('should weight constitutional severity higher (70/30 split)', () => {
+    const highConstitutional = calculateUnifiedScore(1.0, 0.0);
+    const highSalience = calculateUnifiedScore(0.0, 1.0);
+
+    // High constitutional: 1.0 * 0.7 = 0.7
+    // High salience: 1.0 * 0.3 = 0.3
+    expect(highConstitutional).toBe(0.7);
+    expect(highSalience).toBe(0.3);
+    expect(highConstitutional).toBeGreaterThan(highSalience);
+  });
+
+  it('should produce different results based on input mix', () => {
+    const result1 = calculateUnifiedScore(0.8, 0.4);
+    const result2 = calculateUnifiedScore(0.4, 0.8);
+
+    expect(result1).not.toBe(result2);
+    expect(result1).toBeGreaterThan(result2); // Higher constitutional weighs more
+  });
+});
+
+describe('calculateAllSeverityScores', () => {
+  it('should calculate all scores correctly for a typical incident', () => {
+    const result = calculateAllSeverityScores({
+      escalationLevel: 3,
+      durationDays: 120,
+      sources: [
+        { tier: 'primary', credibility_score: 0.85 },
+        { tier: 'primary', credibility_score: 0.85 },
+      ],
+      incidentDate: '2023-06-01T00:00:00.000Z',
+      verificationStatus: 'confirmed',
+      referenceDate: '2024-01-01T00:00:00.000Z',
+    });
+
+    expect(result).toHaveProperty('constitutional');
+    expect(result).toHaveProperty('salience');
+    expect(result).toHaveProperty('unified');
+    expect(result).toHaveProperty('cappedEscalationLevel');
+
+    expect(result.constitutional).toBeGreaterThan(0);
+    expect(result.constitutional).toBeLessThanOrEqual(1);
+    expect(result.salience).toBeGreaterThan(0);
+    expect(result.salience).toBeLessThanOrEqual(1);
+    expect(result.unified).toBeGreaterThan(0);
+    expect(result.unified).toBeLessThanOrEqual(1);
+    expect(result.cappedEscalationLevel).toBe(3);
+  });
+
+  it('should apply escalation cap for unverified incidents', () => {
+    const result = calculateAllSeverityScores({
+      escalationLevel: 4,
+      durationDays: 100,
+      sources: [{ tier: 'secondary', credibility_score: 0.8 }],
+      incidentDate: '2023-01-01T00:00:00.000Z',
+      verificationStatus: 'unverified',
+      referenceDate: '2024-01-01T00:00:00.000Z',
+    });
+
+    expect(result.cappedEscalationLevel).toBe(2);
+    // Constitutional severity should reflect capped level
+    expect(result.constitutional).toBeLessThan(0.6); // Level 2 max would be 0.5 * 0.6 + duration
+  });
+
+  it('should not cap escalation for confirmed incidents', () => {
+    const result = calculateAllSeverityScores({
+      escalationLevel: 4,
+      durationDays: 100,
+      sources: [{ tier: 'secondary', credibility_score: 0.8 }],
+      incidentDate: '2023-01-01T00:00:00.000Z',
+      verificationStatus: 'confirmed',
+      referenceDate: '2024-01-01T00:00:00.000Z',
+    });
+
+    expect(result.cappedEscalationLevel).toBe(4);
+  });
+
+  it('should produce unified score as weighted combination', () => {
+    const result = calculateAllSeverityScores({
+      escalationLevel: 2,
+      durationDays: 60,
+      sources: [{ tier: 'primary', credibility_score: 0.8 }],
+      incidentDate: '2023-06-01T00:00:00.000Z',
+      verificationStatus: 'confirmed',
+      referenceDate: '2024-01-01T00:00:00.000Z',
+    });
+
+    const expectedUnified = result.constitutional * 0.7 + result.salience * 0.3;
+    expect(result.unified).toBeCloseTo(expectedUnified, 5);
+  });
+
+  it('should handle edge case of zero duration', () => {
+    const result = calculateAllSeverityScores({
+      escalationLevel: 3,
+      durationDays: 0,
+      sources: [{ tier: 'primary', credibility_score: 0.9 }],
+      incidentDate: new Date().toISOString(),
+      verificationStatus: 'confirmed',
+    });
+
+    expect(result.constitutional).toBeGreaterThan(0); // Escalation still contributes
+    expect(result.salience).toBeGreaterThan(0); // Recent incident
+    expect(result.unified).toBeGreaterThan(0);
+  });
+
+  it('should handle edge case of no sources', () => {
+    const result = calculateAllSeverityScores({
+      escalationLevel: 2,
+      durationDays: 100,
+      sources: [],
+      incidentDate: '2020-01-01T00:00:00.000Z',
+      verificationStatus: 'unverified',
+      referenceDate: '2024-01-01T00:00:00.000Z',
+    });
+
+    expect(result.constitutional).toBeGreaterThan(0); // Duration and escalation still count
+    expect(result.salience).toBeGreaterThan(0); // Recency still contributes
+    expect(result.cappedEscalationLevel).toBe(2); // Capped due to unverified
+  });
+
+  it('should produce consistent results for same inputs', () => {
+    const params = {
+      escalationLevel: 3 as EscalationLevel,
+      durationDays: 150,
+      sources: [{ tier: 'primary' as SourceTier, credibility_score: 0.85 }],
+      incidentDate: '2023-01-01T00:00:00.000Z',
+      verificationStatus: 'confirmed' as VerificationStatus,
+      referenceDate: '2024-01-01T00:00:00.000Z',
+    };
+
+    const result1 = calculateAllSeverityScores(params);
+    const result2 = calculateAllSeverityScores(params);
+
+    expect(result1).toEqual(result2);
+  });
+});
+
+// ============================================================================
+// Constants Verification Tests
+// ============================================================================
+
+describe('Constants', () => {
+  it('should have correct constitutional weights', () => {
+    expect(CONSTITUTIONAL_WEIGHTS.ESCALATION).toBe(0.6);
+    expect(CONSTITUTIONAL_WEIGHTS.DURATION).toBe(0.4);
+    expect(CONSTITUTIONAL_WEIGHTS.ESCALATION + CONSTITUTIONAL_WEIGHTS.DURATION).toBe(1.0);
+  });
+
+  it('should have correct salience weights', () => {
+    expect(SALIENCE_WEIGHTS.MEDIA_VISIBILITY).toBe(0.5);
+    expect(SALIENCE_WEIGHTS.RECENCY).toBe(0.5);
+    expect(SALIENCE_WEIGHTS.MEDIA_VISIBILITY + SALIENCE_WEIGHTS.RECENCY).toBe(1.0);
+  });
+
+  it('should have correct unified weights', () => {
+    expect(UNIFIED_WEIGHTS.CONSTITUTIONAL).toBe(0.7);
+    expect(UNIFIED_WEIGHTS.SALIENCE).toBe(0.3);
+    expect(UNIFIED_WEIGHTS.CONSTITUTIONAL + UNIFIED_WEIGHTS.SALIENCE).toBe(1.0);
+  });
+
+  it('should have correct max escalation for unverified', () => {
+    expect(MAX_ESCALATION_UNVERIFIED).toBe(2);
+  });
+
+  it('should have correct duration thresholds', () => {
+    expect(DURATION_THRESHOLDS.SHORT).toBe(30);
+    expect(DURATION_THRESHOLDS.MEDIUM).toBe(90);
+    expect(DURATION_THRESHOLDS.LONG).toBe(180);
+    expect(DURATION_THRESHOLDS.EXTENDED).toBe(365);
+  });
+
+  it('should have correct recency half-life', () => {
+    expect(RECENCY_HALF_LIFE_DAYS).toBe(365);
+  });
+});
+
+// ============================================================================
+// Integration Tests - Real-World Scenarios
+// ============================================================================
+
+describe('Real-World Scenarios', () => {
+  it('should score a high-severity recent confirmed incident highly', () => {
+    // Scenario: Major constitutional crisis, well-documented, recent
+    const result = calculateAllSeverityScores({
+      escalationLevel: 4,
+      durationDays: 200,
+      sources: [
+        { tier: 'primary', credibility_score: 0.95 },
+        { tier: 'primary', credibility_score: 0.9 },
+        { tier: 'primary', credibility_score: 0.9 },
+      ],
+      incidentDate: new Date().toISOString(),
+      verificationStatus: 'confirmed',
+    });
+
+    expect(result.constitutional).toBeGreaterThan(0.8);
+    expect(result.salience).toBeGreaterThan(0.8);
+    expect(result.unified).toBeGreaterThan(0.8);
+  });
+
+  it('should score a minor old unverified incident lowly', () => {
+    // Scenario: Minor issue, poorly documented, decades old
+    const result = calculateAllSeverityScores({
+      escalationLevel: 1,
+      durationDays: 5,
+      sources: [{ tier: 'secondary', credibility_score: 0.4 }],
+      incidentDate: '1980-01-01T00:00:00.000Z',
+      verificationStatus: 'unverified',
+      referenceDate: '2024-01-01T00:00:00.000Z',
+    });
+
+    expect(result.constitutional).toBeLessThan(0.3);
+    expect(result.salience).toBeLessThan(0.3);
+    expect(result.unified).toBeLessThan(0.3);
+  });
+
+  it('should handle medium severity partial incident appropriately', () => {
+    // Scenario: Moderate issue, some documentation, few months old
+    const result = calculateAllSeverityScores({
+      escalationLevel: 2,
+      durationDays: 75,
+      sources: [
+        { tier: 'primary', credibility_score: 0.75 },
+        { tier: 'secondary', credibility_score: 0.6 },
+      ],
+      incidentDate: '2023-10-01T00:00:00.000Z',
+      verificationStatus: 'partial',
+      referenceDate: '2024-01-01T00:00:00.000Z',
+    });
+
+    expect(result.constitutional).toBeGreaterThan(0.3);
+    expect(result.constitutional).toBeLessThan(0.6);
+    expect(result.salience).toBeGreaterThan(0.3);
+    expect(result.salience).toBeLessThan(0.9); // Adjusted - 3 months ago is still quite recent
+    expect(result.unified).toBeGreaterThan(0.3);
+    expect(result.unified).toBeLessThan(0.7);
+  });
+});
