@@ -100,16 +100,20 @@ export function DashboardHeader({
   }, [dragging, dateRange, getYearFromPosition, onDateRangeChange]);
 
   return (
-    <header className="card mx-3 lg:mx-5 mt-3 sticky top-3 z-50">
-      <div className="px-4 lg:px-6 py-3">
-        {/* Top row: Quote + KPIs */}
+    <header className="card mx-3 lg:mx-5 mt-3 sticky top-3 z-50 overflow-visible">
+      <div className="px-4 lg:px-6 py-3 overflow-visible">
+        {/* Top row: Logo + Title | Quote | KPIs */}
         <div className="flex flex-wrap items-center justify-between gap-4 mb-3">
-          <div className="flex items-center gap-4">
-            <h1 className="text-lg font-bold text-slate-800">Goat Beard</h1>
-            <blockquote className="quote-text text-sm text-slate-600 hidden md:block">
-              &ldquo;A goat&apos;s beard is as worthless as a state&apos;s governor.&rdquo; <span className="text-slate-400">— Aringar Anna</span>
-            </blockquote>
+          {/* Logo + Title */}
+          <div className="flex items-center gap-3">
+            <img src="/logo.png" alt="Goat Beard Logo" className="w-10 h-10" />
+            <h1 className="text-lg font-bold text-slate-800">Goat Beard Governors</h1>
           </div>
+
+          {/* Centered Quote */}
+          <blockquote className="quote-text text-base text-slate-600 hidden lg:block text-center flex-1 italic">
+            &ldquo;A goat&apos;s beard is as worthless as a state&apos;s governor.&rdquo; <span className="text-slate-400 not-italic">— Aringar Anna</span>
+          </blockquote>
 
           {/* Inline KPIs */}
           <div className="flex items-center gap-6">
@@ -133,11 +137,12 @@ export function DashboardHeader({
         </div>
 
         {/* Timeline Slider */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2">
           <span className="text-xs text-slate-500 font-medium w-10">{MIN_YEAR}</span>
+          {/* Track with handles - uses clamp to keep icons within bounds */}
           <div
             ref={trackRef}
-            className="flex-1 relative cursor-pointer select-none"
+            className="flex-1 relative cursor-pointer select-none py-4"
             onClick={handleTrackClick}
           >
             <div className="timeline-track">
@@ -152,19 +157,24 @@ export function DashboardHeader({
                 style={{ left: `${startPercent}%`, width: `${endPercent - startPercent}%` }}
               ></div>
             </div>
-            {/* Handles */}
+            {/* Start handle - clamped to stay in bounds */}
             <div
-              className={`timeline-handle transition-transform ${dragging === 'start' ? 'scale-125' : ''}`}
-              style={{ left: `${startPercent}%` }}
+              className={`absolute top-1/2 -translate-y-1/2 cursor-grab active:cursor-grabbing transition-transform z-10 ${dragging === 'start' ? 'scale-125 z-20' : ''}`}
+              style={{ left: `clamp(0px, calc(${startPercent}% - 20px), calc(100% - 40px))` }}
               onMouseDown={handleMouseDown('start')}
               onTouchStart={handleTouchStart('start')}
-            ></div>
+            >
+              <img src="/beard-icon.png" alt="Start" className="w-10 h-8 drop-shadow-lg" />
+            </div>
+            {/* End handle - clamped to stay in bounds */}
             <div
-              className={`timeline-handle transition-transform ${dragging === 'end' ? 'scale-125' : ''}`}
-              style={{ left: `${endPercent}%` }}
+              className={`absolute top-1/2 -translate-y-1/2 cursor-grab active:cursor-grabbing transition-transform z-10 ${dragging === 'end' ? 'scale-125 z-20' : ''}`}
+              style={{ left: `clamp(0px, calc(${endPercent}% - 20px), calc(100% - 40px))` }}
               onMouseDown={handleMouseDown('end')}
               onTouchStart={handleTouchStart('end')}
-            ></div>
+            >
+              <img src="/beard-icon.png" alt="End" className="w-10 h-8 drop-shadow-lg" />
+            </div>
           </div>
           <span className="text-xs text-slate-500 font-medium w-10 text-right">{MAX_YEAR}</span>
           <div className="text-xs text-indigo-600 font-semibold bg-indigo-50 px-2 py-1 rounded-lg min-w-[80px] text-center">
