@@ -11,14 +11,14 @@ export function TrendSparkline({ changePercent, comparedTo }: TrendSparklineProp
   const isUp = changePercent > 0;
 
   return (
-    <div className="card p-4">
-      <div className="flex items-center justify-between mb-2">
+    <div className="card p-4 h-full flex flex-col">
+      <div className="flex items-center justify-between mb-2 flex-shrink-0">
         <h2 className="text-sm font-bold text-slate-700">Trend</h2>
         <span className={`text-xs font-semibold ${isUp ? 'text-red-600' : 'text-green-600'}`}>
           {isUp ? '+' : ''}{changePercent}% vs {comparedTo}
         </span>
       </div>
-      <svg viewBox="0 0 200 60" className="w-full h-16">
+      <svg viewBox="0 0 200 60" className="w-full flex-1" preserveAspectRatio="none">
         {/* Area fill */}
         <defs>
           <linearGradient id="trendGradient" x1="0" y1="0" x2="0" y2="1">
@@ -40,7 +40,7 @@ export function TrendSparkline({ changePercent, comparedTo }: TrendSparklineProp
           strokeLinecap="round"
         />
       </svg>
-      <div className="flex justify-between text-[10px] text-slate-400 mt-1 font-medium">
+      <div className="flex justify-between text-[10px] text-slate-400 mt-1 font-medium flex-shrink-0">
         <span>2019</span>
         <span>2020</span>
         <span>2021</span>

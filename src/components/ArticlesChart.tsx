@@ -16,9 +16,9 @@ export function ArticlesChart({ articles, onArticleClick }: ArticlesChartProps) 
   const maxCount = Math.max(...articles.map(a => a.count), 1);
 
   return (
-    <div className="card p-4">
+    <div className="card p-4 h-full flex flex-col">
       <h2 className="text-sm font-bold text-slate-700 mb-3">Articles Invoked</h2>
-      <div className="space-y-2">
+      <div className="flex-1 flex flex-col justify-center space-y-2">
         {articles.map((article) => (
           <button
             key={article.number}

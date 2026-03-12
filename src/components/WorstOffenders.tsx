@@ -51,7 +51,7 @@ interface WorstOffendersProps {
 
 export function WorstOffenders({ governors, onViewAll, onGovernorClick }: WorstOffendersProps) {
   return (
-    <div className="card p-4">
+    <div className="card p-4 h-full flex flex-col">
       <div className="flex items-center justify-between mb-3">
         <h2 className="text-sm font-bold text-slate-700">Worst Offenders</h2>
         <button
