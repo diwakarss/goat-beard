@@ -22,8 +22,9 @@ describe('data loader validation', () => {
     expect(getArticles()).toHaveLength(5);
     expect(getEras()).toHaveLength(5);
     expect(getPrecedents()).toHaveLength(3);
-    expect(getGovernors()).toHaveLength(0);
-    expect(getIncidents()).toHaveLength(0);
+    // Seed data now contains real governors and incidents
+    expect(getGovernors().length).toBeGreaterThanOrEqual(7);
+    expect(getIncidents().length).toBeGreaterThanOrEqual(12);
   });
 
   describe('lookup functions', () => {
@@ -64,11 +65,12 @@ describe('data loader validation', () => {
     });
   });
 
-  describe('aggregation functions (empty data)', () => {
-    it('returns empty collections for empty seed data', () => {
-      expect(getIncidentCountByState().size).toBe(0);
-      expect(getIncidentCountByGovernor().size).toBe(0);
-      expect(getAverageSeverityByState().size).toBe(0);
+  describe('aggregation functions', () => {
+    it('returns populated collections with seed data', () => {
+      // Seed data has incidents across multiple states
+      expect(getIncidentCountByState().size).toBeGreaterThan(0);
+      expect(getIncidentCountByGovernor().size).toBeGreaterThan(0);
+      expect(getAverageSeverityByState().size).toBeGreaterThan(0);
     });
   });
 });
