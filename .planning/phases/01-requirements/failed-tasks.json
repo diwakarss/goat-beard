@@ -1,0 +1,12 @@
+{
+  "failed_tasks": [
+    {
+      "task_id": "3.5",
+      "title": "Main Page Assembly",
+      "last_score": 8,
+      "iterations": 3,
+      "error": "Exhausted quality iterations (threshold=95, role=code-simplifier)",
+      "timestamp": "2026-03-11T18:54:07Z"
+    }
+  ]
+}

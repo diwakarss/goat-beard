@@ -1,0 +1,98 @@
+{
+  "run_id": "20260311T174011Z",
+  "updated_at": "2026-03-11T18:54:07Z",
+  "tasks": [
+    {
+      "id": "1.1",
+      "title": "Initialize Next.js Project",
+      "state": "failed",
+      "status": "quality_failed"
+    },
+    {
+      "id": "1.2",
+      "title": "Define TypeScript Types",
+      "state": "failed",
+      "status": "quality_failed"
+    },
+    {
+      "id": "1.3",
+      "title": "Create JSON Schema Files with Seed Structure",
+      "state": "failed",
+      "status": "quality_failed"
+    },
+    {
+      "id": "1.4",
+      "title": "Data Loading Utilities",
+      "state": "failed",
+      "status": "quality_failed"
+    },
+    {
+      "id": "2.1",
+      "title": "Severity Calculator Module",
+      "state": "finalized",
+      "status": "ok"
+    },
+    {
+      "id": "2.2",
+      "title": "Severity Calculator Tests",
+      "state": "failed",
+      "status": "quality_failed"
+    },
+    {
+      "id": "2.3",
+      "title": "Manually Curate Seed Incidents",
+      "state": "failed",
+      "status": "quality_failed"
+    },
+    {
+      "id": "3.1",
+      "title": "Timeline-Matrix Component",
+      "state": "failed",
+      "status": "quality_failed"
+    },
+    {
+      "id": "3.2",
+      "title": "Evidence Drawer Component",
+      "state": "finalized",
+      "status": "ok"
+    },
+    {
+      "id": "3.3",
+      "title": "Filter Panel",
+      "state": "finalized",
+      "status": "ok"
+    },
+    {
+      "id": "3.4",
+      "title": "Beard Scale Legend & Governor Card",
+      "state": "failed",
+      "status": "quality_failed"
+    },
+    {
+      "id": "3.5",
+      "title": "Main Page Assembly",
+      "state": "failed",
+      "status": "failed"
+    }
+  ],
+  "meta": {
+    "phase": "01-requirements",
+    "run_state": "canceled",
+    "current_step": "run_canceled",
+    "step_label": "run_canceled",
+    "started_at": "2026-03-11T17:40:11Z",
+    "last_heartbeat_at": "2026-03-11T18:54:07Z",
+    "error_code": "operator_stop",
+    "retry_count": 1,
+    "active_agents": 0,
+    "total_tasks": 12,
+    "completed_tasks": 3,
+    "failed_tasks": 9,
+    "running_tasks": 0,
+    "blocked_tasks": 0,
+    "state_counts": {
+      "failed": 9,
+      "finalized": 3
+    }
+  }
+}

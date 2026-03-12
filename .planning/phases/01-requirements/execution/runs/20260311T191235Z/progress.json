@@ -1,0 +1,31 @@
+{
+  "run_id": "20260311T191235Z",
+  "updated_at": "2026-03-11T19:12:36Z",
+  "tasks": [
+    {
+      "id": "1.1",
+      "title": "Initialize Next.js Project",
+      "state": "completed",
+      "status": "ok"
+    }
+  ],
+  "meta": {
+    "phase": "01-requirements",
+    "run_state": "completed",
+    "current_step": "run_completed",
+    "step_label": "run_completed",
+    "started_at": "2026-03-11T19:12:35Z",
+    "last_heartbeat_at": "2026-03-11T19:12:36Z",
+    "error_code": null,
+    "retry_count": 0,
+    "active_agents": 0,
+    "total_tasks": 1,
+    "completed_tasks": 1,
+    "failed_tasks": 0,
+    "running_tasks": 0,
+    "blocked_tasks": 0,
+    "state_counts": {
+      "completed": 1
+    }
+  }
+}
