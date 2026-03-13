@@ -603,6 +603,7 @@ export default function Home() {
         governor={selectedIncidentGovernor || null}
         stateName={selectedIncident ? getStateName(selectedIncident.state) : ''}
         articles={articles}
+        governorIncidents={selectedIncidentGovernor ? getIncidentsByGovernor(selectedIncidentGovernor.id) : []}
         onGovernorClick={(id) => {
           closeIncidentModal();
           handleGovernorIdClick(id);

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Modal } from './Modal';
-import type { Incident, Governor, ArticleMetadata, IncidentCategory } from '@/types/schema';
+import type { Incident, Governor, ArticleMetadata, IncidentCategory, BeardLevel } from '@/types/schema';
 
 interface IncidentDetailProps {
   isOpen: boolean;
@@ -11,8 +11,40 @@ interface IncidentDetailProps {
   governor: Governor | null;
   stateName: string;
   articles: readonly ArticleMetadata[];
+  governorIncidents: readonly Incident[];
   onGovernorClick: (governorId: string) => void;
 }
+
+// Uses total severity to match ranking logic
+function severityToBeardLevel(totalSeverity: number): BeardLevel {
+  if (totalSeverity < 0.7) return 0;
+  if (totalSeverity < 1.3) return 1;
+  if (totalSeverity < 2.0) return 2;
+  if (totalSeverity < 3.5) return 3;
+  return 4;
+}
+
+const goatIcons: Record<BeardLevel, string> = {
+  0: '/tuft.png',
+  1: '/tuft.png',
+  2: '/tuft.png',
+  3: '/billy.png',
+  4: '/knee-dragger.png',
+};
+
+const avatarGradients: Record<BeardLevel, string> = {
+  0: 'from-slate-200 to-slate-300',
+  1: 'from-emerald-200 to-green-300',
+  2: 'from-amber-200 to-yellow-300',
+  3: 'from-orange-200 to-amber-300',
+  4: 'from-rose-200 to-pink-300',
+};
+
+// Map historical/special state codes to display names
+const specialStateNames: Record<string, string> = {
+  'PEPSU': 'Patiala & East Punjab States Union (merged into Punjab, 1956)',
+  'MULTI': 'Multiple States',
+};
 
 function formatDate(dateStr: string): string {
   return new Date(dateStr).toLocaleDateString('en-US', {
@@ -82,6 +114,7 @@ export function IncidentDetail({
   governor,
   stateName,
   articles,
+  governorIncidents,
   onGovernorClick
 }: IncidentDetailProps) {
   if (!incident) return null;
@@ -91,6 +124,13 @@ export function IncidentDetail({
   );
   const categoryInfo = formatCategory(incident.category);
   const isCriminalOrMisconduct = incident.category === 'criminal' || incident.category === 'misconduct';
+
+  // Calculate beard level for governor thumbnail
+  const totalSeverity = governorIncidents.reduce((sum, inc) => sum + inc.severity_unified, 0);
+  const beardLevel = severityToBeardLevel(totalSeverity);
+
+  // Use special state name if applicable, otherwise use provided stateName
+  const displayStateName = specialStateNames[incident.state] || stateName;
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={incident.title} size="xl">
@@ -113,7 +153,7 @@ export function IncidentDetail({
                  incident.verification_status === 'partial' ? 'Partial' : 'Unverified'}
               </span>
             </div>
-            <p className="text-slate-600 mb-1">{stateName}</p>
+            <p className="text-slate-600 mb-1">{displayStateName}</p>
             {incident.bill_name && (
               <p className="text-sm text-slate-500 font-medium">📋 {incident.bill_name}</p>
             )}
@@ -144,8 +184,8 @@ export function IncidentDetail({
             onClick={() => onGovernorClick(governor.id)}
             className="flex items-center gap-3 p-3 bg-white/60 rounded-xl hover:bg-white transition-colors w-full text-left"
           >
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-slate-200 to-slate-300 flex items-center justify-center">
-              👤
+            <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${avatarGradients[beardLevel]} flex items-center justify-center overflow-hidden`}>
+              <img src={goatIcons[beardLevel]} alt="" className="w-8 h-8 object-contain" />
             </div>
             <div>
               <div className="font-semibold text-slate-800">{governor.name}</div>
