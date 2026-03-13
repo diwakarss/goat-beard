@@ -255,9 +255,8 @@ export default function Home() {
       .map((gov, idx) => {
         const count = incidentCountByGovernor.get(gov.id) || 0;
         const severities = governorSeverity.get(gov.id) || [];
-        const avgSeverity = severities.length > 0
-          ? severities.reduce((a, b) => a + b, 0) / severities.length
-          : 0;
+        const totalSeverity = severities.reduce((a, b) => a + b, 0);
+        const avgSeverity = severities.length > 0 ? totalSeverity / severities.length : 0;
         const beardLevel = severityToBeardLevel(avgSeverity);
         const state = states.find(s => s.code === gov.state);
 
@@ -268,11 +267,12 @@ export default function Home() {
           incidents: count,
           beardLevel,
           beardName: getBeardName(beardLevel),
-          avgSeverity
+          avgSeverity,
+          totalSeverity
         };
       })
       .filter(g => g.incidents > 0)
-      .sort((a, b) => b.avgSeverity - a.avgSeverity || b.incidents - a.incidents)
+      .sort((a, b) => b.totalSeverity - a.totalSeverity || b.incidents - a.incidents)
       .slice(0, 5)
       .map((g, idx) => ({ ...g, rank: idx + 1 }));
   }, [governors, incidents, incidentCountByGovernor, states]);
