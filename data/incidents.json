@@ -42,7 +42,8 @@
     "reviewer_id": "historical-import",
     "contradiction_flag": false,
     "recency_multiplier": 1,
-    "heat_multiplier": 1
+    "heat_multiplier": 1,
+    "category": "constitutional"
   },
   {
     "id": "inc-014",
@@ -95,7 +96,8 @@
     "reviewer_id": "historical-import",
     "contradiction_flag": false,
     "recency_multiplier": 1,
-    "heat_multiplier": 1
+    "heat_multiplier": 1,
+    "category": "constitutional"
   },
   {
     "id": "inc-015",
@@ -140,7 +142,8 @@
     "reviewer_id": "historical-import",
     "contradiction_flag": false,
     "recency_multiplier": 1,
-    "heat_multiplier": 1
+    "heat_multiplier": 1,
+    "category": "constitutional"
   },
   {
     "id": "inc-016",
@@ -185,7 +188,8 @@
     "reviewer_id": "historical-import",
     "contradiction_flag": false,
     "recency_multiplier": 1,
-    "heat_multiplier": 1
+    "heat_multiplier": 1,
+    "category": "constitutional"
   },
   {
     "id": "inc-017",
@@ -230,7 +234,8 @@
     "reviewer_id": "historical-import",
     "contradiction_flag": false,
     "recency_multiplier": 1,
-    "heat_multiplier": 1
+    "heat_multiplier": 1,
+    "category": "constitutional"
   },
   {
     "id": "inc-018",
@@ -275,7 +280,8 @@
     "reviewer_id": "historical-import",
     "contradiction_flag": false,
     "recency_multiplier": 1,
-    "heat_multiplier": 1
+    "heat_multiplier": 1,
+    "category": "constitutional"
   },
   {
     "id": "inc-019",
@@ -320,7 +326,8 @@
     "reviewer_id": "historical-import",
     "contradiction_flag": false,
     "recency_multiplier": 1,
-    "heat_multiplier": 1
+    "heat_multiplier": 1,
+    "category": "constitutional"
   },
   {
     "id": "inc-020",
@@ -367,7 +374,8 @@
     "reviewer_id": "historical-import",
     "contradiction_flag": false,
     "recency_multiplier": 1,
-    "heat_multiplier": 1
+    "heat_multiplier": 1,
+    "category": "constitutional"
   },
   {
     "id": "inc-021",
@@ -412,7 +420,8 @@
     "reviewer_id": "historical-import",
     "contradiction_flag": false,
     "recency_multiplier": 1,
-    "heat_multiplier": 1
+    "heat_multiplier": 1,
+    "category": "constitutional"
   },
   {
     "id": "inc-022",
@@ -459,7 +468,8 @@
     "reviewer_id": "historical-import",
     "contradiction_flag": false,
     "recency_multiplier": 1,
-    "heat_multiplier": 1
+    "heat_multiplier": 1,
+    "category": "constitutional"
   },
   {
     "id": "inc-023",
@@ -506,7 +516,8 @@
     "reviewer_id": "historical-import",
     "contradiction_flag": false,
     "recency_multiplier": 1,
-    "heat_multiplier": 1
+    "heat_multiplier": 1,
+    "category": "constitutional"
   },
   {
     "id": "inc-024",
@@ -552,7 +563,8 @@
     "reviewer_id": "historical-import",
     "contradiction_flag": false,
     "recency_multiplier": 1,
-    "heat_multiplier": 1
+    "heat_multiplier": 1,
+    "category": "constitutional"
   },
   {
     "id": "inc-025",
@@ -600,7 +612,8 @@
     "reviewer_id": "historical-import",
     "contradiction_flag": false,
     "recency_multiplier": 1,
-    "heat_multiplier": 1
+    "heat_multiplier": 1,
+    "category": "constitutional"
   },
   {
     "id": "inc-026",
@@ -647,7 +660,8 @@
     "reviewer_id": "historical-import",
     "contradiction_flag": false,
     "recency_multiplier": 1,
-    "heat_multiplier": 1
+    "heat_multiplier": 1,
+    "category": "constitutional"
   },
   {
     "id": "inc-027",
@@ -695,7 +709,8 @@
     "reviewer_id": "historical-import",
     "contradiction_flag": false,
     "recency_multiplier": 1,
-    "heat_multiplier": 1
+    "heat_multiplier": 1,
+    "category": "constitutional"
   },
   {
     "id": "inc-029",
@@ -743,7 +758,8 @@
     "reviewer_id": "historical-import",
     "contradiction_flag": false,
     "recency_multiplier": 1,
-    "heat_multiplier": 1
+    "heat_multiplier": 1,
+    "category": "constitutional"
   },
   {
     "id": "inc-031",
@@ -789,7 +805,8 @@
     "reviewer_id": "historical-import",
     "contradiction_flag": false,
     "recency_multiplier": 1,
-    "heat_multiplier": 1
+    "heat_multiplier": 1,
+    "category": "constitutional"
   },
   {
     "id": "inc-028",
@@ -844,7 +861,8 @@
     "reviewer_id": "historical-import",
     "contradiction_flag": false,
     "recency_multiplier": 1,
-    "heat_multiplier": 1
+    "heat_multiplier": 1,
+    "category": "constitutional"
   },
   {
     "id": "inc-030",
@@ -890,7 +908,8 @@
     "reviewer_id": "historical-import",
     "contradiction_flag": false,
     "recency_multiplier": 1,
-    "heat_multiplier": 1
+    "heat_multiplier": 1,
+    "category": "constitutional"
   },
   {
     "id": "inc-010",
@@ -937,7 +956,8 @@
     "heat_multiplier": 1.3,
     "era": "post_2014",
     "raj_bhavan_response": "Constitutional duty to protect citizens; criticized 'jungle raj'",
-    "legislative_pushback": "CM accused Governor of being BJP spokesperson; called for his removal"
+    "legislative_pushback": "CM accused Governor of being BJP spokesperson; called for his removal",
+    "category": "constitutional"
   },
   {
     "id": "inc-001",
@@ -1001,7 +1021,8 @@
     "heat_multiplier": 1.2,
     "era": "post_2014",
     "raj_bhavan_response": "Bills under examination; constitutional concerns raised",
-    "legislative_pushback": "Kerala Assembly passed resolutions condemning delay; CM approached Supreme Court"
+    "legislative_pushback": "Kerala Assembly passed resolutions condemning delay; CM approached Supreme Court",
+    "category": "constitutional"
   },
   {
     "id": "inc-007",
@@ -1065,7 +1086,8 @@
     "heat_multiplier": 1.15,
     "era": "post_2014",
     "raj_bhavan_response": "Under consideration; no formal communication",
-    "legislative_pushback": "CM Stalin approached Supreme Court seeking direction to Governor"
+    "legislative_pushback": "CM Stalin approached Supreme Court seeking direction to Governor",
+    "category": "constitutional"
   },
   {
     "id": "inc-011",
@@ -1119,7 +1141,8 @@
     "heat_multiplier": 1.6,
     "era": "post_2014",
     "raj_bhavan_response": "Acted within constitutional provisions; government has majority",
-    "legislative_pushback": "Uddhav Thackeray faction filed SC petition challenging formation"
+    "legislative_pushback": "Uddhav Thackeray faction filed SC petition challenging formation",
+    "category": "constitutional"
   },
   {
     "id": "inc-012",
@@ -1162,7 +1185,8 @@
     "media_visibility": 0.6,
     "recency_multiplier": 0.7,
     "heat_multiplier": 1,
-    "era": "post_2014"
+    "era": "post_2014",
+    "category": "constitutional"
   },
   {
     "id": "inc-032",
@@ -1209,7 +1233,8 @@
     "reviewer_id": "historical-import",
     "contradiction_flag": false,
     "recency_multiplier": 1,
-    "heat_multiplier": 1
+    "heat_multiplier": 1,
+    "category": "constitutional"
   },
   {
     "id": "inc-003",
@@ -1252,7 +1277,8 @@
     "media_visibility": 0.5,
     "recency_multiplier": 0.9,
     "heat_multiplier": 1,
-    "era": "post_2014"
+    "era": "post_2014",
+    "category": "constitutional"
   },
   {
     "id": "inc-008",
@@ -1295,7 +1321,8 @@
     "media_visibility": 0.45,
     "recency_multiplier": 0.85,
     "heat_multiplier": 1,
-    "era": "post_2014"
+    "era": "post_2014",
+    "category": "constitutional"
   },
   {
     "id": "inc-009",
@@ -1338,7 +1365,8 @@
     "media_visibility": 0.4,
     "recency_multiplier": 0.8,
     "heat_multiplier": 1,
-    "era": "post_2014"
+    "era": "post_2014",
+    "category": "constitutional"
   },
   {
     "id": "inc-006",
@@ -1380,7 +1408,8 @@
     "media_visibility": 0.65,
     "recency_multiplier": 0.85,
     "heat_multiplier": 1,
-    "era": "post_2014"
+    "era": "post_2014",
+    "category": "constitutional"
   },
   {
     "id": "inc-005",
@@ -1425,7 +1454,8 @@
     "media_visibility": 0.75,
     "recency_multiplier": 0.9,
     "heat_multiplier": 1.1,
-    "era": "post_2014"
+    "era": "post_2014",
+    "category": "constitutional"
   },
   {
     "id": "inc-004",
@@ -1471,7 +1501,8 @@
     "heat_multiplier": 1.4,
     "era": "post_2014",
     "raj_bhavan_response": "Governor expressed concern over law and order; denied improper conduct",
-    "legislative_pushback": "CM publicly accused Governor of overstepping constitutional role"
+    "legislative_pushback": "CM publicly accused Governor of overstepping constitutional role",
+    "category": "constitutional"
   },
   {
     "id": "inc-035",
@@ -1518,7 +1549,8 @@
     "severity_salience": 1.3,
     "severity_unified": 1.24,
     "sc_precedents": [],
-    "notes": "Governor resigned amid controversy; succeeded by Gulab Chand Kataria"
+    "notes": "Governor resigned amid controversy; succeeded by Gulab Chand Kataria",
+    "category": "constitutional"
   },
   {
     "id": "inc-002",
@@ -1565,7 +1597,8 @@
     "heat_multiplier": 1.5,
     "era": "post_2014",
     "raj_bhavan_response": "Governor's office claimed address was delivered; released modified version",
-    "legislative_pushback": "Assembly Speaker ruled address not delivered; DMK condemned as constitutional violation"
+    "legislative_pushback": "Assembly Speaker ruled address not delivered; DMK condemned as constitutional violation",
+    "category": "constitutional"
   },
   {
     "id": "inc-033",
@@ -1614,7 +1647,8 @@
     "sc_precedents": [
       "State of Tamil Nadu v. Governor of Tamil Nadu (2025)"
     ],
-    "notes": "Landmark Supreme Court judgment establishing timelines for gubernatorial assent"
+    "notes": "Landmark Supreme Court judgment establishing timelines for gubernatorial assent",
+    "category": "constitutional"
   },
   {
     "id": "inc-034",
@@ -1661,7 +1695,8 @@
     "severity_salience": 1.4,
     "severity_unified": 1.46,
     "sc_precedents": [],
-    "notes": "Case became infructuous after TN judgment; Governor later signed some bills"
+    "notes": "Case became infructuous after TN judgment; Governor later signed some bills",
+    "category": "constitutional"
   },
   {
     "id": "inc-038",
@@ -1708,7 +1743,8 @@
     "severity_salience": 1.3,
     "severity_unified": 1.42,
     "sc_precedents": [],
-    "notes": "Governor resigned March 2026 before state elections"
+    "notes": "Governor resigned March 2026 before state elections",
+    "category": "constitutional"
   },
   {
     "id": "inc-036",
@@ -1751,11 +1787,12 @@
     "era": "post_2014",
     "raj_bhavan_response": "Sought clarifications; set deadline for government action",
     "legislative_pushback": "Congress government passed bill through both houses",
-    "severity_constitutional": 1.0,
+    "severity_constitutional": 1,
     "severity_salience": 1.2,
     "severity_unified": 1.08,
     "sc_precedents": [],
-    "notes": "Ongoing dispute over VC appointment powers"
+    "notes": "Ongoing dispute over VC appointment powers",
+    "category": "constitutional"
   },
   {
     "id": "inc-039",
@@ -1789,11 +1826,12 @@
     "era": "post_2014",
     "raj_bhavan_response": "Governor maintained constitutional position on address content",
     "legislative_pushback": "DMK legislators staged protests",
-    "severity_constitutional": 1.0,
+    "severity_constitutional": 1,
     "severity_salience": 1.2,
     "severity_unified": 1.08,
     "sc_precedents": [],
-    "notes": "Annual pattern of confrontation during Assembly addresses"
+    "notes": "Annual pattern of confrontation during Assembly addresses",
+    "category": "constitutional"
   },
   {
     "id": "inc-037",
@@ -1828,10 +1866,537 @@
     "era": "post_2014",
     "raj_bhavan_response": "Reserved bills for President's consideration",
     "legislative_pushback": "State government criticized delay",
-    "severity_constitutional": 1.0,
-    "severity_salience": 1.0,
-    "severity_unified": 1.0,
+    "severity_constitutional": 1,
+    "severity_salience": 1,
+    "severity_unified": 1,
     "sc_precedents": [],
-    "notes": "Part of ongoing Karnataka Governor-Government tensions"
+    "notes": "Part of ongoing Karnataka Governor-Government tensions",
+    "category": "constitutional"
+  },
+  {
+    "id": "inc-040",
+    "governor_id": "gov-cvab-wb",
+    "state": "WB",
+    "date_start": "2024-05-02",
+    "date_end": "2026-03-05",
+    "transgression_type": "sexual_misconduct",
+    "category": "misconduct",
+    "duration_days": 672,
+    "title": "Sexual Harassment Allegations Against Governor Ananda Bose",
+    "description": "A woman working at Raj Bhavan filed a sexual harassment complaint against Governor C.V. Ananda Bose at Hare Street Police Station in Kolkata. The complaint included allegations of serious misconduct at the official residence. The Governor denied all allegations and invoked Article 361 immunity. The Supreme Court took up the matter, questioning whether gubernatorial immunity extends to criminal acts. Multiple women came forward with similar allegations. Bose resigned on March 5, 2026 before the West Bengal Assembly elections.",
+    "constitutional_articles": [],
+    "criminal_sections": ["IPC 354", "IPC 509"],
+    "case_status": "alleged",
+    "investigating_agency": "Kolkata Police",
+    "immunity_claimed": true,
+    "resigned_over_incident": true,
+    "escalation_level": 4,
+    "sources": [
+      {
+        "url": "https://www.hindustantimes.com/india-news/woman-files-molestation-complaint-against-west-bengal-governor-cv-ananda-bose-101714658988612.html",
+        "outlet": "Hindustan Times",
+        "title": "Woman files molestation complaint against West Bengal Governor CV Ananda Bose",
+        "date_published": "2024-05-02",
+        "tier": "primary",
+        "credibility_score": 0.9
+      },
+      {
+        "url": "https://www.scobserver.in/cases/bengal-governor-cv-ananda-bose-sexual-harassment/",
+        "outlet": "Supreme Court Observer",
+        "title": "Bengal Governor Sexual Harassment Case",
+        "date_published": "2024-05-15",
+        "tier": "primary",
+        "credibility_score": 0.95
+      }
+    ],
+    "verification_status": "partial",
+    "incident_status": "contested",
+    "confidence_score": 0.75,
+    "data_completeness_score": 0.7,
+    "era": "post_2014",
+    "severity_constitutional": 0,
+    "severity_salience": 1.8,
+    "severity_unified": 1.26,
+    "duration_impact": 0.95,
+    "media_visibility": 0.95,
+    "recency_multiplier": 1,
+    "heat_multiplier": 1.5,
+    "sc_precedents": [],
+    "claim_id": "claim-inc-040",
+    "evidence_bundle_id": "bundle-inc-040",
+    "last_verified_at": "2026-03-13",
+    "reviewer_id": "curator-001",
+    "contradiction_flag": true,
+    "notes": "Article 361 immunity challenged; Governor resigned before elections"
+  },
+  {
+    "id": "inc-041",
+    "governor_id": "gov-spm-jk-2018",
+    "state": "JK",
+    "date_start": "2024-02-10",
+    "date_end": null,
+    "transgression_type": "corruption",
+    "category": "criminal",
+    "duration_days": 397,
+    "title": "Satya Pal Malik CBI Corruption Case - Kiru Hydropower Project",
+    "description": "CBI conducted raids at multiple locations linked to former J&K Governor Satya Pal Malik in connection with a bribery case related to the Kiru Hydropower Project insurance contract. Malik allegedly received Rs 150 crore bribe for awarding the insurance contract to a private firm. A chargesheet was filed in 2025. Malik was also the first former governor to publicly allege government complicity in the Pulwama attack.",
+    "constitutional_articles": [],
+    "criminal_sections": ["PC Act 1988", "IPC 120B"],
+    "case_number": "RC 2252024E0003",
+    "case_status": "chargesheeted",
+    "investigating_agency": "CBI",
+    "immunity_claimed": false,
+    "resigned_over_incident": false,
+    "escalation_level": 4,
+    "sources": [
+      {
+        "url": "https://www.india.com/news/india/satya-pal-malik-is-arrested-or-not-latest-news-know-about-cbi-raids-on-former-jk-governor-over-insurance-scam-6597259/",
+        "outlet": "India.com",
+        "title": "CBI Raids Former J&K Governor Satya Pal Malik's Residence Over Insurance Scam",
+        "date_published": "2024-02-10",
+        "tier": "secondary",
+        "credibility_score": 0.8
+      },
+      {
+        "url": "https://www.deccanherald.com/india/cbi-files-chargesheet-against-satya-pal-malik-kiru-hydropower-project-2025-01",
+        "outlet": "Deccan Herald",
+        "title": "CBI Files Chargesheet Against Satya Pal Malik in Kiru Hydropower Case",
+        "date_published": "2025-01-15",
+        "tier": "primary",
+        "credibility_score": 0.9
+      }
+    ],
+    "verification_status": "confirmed",
+    "incident_status": "contested",
+    "confidence_score": 0.85,
+    "data_completeness_score": 0.8,
+    "era": "post_2014",
+    "severity_constitutional": 0,
+    "severity_salience": 1.7,
+    "severity_unified": 1.19,
+    "duration_impact": 0.9,
+    "media_visibility": 0.9,
+    "recency_multiplier": 1,
+    "heat_multiplier": 1.4,
+    "sc_precedents": [],
+    "claim_id": "claim-inc-041",
+    "evidence_bundle_id": "bundle-inc-041",
+    "last_verified_at": "2026-03-13",
+    "reviewer_id": "curator-001",
+    "contradiction_flag": false,
+    "notes": "First sitting/former governor to face CBI charges for corruption during tenure"
+  },
+  {
+    "id": "inc-042",
+    "governor_id": "gov-vs-ml-2015",
+    "state": "ML",
+    "date_start": "2017-01-16",
+    "date_end": "2017-01-25",
+    "transgression_type": "sexual_misconduct",
+    "category": "misconduct",
+    "duration_days": 9,
+    "title": "V. Shanmuganathan Resignation Over Sexual Harassment Allegations",
+    "description": "Meghalaya Governor V. Shanmuganathan resigned abruptly after 100 Raj Bhavan employees signed a complaint alleging sexual misconduct and inappropriate behavior towards women staff. BJP's Mahila Morcha demanded his resignation. He was also given additional charge of Arunachal Pradesh before the scandal. Shanmuganathan resigned claiming health reasons but the allegations were widely reported. He was an RSS veteran and BJP functionary before appointment.",
+    "constitutional_articles": [],
+    "criminal_sections": [],
+    "case_status": "alleged",
+    "investigating_agency": null,
+    "immunity_claimed": false,
+    "resigned_over_incident": true,
+    "escalation_level": 4,
+    "sources": [
+      {
+        "url": "https://www.thehindu.com/news/national/other-states/meghalaya-governor-v-shanmuganathan-resigns/article17093485.ece",
+        "outlet": "The Hindu",
+        "title": "Meghalaya Governor V. Shanmuganathan resigns",
+        "date_published": "2017-01-25",
+        "tier": "primary",
+        "credibility_score": 0.95
+      },
+      {
+        "url": "https://www.indiatoday.in/india/story/meghalaya-governor-v-shanmuganathan-100-raj-bhavan-employees-complaint-956839-2017-01-16",
+        "outlet": "India Today",
+        "title": "100 Raj Bhavan employees complain against Meghalaya Governor",
+        "date_published": "2017-01-16",
+        "tier": "primary",
+        "credibility_score": 0.9
+      }
+    ],
+    "verification_status": "confirmed",
+    "incident_status": "resolved",
+    "confidence_score": 0.9,
+    "data_completeness_score": 0.85,
+    "era": "post_2014",
+    "severity_constitutional": 0,
+    "severity_salience": 1.5,
+    "severity_unified": 1.05,
+    "duration_impact": 0.1,
+    "media_visibility": 0.85,
+    "recency_multiplier": 0.6,
+    "heat_multiplier": 1.3,
+    "sc_precedents": [],
+    "claim_id": "claim-inc-042",
+    "evidence_bundle_id": "bundle-inc-042",
+    "last_verified_at": "2026-03-13",
+    "reviewer_id": "curator-001",
+    "contradiction_flag": false,
+    "notes": "First sitting governor forced to resign over sexual misconduct allegations"
+  },
+  {
+    "id": "inc-043",
+    "governor_id": "gov-pepsu-ys-1948",
+    "state": "PEPSU",
+    "date_start": "1953-03-05",
+    "date_end": "1954-03-07",
+    "transgression_type": "dissolution",
+    "category": "constitutional",
+    "duration_days": 367,
+    "title": "PEPSU President's Rule - Second After Punjab 1953",
+    "description": "The second ever President's Rule was imposed in Patiala and East Punjab States Union (PEPSU) on March 5, 1953 after the collapse of Gian Singh Rarewala's United Front coalition government. The state was formed by merging eight princely states in 1948 with the Maharaja of Patiala, Yadavindra Singh, as Rajpramukh (Governor equivalent). PEPSU was later merged into Punjab in 1956 during the States Reorganisation Act.",
+    "constitutional_articles": [356],
+    "escalation_level": 4,
+    "sources": [
+      {
+        "url": "https://en.wikipedia.org/wiki/Patiala_and_East_Punjab_States_Union",
+        "outlet": "Wikipedia",
+        "title": "Patiala and East Punjab States Union",
+        "date_published": null,
+        "tier": "secondary",
+        "credibility_score": 0.8
+      }
+    ],
+    "verification_status": "partial",
+    "incident_status": "resolved",
+    "confidence_score": 0.8,
+    "data_completeness_score": 0.5,
+    "era": "pre_emergency",
+    "notes": "Second use of Article 356 in Indian history; PEPSU merged into Punjab in 1956",
+    "severity_constitutional": 2,
+    "severity_salience": 0.3,
+    "severity_unified": 1.32,
+    "duration_impact": 1,
+    "media_visibility": 0.3,
+    "sc_precedents": [],
+    "claim_id": "claim-inc-043",
+    "evidence_bundle_id": "bundle-inc-043",
+    "last_verified_at": "2026-03-13",
+    "reviewer_id": "historical-import",
+    "contradiction_flag": false,
+    "recency_multiplier": 1,
+    "heat_multiplier": 1
+  },
+  {
+    "id": "inc-044",
+    "governor_id": "gov-dv-wb-1967",
+    "state": "WB",
+    "date_start": "1967-11-21",
+    "date_end": "1968-02-20",
+    "transgression_type": "dissolution",
+    "category": "constitutional",
+    "duration_days": 91,
+    "title": "West Bengal United Front Dismissal 1967",
+    "description": "Governor Dharma Vira dismissed the United Front government led by Ajoy Mukherjee (Bangla Congress) with Jyoti Basu (CPI-M) as Deputy CM within 265 days of its assuming power. The Governor dissolved the government without conducting a no-trust vote in the Legislative Assembly and swore in P.C. Ghosh as the new CM instead. This was a controversial use of Article 356 as the United Front had not lost majority on the floor.",
+    "constitutional_articles": [356, 164],
+    "escalation_level": 4,
+    "sources": [
+      {
+        "url": "https://en.wikipedia.org/wiki/1967_West_Bengal_Legislative_Assembly_election",
+        "outlet": "Wikipedia",
+        "title": "1967 West Bengal Legislative Assembly election",
+        "date_published": null,
+        "tier": "secondary",
+        "credibility_score": 0.8
+      }
+    ],
+    "verification_status": "partial",
+    "incident_status": "resolved",
+    "confidence_score": 0.85,
+    "data_completeness_score": 0.6,
+    "era": "pre_emergency",
+    "notes": "First non-Congress government in West Bengal dismissed without floor test",
+    "severity_constitutional": 2,
+    "severity_salience": 0.4,
+    "severity_unified": 1.36,
+    "duration_impact": 0.25,
+    "media_visibility": 0.4,
+    "sc_precedents": [],
+    "claim_id": "claim-inc-044",
+    "evidence_bundle_id": "bundle-inc-044",
+    "last_verified_at": "2026-03-13",
+    "reviewer_id": "historical-import",
+    "contradiction_flag": false,
+    "recency_multiplier": 1,
+    "heat_multiplier": 1
+  },
+  {
+    "id": "inc-045",
+    "governor_id": "gov-rl-ap-1983",
+    "state": "AP",
+    "date_start": "1984-08-16",
+    "date_end": "1984-09-16",
+    "transgression_type": "overreach",
+    "category": "constitutional",
+    "duration_days": 31,
+    "title": "NTR Dismissal by Governor Ram Lal - 1984 Andhra Crisis",
+    "description": "While Chief Minister N.T. Rama Rao was in the US undergoing heart surgery, Governor Ram Lal dismissed his government on August 16, 1984, and swore in Finance Minister Nadendla Bhaskara Rao as CM. Ram Lal claimed NTR had lost majority. NTR returned to India, demonstrated majority support among MLAs, and launched a popular campaign. President Zail Singh dismissed Ram Lal on August 29, 1984, and NTR was reinstated. This case became a landmark example of gubernatorial overreach.",
+    "constitutional_articles": [356, 163, 164],
+    "escalation_level": 4,
+    "sources": [
+      {
+        "url": "https://en.wikipedia.org/wiki/N._T._Rama_Rao",
+        "outlet": "Wikipedia",
+        "title": "N. T. Rama Rao",
+        "date_published": null,
+        "tier": "secondary",
+        "credibility_score": 0.8
+      }
+    ],
+    "verification_status": "confirmed",
+    "incident_status": "resolved",
+    "confidence_score": 0.95,
+    "data_completeness_score": 0.8,
+    "era": "post_emergency",
+    "notes": "Governor dismissed by President; CM reinstated; landmark case of gubernatorial abuse",
+    "severity_constitutional": 2,
+    "severity_salience": 0.8,
+    "severity_unified": 1.52,
+    "duration_impact": 0.09,
+    "media_visibility": 0.7,
+    "sc_precedents": [],
+    "claim_id": "claim-inc-045",
+    "evidence_bundle_id": "bundle-inc-045",
+    "last_verified_at": "2026-03-13",
+    "reviewer_id": "historical-import",
+    "contradiction_flag": false,
+    "recency_multiplier": 1,
+    "heat_multiplier": 1.2
+  },
+  {
+    "id": "inc-046",
+    "governor_id": "gov-scj-goa-2004",
+    "state": "GA",
+    "date_start": "2005-01-29",
+    "date_end": "2005-03-05",
+    "transgression_type": "overreach",
+    "category": "constitutional",
+    "duration_days": 35,
+    "title": "Goa Government Collapse - Governor SC Jamir Controversy 2005",
+    "description": "Governor S.C. Jamir dismissed the BJP government headed by Manohar Parrikar on January 29, 2005, even though Parrikar had proved his majority on the floor of the House. After four BJP MLAs resigned, Jamir immediately swore in Congress leader Pratapsinh Rane as CM without allowing a floor test. BJP called it 'a coup d'état staged by the Governor for the benefit of Congress.' In March 2005, the assembly was dissolved and President's Rule declared.",
+    "constitutional_articles": [356, 163, 164],
+    "escalation_level": 4,
+    "sources": [
+      {
+        "url": "https://en.wikipedia.org/wiki/S._C._Jamir",
+        "outlet": "Wikipedia",
+        "title": "S.C. Jamir",
+        "date_published": null,
+        "tier": "secondary",
+        "credibility_score": 0.8
+      }
+    ],
+    "verification_status": "partial",
+    "incident_status": "resolved",
+    "confidence_score": 0.85,
+    "data_completeness_score": 0.75,
+    "era": "coalition",
+    "notes": "BJP accused Governor of staging coup; President's Rule followed",
+    "severity_constitutional": 1.5,
+    "severity_salience": 0.6,
+    "severity_unified": 1.14,
+    "duration_impact": 0.1,
+    "media_visibility": 0.6,
+    "sc_precedents": [],
+    "claim_id": "claim-inc-046",
+    "evidence_bundle_id": "bundle-inc-046",
+    "last_verified_at": "2026-03-13",
+    "reviewer_id": "historical-import",
+    "contradiction_flag": false,
+    "recency_multiplier": 1,
+    "heat_multiplier": 1
+  },
+  {
+    "id": "inc-047",
+    "governor_id": "gov-ndt-ap-2007",
+    "state": "AP",
+    "date_start": "2009-12-21",
+    "date_end": "2009-12-27",
+    "transgression_type": "sexual_misconduct",
+    "category": "misconduct",
+    "duration_days": 6,
+    "title": "ND Tiwari Sex Scandal Resignation - Andhra Pradesh 2009",
+    "description": "Andhra Pradesh Governor Narayan Dutt Tiwari (age 86) resigned on December 27, 2009 after a Telugu news channel ABN Andhra Jyothi aired sting operation footage allegedly showing him in a compromising position with three women at the Raj Bhavan in Hyderabad. The sting was arranged by a woman who claimed Tiwari had promised her a mining lease in return for sexual favors. Tiwari cited 'health reasons' for resignation but the scandal was widely covered. He was also embroiled in a paternity suit case.",
+    "constitutional_articles": [],
+    "criminal_sections": [],
+    "case_status": "alleged",
+    "investigating_agency": null,
+    "immunity_claimed": false,
+    "resigned_over_incident": true,
+    "escalation_level": 4,
+    "sources": [
+      {
+        "url": "https://en.wikipedia.org/wiki/N._D._Tiwari",
+        "outlet": "Wikipedia",
+        "title": "N. D. Tiwari",
+        "date_published": null,
+        "tier": "secondary",
+        "credibility_score": 0.85
+      },
+      {
+        "url": "https://www.npr.org/2010/01/04/122115278/86-year-old-at-heart-of-indian-political-sex-scandal",
+        "outlet": "NPR",
+        "title": "86-Year-Old At Heart Of Indian Political Sex Scandal",
+        "date_published": "2010-01-04",
+        "tier": "primary",
+        "credibility_score": 0.95
+      }
+    ],
+    "verification_status": "confirmed",
+    "incident_status": "resolved",
+    "confidence_score": 0.9,
+    "data_completeness_score": 0.85,
+    "era": "coalition",
+    "notes": "First Governor caught in sting operation; cited health reasons for resignation",
+    "severity_constitutional": 0,
+    "severity_salience": 1.6,
+    "severity_unified": 1.12,
+    "duration_impact": 0.02,
+    "media_visibility": 0.9,
+    "recency_multiplier": 0.7,
+    "heat_multiplier": 1.4,
+    "sc_precedents": [],
+    "claim_id": "claim-inc-047",
+    "evidence_bundle_id": "bundle-inc-047",
+    "last_verified_at": "2026-03-13",
+    "reviewer_id": "curator-001",
+    "contradiction_flag": false
+  },
+  {
+    "id": "inc-048",
+    "governor_id": "gov-dcp-pb-1967",
+    "state": "PB",
+    "date_start": "1968-03-06",
+    "date_end": "1968-07-30",
+    "transgression_type": "overreach",
+    "category": "constitutional",
+    "duration_days": 146,
+    "title": "Punjab Speaker Crisis - Governor Pavate Ordinance 1968",
+    "description": "Governor D.C. Pavate issued an extraordinary ordinance under Article 213 to bypass the State Assembly Speaker during a constitutional crisis. When Speaker Joginder Singh Mann declared a no-confidence motion against himself unconstitutional and adjourned the House until May (blocking the budget), the Governor prorogued the Assembly and issued the Punjab Legislature (Regulation of Procedure in Relation to Financial Business) Ordinance 1968, barring the Speaker from adjourning the House. The High Court struck down the ordinance as unconstitutional, but the Supreme Court reversed this on July 30, 1968 in State of Punjab v. Sat Pal Dang, establishing important precedent on gubernatorial ordinance power.",
+    "constitutional_articles": [213, 174, 199],
+    "escalation_level": 4,
+    "sources": [
+      {
+        "url": "https://indiankanoon.org/doc/36589/",
+        "outlet": "Indian Kanoon",
+        "title": "State Of Punjab vs Sat Pal Dang & Ors",
+        "date_published": "1968-07-30",
+        "tier": "primary",
+        "credibility_score": 0.95
+      }
+    ],
+    "verification_status": "confirmed",
+    "incident_status": "resolved",
+    "confidence_score": 0.95,
+    "data_completeness_score": 0.9,
+    "era": "pre_emergency",
+    "notes": "Landmark case on governor's ordinance power; High Court struck down, SC reversed",
+    "severity_constitutional": 1.8,
+    "severity_salience": 0.5,
+    "severity_unified": 1.41,
+    "duration_impact": 0.4,
+    "media_visibility": 0.5,
+    "sc_precedents": ["State of Punjab v. Sat Pal Dang (1968)"],
+    "claim_id": "claim-inc-048",
+    "evidence_bundle_id": "bundle-inc-048",
+    "last_verified_at": "2026-03-14",
+    "reviewer_id": "historical-import",
+    "contradiction_flag": false,
+    "recency_multiplier": 1,
+    "heat_multiplier": 1
+  },
+  {
+    "id": "inc-049",
+    "governor_id": "gov-bnc-hr-1967",
+    "state": "HR",
+    "date_start": "1967-11-20",
+    "date_end": "1968-05-21",
+    "transgression_type": "dissolution",
+    "category": "constitutional",
+    "duration_days": 182,
+    "title": "Haryana President's Rule - Governor Chakravorty Report 1967",
+    "description": "Governor Birendra Narayan Chakravorty recommended President's Rule citing political instability and widespread defections. Chief Minister Rao Birinder Singh had given ministerial posts to 22 out of 30 MLAs in his party to prevent defections. The Governor's report stated the political atmosphere was not conducive to governance and the government was busy keeping MLAs together rather than governing. President's Rule was imposed on November 20, 1967 - the first in newly-formed Haryana state.",
+    "constitutional_articles": [356],
+    "escalation_level": 3,
+    "sources": [
+      {
+        "url": "https://haryanarajbhavan.gov.in/former-head/shri-birendra-naryan-chakravarty/",
+        "outlet": "Raj Bhavan Haryana",
+        "title": "Shri Birendra Narayan Chakravarty",
+        "date_published": null,
+        "tier": "primary",
+        "credibility_score": 0.9
+      }
+    ],
+    "verification_status": "confirmed",
+    "incident_status": "resolved",
+    "confidence_score": 0.85,
+    "data_completeness_score": 0.8,
+    "era": "pre_emergency",
+    "notes": "First President's Rule in newly formed Haryana; 22 of 30 MLAs were ministers",
+    "severity_constitutional": 1.2,
+    "severity_salience": 0.4,
+    "severity_unified": 0.96,
+    "duration_impact": 0.5,
+    "media_visibility": 0.4,
+    "sc_precedents": [],
+    "claim_id": "claim-inc-049",
+    "evidence_bundle_id": "bundle-inc-049",
+    "last_verified_at": "2026-03-14",
+    "reviewer_id": "historical-import",
+    "contradiction_flag": false,
+    "recency_multiplier": 1,
+    "heat_multiplier": 1
+  },
+  {
+    "id": "inc-050",
+    "governor_id": "gov-dv-wb-1967",
+    "state": "WB",
+    "date_start": "1969-02-25",
+    "date_end": "1969-02-25",
+    "transgression_type": "overreach",
+    "category": "constitutional",
+    "duration_days": 1,
+    "title": "Governor Dharma Vira Omits 535 Words from Assembly Address 1969",
+    "description": "Governor Dharma Vira skipped 535 words from the speech prepared by the United Front Cabinet when delivering his Address to the joint session of the State Legislature. The omitted portion contained criticism of the Central government. As he skipped the text, MLAs shouted 'Read the full text!' This represented a direct confrontation between the Governor and the elected state government over constitutional propriety regarding the Governor's Address (prepared by the Cabinet but delivered by the Governor).",
+    "constitutional_articles": [176],
+    "escalation_level": 2,
+    "sources": [
+      {
+        "url": "https://www.tribuneindia.com/news/archive/this-day-that-year/criticism-of-centre-omitted-by-dharma-vira-739163",
+        "outlet": "The Tribune",
+        "title": "Criticism of Centre omitted by Dharma Vira",
+        "date_published": null,
+        "tier": "primary",
+        "credibility_score": 0.85
+      }
+    ],
+    "verification_status": "confirmed",
+    "incident_status": "resolved",
+    "confidence_score": 0.85,
+    "data_completeness_score": 0.75,
+    "era": "pre_emergency",
+    "notes": "Symbolic confrontation; Governor altered Cabinet-prepared address",
+    "severity_constitutional": 0.8,
+    "severity_salience": 0.3,
+    "severity_unified": 0.65,
+    "duration_impact": 0.01,
+    "media_visibility": 0.3,
+    "sc_precedents": [],
+    "claim_id": "claim-inc-050",
+    "evidence_bundle_id": "bundle-inc-050",
+    "last_verified_at": "2026-03-14",
+    "reviewer_id": "historical-import",
+    "contradiction_flag": false,
+    "recency_multiplier": 1,
+    "heat_multiplier": 1
   }
 ]
