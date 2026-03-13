@@ -12,6 +12,7 @@ import { IncidentStream } from '@/components/IncidentStream';
 import { IncidentsTable } from '@/components/IncidentsTable';
 import { DashboardFooter } from '@/components/DashboardFooter';
 import { GovernorDetail } from '@/components/GovernorDetail';
+import { BeardBoard } from '@/components/BeardBoard';
 import { IncidentDetail } from '@/components/IncidentDetail';
 import { StateDetail } from '@/components/StateDetail';
 import {
@@ -123,6 +124,7 @@ export default function Home() {
   const [selectedGovernorId, setSelectedGovernorId] = useState<string | null>(null);
   const [selectedIncidentId, setSelectedIncidentId] = useState<string | null>(null);
   const [selectedStateCode, setSelectedStateCode] = useState<string | null>(null);
+  const [isBeardBoardOpen, setIsBeardBoardOpen] = useState(false);
 
   // Load real data
   const governors = getGovernors();
@@ -221,9 +223,7 @@ export default function Home() {
   }, []);
 
   const handleViewAllGovernors = useCallback(() => {
-    // For now, we don't have a full governors list page
-    // Could open a modal with all governors
-    alert('Full governor rankings coming soon.\n\nThis will show all governors with incident history.');
+    setIsBeardBoardOpen(true);
   }, []);
 
   const handleViewAllBills = useCallback(() => {
@@ -241,9 +241,10 @@ export default function Home() {
   const closeGovernorModal = useCallback(() => setSelectedGovernorId(null), []);
   const closeIncidentModal = useCallback(() => setSelectedIncidentId(null), []);
   const closeStateModal = useCallback(() => setSelectedStateCode(null), []);
+  const closeBeardBoard = useCallback(() => setIsBeardBoardOpen(false), []);
 
-  // Transform data for components
-  const transformedGovernors = useMemo(() => {
+  // Transform data for components - full list for BeardBoard modal
+  const allRankedGovernors = useMemo(() => {
     const governorSeverity = new Map<string, number[]>();
     incidents.forEach(inc => {
       const severities = governorSeverity.get(inc.governor_id) || [];
@@ -273,9 +274,13 @@ export default function Home() {
       })
       .filter(g => g.incidents > 0)
       .sort((a, b) => b.totalSeverity - a.totalSeverity || b.incidents - a.incidents)
-      .slice(0, 5)
       .map((g, idx) => ({ ...g, rank: idx + 1 }));
   }, [governors, incidents, incidentCountByGovernor, states]);
+
+  // Top 5 for the dashboard card
+  const transformedGovernors = useMemo(() => {
+    return allRankedGovernors.slice(0, 5);
+  }, [allRankedGovernors]);
 
   // Bills in limbo (ongoing withholding incidents)
   const billsInLimbo = useMemo(() => {
@@ -589,6 +594,16 @@ export default function Home() {
         onIncidentClick={(id) => {
           closeStateModal();
           handleIncidentClick(id);
+        }}
+      />
+
+      <BeardBoard
+        isOpen={isBeardBoardOpen}
+        onClose={closeBeardBoard}
+        governors={allRankedGovernors}
+        onGovernorClick={(governor) => {
+          closeBeardBoard();
+          handleGovernorClick(governor);
         }}
       />
     </div>
