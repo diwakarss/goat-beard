@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Modal } from './Modal';
-import type { Incident, Governor, StateMetadata } from '@/types/schema';
+import type { Incident, Governor, StateMetadata, BeardLevel } from '@/types/schema';
 
 interface StateDetailProps {
   isOpen: boolean;
@@ -34,6 +34,31 @@ function formatTransgressionType(type: string): string {
 }
 
 const severityDotColors = ['bg-slate-300', 'bg-yellow-500', 'bg-orange-500', 'bg-red-500'];
+
+// Uses total severity to match ranking logic
+function severityToBeardLevel(totalSeverity: number): BeardLevel {
+  if (totalSeverity < 1.0) return 0;
+  if (totalSeverity < 2.0) return 1;
+  if (totalSeverity < 3.5) return 2;
+  if (totalSeverity < 5.0) return 3;
+  return 4;
+}
+
+const goatIcons: Record<BeardLevel, string> = {
+  0: '/tuft.png',
+  1: '/tuft.png',
+  2: '/tuft.png',
+  3: '/billy.png',
+  4: '/knee-dragger.png',
+};
+
+const avatarGradients: Record<BeardLevel, string> = {
+  0: 'from-slate-200 to-slate-300',
+  1: 'from-emerald-200 to-green-300',
+  2: 'from-amber-200 to-yellow-300',
+  3: 'from-orange-200 to-amber-300',
+  4: 'from-rose-200 to-pink-300',
+};
 
 function severityToCategory(severity: number): { label: string; color: string } {
   if (severity >= 1.6) return { label: 'Critical', color: 'bg-red-100 text-red-700' };
@@ -75,9 +100,14 @@ export function StateDetail({
     incidents.some(inc => inc.governor_id === gov.id)
   );
 
-  // Group incidents by governor
+  // Group incidents by governor (count and total severity)
   const incidentsByGovernor = incidents.reduce((acc, inc) => {
     acc[inc.governor_id] = (acc[inc.governor_id] || 0) + 1;
+    return acc;
+  }, {} as Record<string, number>);
+
+  const severityByGovernor = incidents.reduce((acc, inc) => {
+    acc[inc.governor_id] = (acc[inc.governor_id] || 0) + inc.severity_unified;
     return acc;
   }, {} as Record<string, number>);
 
@@ -143,14 +173,17 @@ export function StateDetail({
         <div className="space-y-2">
           {stateGovernors
             .sort((a, b) => (incidentsByGovernor[b.id] || 0) - (incidentsByGovernor[a.id] || 0))
-            .map((gov) => (
+            .map((gov) => {
+              const totalSeverity = severityByGovernor[gov.id] || 0;
+              const beardLevel = severityToBeardLevel(totalSeverity);
+              return (
               <button
                 key={gov.id}
                 onClick={() => onGovernorClick(gov.id)}
                 className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 transition-colors text-left"
               >
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-slate-200 to-slate-300 flex items-center justify-center">
-                  👤
+                <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${avatarGradients[beardLevel]} flex items-center justify-center overflow-hidden`}>
+                  <img src={goatIcons[beardLevel]} alt="" className="w-8 h-8 object-contain" />
                 </div>
                 <div className="flex-1">
                   <div className="font-semibold text-slate-800">{gov.name}</div>
@@ -163,7 +196,8 @@ export function StateDetail({
                   <div className="text-xs text-slate-500">incidents</div>
                 </div>
               </button>
-            ))}
+            );
+            })}
         </div>
       </div>
 
