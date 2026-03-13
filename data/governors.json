@@ -1,7 +1,7 @@
 [
   {
     "id": "gov-amk-kl",
-    "name": "A.M. Khan",
+    "name": "Arif Mohammad Khan",
     "state": "KL",
     "tenure_start": "2021-09-01",
     "tenure_end": null,
@@ -15,22 +15,26 @@
     "name": "R.N. Ravi",
     "state": "TN",
     "tenure_start": "2021-09-18",
-    "tenure_end": null,
+    "tenure_end": "2025-02-28",
     "appointing_authority": "Modi Government (BJP)",
     "party_affiliation": "IAS (Former)",
-    "prior_postings": ["Nagaland"],
+    "prior_postings": [
+      "Nagaland"
+    ],
     "next_postings": []
   },
   {
     "id": "gov-jd-wb",
-    "name": "J. Dhankhar",
+    "name": "Jagdeep Dhankhar",
     "state": "WB",
     "tenure_start": "2019-07-30",
     "tenure_end": "2022-07-17",
     "appointing_authority": "Modi Government (BJP)",
     "party_affiliation": "BJP",
     "prior_postings": [],
-    "next_postings": ["Vice President of India"]
+    "next_postings": [
+      "Vice President of India"
+    ]
   },
   {
     "id": "gov-bsk-mh",
@@ -40,12 +44,14 @@
     "tenure_end": "2023-02-28",
     "appointing_authority": "Modi Government (BJP)",
     "party_affiliation": "BJP",
-    "prior_postings": ["Uttarakhand CM"],
+    "prior_postings": [
+      "Uttarakhand CM"
+    ],
     "next_postings": []
   },
   {
     "id": "gov-ts-ts",
-    "name": "T. Soundararajan",
+    "name": "Tamilisai Soundararajan",
     "state": "TS",
     "tenure_start": "2019-09-01",
     "tenure_end": "2023-01-05",
@@ -56,24 +62,243 @@
   },
   {
     "id": "gov-blp-pb",
-    "name": "B.L. Purohit",
+    "name": "Banwarilal Purohit",
     "state": "PB",
     "tenure_start": "2021-08-31",
     "tenure_end": "2024-02-28",
     "appointing_authority": "Modi Government (BJP)",
     "party_affiliation": "BJP",
-    "prior_postings": ["Tamil Nadu"],
+    "prior_postings": [
+      "Tamil Nadu"
+    ],
     "next_postings": []
   },
   {
     "id": "gov-cvab-wb",
-    "name": "C.V.A. Bose",
+    "name": "C.V. Ananda Bose",
     "state": "WB",
     "tenure_start": "2022-11-18",
     "tenure_end": null,
     "appointing_authority": "Modi Government (BJP)",
     "party_affiliation": "IAS (Former)",
     "prior_postings": [],
+    "next_postings": []
+  },
+  {
+    "id": "gov-ct-pj-1951",
+    "name": "Chandulal Trivedi",
+    "state": "PB",
+    "tenure_start": "1947-08-15",
+    "tenure_end": "1953-06-01",
+    "appointing_authority": "Nehru Government (Congress)",
+    "party_affiliation": "ICS",
+    "prior_postings": [],
+    "next_postings": [
+      "Punjab Governor"
+    ]
+  },
+  {
+    "id": "gov-rr-kl-1959",
+    "name": "Ramakrishna Rao",
+    "state": "KL",
+    "tenure_start": "1956-11-01",
+    "tenure_end": "1960-02-26",
+    "appointing_authority": "Nehru Government (Congress)",
+    "party_affiliation": "Congress",
+    "prior_postings": [],
+    "next_postings": []
+  },
+  {
+    "id": "gov-kks-tn-1976",
+    "name": "K.K. Shah",
+    "state": "TN",
+    "tenure_start": "1971-06-07",
+    "tenure_end": "1976-12-24",
+    "appointing_authority": "Indira Gandhi Government (Congress)",
+    "party_affiliation": "Congress",
+    "prior_postings": [],
+    "next_postings": []
+  },
+  {
+    "id": "gov-multiple-1977",
+    "name": "Multiple Governors",
+    "state": "MULTI",
+    "tenure_start": "1977-04-30",
+    "tenure_end": "1977-04-30",
+    "appointing_authority": "Janata Party Government",
+    "party_affiliation": "Various",
+    "prior_postings": [],
+    "next_postings": []
+  },
+  {
+    "id": "gov-multiple-1980",
+    "name": "Multiple Governors",
+    "state": "MULTI",
+    "tenure_start": "1980-02-17",
+    "tenure_end": "1980-02-17",
+    "appointing_authority": "Indira Gandhi Government (Congress)",
+    "party_affiliation": "Congress",
+    "prior_postings": [],
+    "next_postings": []
+  },
+  {
+    "id": "gov-jag-jk-1986",
+    "name": "Jagmohan",
+    "state": "JK",
+    "tenure_start": "1984-04-26",
+    "tenure_end": "1989-07-03",
+    "appointing_authority": "Rajiv Gandhi Government (Congress)",
+    "party_affiliation": "IAS (Former)",
+    "prior_postings": [
+      "Delhi Lt. Governor"
+    ],
+    "next_postings": [
+      "Union Minister"
+    ]
+  },
+  {
+    "id": "gov-ssr-pj-1987",
+    "name": "S.S. Ray",
+    "state": "PB",
+    "tenure_start": "1986-02-01",
+    "tenure_end": "1990-04-12",
+    "appointing_authority": "Rajiv Gandhi Government (Congress)",
+    "party_affiliation": "Congress",
+    "prior_postings": [
+      "West Bengal CM"
+    ],
+    "next_postings": []
+  },
+  {
+    "id": "gov-bommai-ka-1989",
+    "name": "P. Venkatasubbaiah",
+    "state": "KA",
+    "tenure_start": "1988-02-06",
+    "tenure_end": "1990-03-06",
+    "appointing_authority": "Rajiv Gandhi Government (Congress)",
+    "party_affiliation": "Congress",
+    "prior_postings": [],
+    "next_postings": []
+  },
+  {
+    "id": "gov-jag-jk-1990",
+    "name": "Jagmohan",
+    "state": "JK",
+    "tenure_start": "1990-01-19",
+    "tenure_end": "1990-05-26",
+    "appointing_authority": "V.P. Singh Government (National Front)",
+    "party_affiliation": "IAS (Former)",
+    "prior_postings": [
+      "Delhi Lt. Governor",
+      "J&K Governor (1984-89)"
+    ],
+    "next_postings": [
+      "Union Minister (2001-04)"
+    ]
+  },
+  {
+    "id": "gov-multiple-1992",
+    "name": "Multiple Governors",
+    "state": "MULTI",
+    "tenure_start": "1992-12-15",
+    "tenure_end": "1992-12-15",
+    "appointing_authority": "Narasimha Rao Government (Congress)",
+    "party_affiliation": "Congress",
+    "prior_postings": [],
+    "next_postings": []
+  },
+  {
+    "id": "gov-ssb-br-1999",
+    "name": "Sunder Singh Bhandari",
+    "state": "BR",
+    "tenure_start": "1998-03-17",
+    "tenure_end": "1999-07-23",
+    "appointing_authority": "Vajpayee Government (BJP)",
+    "party_affiliation": "BJP",
+    "prior_postings": [],
+    "next_postings": []
+  },
+  {
+    "id": "gov-rt-ka-2007",
+    "name": "Rameshwar Thakur",
+    "state": "KA",
+    "tenure_start": "2002-08-21",
+    "tenure_end": "2007-06-30",
+    "appointing_authority": "Vajpayee Government (BJP)",
+    "party_affiliation": "BJP",
+    "prior_postings": [],
+    "next_postings": [
+      "MP Governor"
+    ]
+  },
+  {
+    "id": "gov-vv-ka-2018",
+    "name": "Vajubhai Vala",
+    "state": "KA",
+    "tenure_start": "2014-08-01",
+    "tenure_end": "2021-09-01",
+    "appointing_authority": "Modi Government (BJP)",
+    "party_affiliation": "BJP",
+    "prior_postings": [
+      "Gujarat Speaker"
+    ],
+    "next_postings": []
+  },
+  {
+    "id": "gov-jpr-ar-2016",
+    "name": "J.P. Rajkhowa",
+    "state": "AR",
+    "tenure_start": "2013-05-10",
+    "tenure_end": "2016-09-12",
+    "appointing_authority": "Manmohan Singh Government (Congress)",
+    "party_affiliation": "IAS (Former)",
+    "prior_postings": [
+      "Sikkim Governor"
+    ],
+    "next_postings": []
+  },
+  {
+    "id": "gov-kkp-uk-2016",
+    "name": "K.K. Paul",
+    "state": "UK",
+    "tenure_start": "2015-07-09",
+    "tenure_end": "2018-08-23",
+    "appointing_authority": "Modi Government (BJP)",
+    "party_affiliation": "IPS (Former)",
+    "prior_postings": [
+      "Delhi Police Commissioner"
+    ],
+    "next_postings": [
+      "Meghalaya Governor"
+    ]
+  },
+  {
+    "id": "gov-spm-jk-2018",
+    "name": "Satya Pal Malik",
+    "state": "JK",
+    "tenure_start": "2018-08-23",
+    "tenure_end": "2019-10-30",
+    "appointing_authority": "Modi Government (BJP)",
+    "party_affiliation": "BJP",
+    "prior_postings": [
+      "Bihar Governor"
+    ],
+    "next_postings": [
+      "Goa Governor",
+      "Meghalaya Governor"
+    ]
+  },
+  {
+    "id": "gov-km-rj-2020",
+    "name": "Kalraj Mishra",
+    "state": "RJ",
+    "tenure_start": "2019-09-09",
+    "tenure_end": null,
+    "appointing_authority": "Modi Government (BJP)",
+    "party_affiliation": "BJP",
+    "prior_postings": [
+      "Union Minister"
+    ],
     "next_postings": []
   }
 ]

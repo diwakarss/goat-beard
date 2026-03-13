@@ -11,7 +11,7 @@ interface DashboardHeaderProps {
   onDateRangeChange: (start: number, end: number) => void;
 }
 
-const MIN_YEAR = 2010;
+const MIN_YEAR = 1950;
 const MAX_YEAR = 2026;
 const TOTAL_YEARS = MAX_YEAR - MIN_YEAR;
 

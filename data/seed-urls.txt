@@ -1,0 +1,12 @@
+# Governor incident article URLs - verified working
+# Tamil Nadu Supreme Court verdict
+https://www.deccanherald.com/india/tamil-nadu/what-are-the-10-bills-of-tamil-nadu-withheld-by-governor-r-n-ravi-3485636
+
+# Business Standard
+https://www.business-standard.com/india-news/supreme-court-outlines-governor-s-role-timelines-in-withholding-bills-125040801175_1.html
+
+# National Herald
+https://www.nationalheraldindia.com/national/supreme-court-reserves-judgment-on-tamil-nadu-govt-vs-governor-rn-ravi-case
+
+# The Print
+https://theprint.in/politics/ruling-dmk-makes-star-campaigner-jibe-as-governor-rn-ravis-stormy-tamil-nadu-tenure-ends/2871782/

@@ -9,7 +9,7 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: 'Goat Beard - Gubernatorial Transgression Tracker',
-  description: 'Evidence platform tracking gubernatorial transgressions in India (2010-present)',
+  description: 'Evidence platform tracking gubernatorial transgressions in India (1951-present)',
 }
 
 export default function RootLayout({
