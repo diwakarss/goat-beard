@@ -164,16 +164,16 @@ export function DashboardHeader({
               onMouseDown={handleMouseDown('start')}
               onTouchStart={handleTouchStart('start')}
             >
-              <img src="/beard-icon.png" alt="Start" className="w-10 h-8 drop-shadow-lg" />
+              <img src="/goat-slider.png" alt="Start" className="w-auto h-10 drop-shadow-lg" />
             </div>
             {/* End handle - clamped to stay in bounds */}
             <div
               className={`absolute top-1/2 -translate-y-1/2 cursor-grab active:cursor-grabbing transition-transform z-10 ${dragging === 'end' ? 'scale-125 z-20' : ''}`}
-              style={{ left: `clamp(0px, calc(${endPercent}% - 20px), calc(100% - 40px))` }}
+              style={{ left: `clamp(0px, calc(${endPercent}% - 16px), calc(100% - 33px))` }}
               onMouseDown={handleMouseDown('end')}
               onTouchStart={handleTouchStart('end')}
             >
-              <img src="/beard-icon.png" alt="End" className="w-10 h-8 drop-shadow-lg" />
+              <img src="/goat-slider.png" alt="End" className="w-auto h-10 drop-shadow-lg" />
             </div>
           </div>
           <span className="text-xs text-slate-500 font-medium w-10 text-right">{MAX_YEAR}</span>
