@@ -1,0 +1,61 @@
+flowchart TD
+    subgraph Sources["News Sources (Parallel)"]
+        TH[The Hindu Archive]
+        IE[Indian Express]
+        DC[Deccan Chronicle]
+        OTHER[Other Sources...]
+    end
+
+    subgraph Crawlee["Crawlee Pipeline"]
+        PC[PlaywrightCrawler]
+        RQ[(Request Queue)]
+        PS[(Persistent Storage)]
+
+        PC --> RQ
+        RQ --> PC
+        PC --> PS
+    end
+
+    subgraph Extraction["LLM-Assisted Extraction"]
+        ART[Article HTML]
+        LLM[LLM Parser]
+        RAW[Raw Incident Data]
+
+        ART --> LLM
+        LLM --> RAW
+    end
+
+    subgraph Processing["Processing Pipeline"]
+        FM[Fuzzy Matcher]
+        GOV[(governors.json)]
+        DEDUP[Deduplication]
+        VAL[Schema Validator]
+
+        RAW --> FM
+        GOV --> FM
+        FM --> DEDUP
+        DEDUP --> VAL
+    end
+
+    subgraph Output["Staging Output"]
+        STAGED[incidents_staged.json]
+        REVIEW[Manual Review]
+        MERGE[Merge Script]
+        FINAL[incidents.json]
+
+        VAL --> STAGED
+        STAGED --> REVIEW
+        REVIEW --> MERGE
+        MERGE --> FINAL
+    end
+
+    TH --> PC
+    IE --> PC
+    DC --> PC
+    OTHER --> PC
+    PS --> ART
+
+    style PC fill:#3b82f6
+    style LLM fill:#8b5cf6
+    style REVIEW fill:#f59e0b
+    style FINAL fill:#10b981
