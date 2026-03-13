@@ -37,13 +37,31 @@ const beardNames: Record<BeardLevel, BeardName> = {
   4: 'Knee-Dragger',
 };
 
-function severityToBeardLevel(severity: number): BeardLevel {
-  if (severity < 0.6) return 0;
-  if (severity < 1.0) return 1;
-  if (severity < 1.3) return 2;
-  if (severity < 1.6) return 3;
-  return 4;
+// Uses total severity to match ranking logic in page.tsx
+function severityToBeardLevel(totalSeverity: number): BeardLevel {
+  if (totalSeverity < 1.0) return 0;  // Clean Chin
+  if (totalSeverity < 2.0) return 1;  // Wisp
+  if (totalSeverity < 3.5) return 2;  // Tuft
+  if (totalSeverity < 5.0) return 3;  // Billy Beard
+  return 4;                            // Knee-Dragger
 }
+
+// Map beard levels to goat icons
+const goatIcons: Record<BeardLevel, string> = {
+  0: '/tuft.png',
+  1: '/tuft.png',
+  2: '/tuft.png',
+  3: '/billy.png',
+  4: '/knee-dragger.png',
+};
+
+const avatarGradients: Record<BeardLevel, string> = {
+  0: 'from-slate-200 to-slate-300',
+  1: 'from-emerald-200 to-green-300',
+  2: 'from-amber-200 to-yellow-300',
+  3: 'from-orange-200 to-amber-300',
+  4: 'from-rose-200 to-pink-300',
+};
 
 function formatDate(dateStr: string): string {
   return new Date(dateStr).toLocaleDateString('en-US', {
@@ -79,7 +97,7 @@ export function GovernorDetail({
 
   const totalSeverity = incidents.reduce((sum, inc) => sum + inc.severity_unified, 0);
   const avgSeverity = incidents.length > 0 ? totalSeverity / incidents.length : 0;
-  const beardLevel = severityToBeardLevel(avgSeverity);
+  const beardLevel = severityToBeardLevel(totalSeverity);  // Use total severity for beard level
   const totalDays = incidents.reduce((sum, inc) => sum + inc.duration_days, 0);
 
   // Group incidents by type
@@ -95,12 +113,9 @@ export function GovernorDetail({
       <div className="bg-gradient-to-br from-slate-50 to-slate-100 rounded-xl p-5 mb-6">
         <div className="flex items-start gap-4">
           <div className="relative">
-            <div className={`w-16 h-16 rounded-full bg-gradient-to-br from-slate-200 to-slate-300 flex items-center justify-center text-2xl`}>
-              👤
+            <div className={`w-16 h-16 rounded-full bg-gradient-to-br ${avatarGradients[beardLevel]} flex items-center justify-center overflow-hidden`}>
+              <img src={goatIcons[beardLevel]} alt="" className="w-14 h-14 object-contain" />
             </div>
-            {beardLevel >= 3 && (
-              <div className="absolute -bottom-1 -right-1 text-xl">🐐</div>
-            )}
           </div>
           <div className="flex-1">
             <div className="flex items-center gap-3 mb-1">
