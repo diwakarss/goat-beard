@@ -1008,7 +1008,7 @@
     "governor_id": "gov-rnr-tn",
     "state": "TN",
     "date_start": "2022-06-01",
-    "date_end": "2025-04-08",
+    "date_end": null,
     "transgression_type": "withholding_assent",
     "duration_days": 423,
     "title": "NEET Exemption Bill Withheld",
@@ -1048,7 +1048,7 @@
       }
     ],
     "verification_status": "confirmed",
-    "incident_status": "resolved",
+    "incident_status": "ongoing",
     "claim_id": "claim-007",
     "evidence_bundle_id": "bundle-007",
     "confidence_score": 0.98,

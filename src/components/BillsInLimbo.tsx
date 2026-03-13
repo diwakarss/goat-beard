@@ -9,6 +9,7 @@ interface Bill {
   governor: string;
   daysHeld: number;
   severity: 'low' | 'medium' | 'high' | 'critical';
+  isResolved?: boolean;
 }
 
 const severityColors: Record<string, string> = {
@@ -32,7 +33,7 @@ interface BillsInLimboProps {
 }
 
 export function BillsInLimbo({ bills, onViewAll, onBillClick }: BillsInLimboProps) {
-  const maxDays = Math.max(...bills.map(b => b.daysHeld), 1);
+  const maxDays = bills.length > 0 ? Math.max(...bills.map(b => b.daysHeld)) : 1;
 
   return (
     <div className="card p-4 h-full flex flex-col">

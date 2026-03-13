@@ -10,6 +10,7 @@ interface Bill {
   governor: string;
   daysHeld: number;
   severity: 'low' | 'medium' | 'high' | 'critical';
+  isResolved?: boolean;
 }
 
 const severityColors: Record<string, string> = {
@@ -43,7 +44,7 @@ interface BillsModalProps {
 export function BillsModal({ isOpen, onClose, bills, onBillClick }: BillsModalProps) {
   const maxDays = bills.length > 0 ? Math.max(...bills.map(b => b.daysHeld)) : 1;
   const totalBills = bills.length;
-  const criticalCount = bills.filter(b => b.severity === 'critical').length;
+  const pendingCount = bills.filter(b => !b.isResolved).length;
   const totalDaysHeld = bills.reduce((sum, b) => sum + b.daysHeld, 0);
 
   return (
@@ -54,9 +55,9 @@ export function BillsModal({ isOpen, onClose, bills, onBillClick }: BillsModalPr
           <div className="text-2xl font-bold text-indigo-700">{totalBills}</div>
           <div className="text-xs text-indigo-600 font-medium">Pending Bills</div>
         </div>
-        <div className="bg-gradient-to-br from-red-50 to-rose-100 rounded-xl p-3 text-center">
-          <div className="text-2xl font-bold text-red-700">{criticalCount}</div>
-          <div className="text-xs text-red-600 font-medium">Critical</div>
+        <div className="bg-gradient-to-br from-orange-50 to-amber-100 rounded-xl p-3 text-center">
+          <div className="text-2xl font-bold text-orange-700">{pendingCount}</div>
+          <div className="text-xs text-orange-600 font-medium">Pending</div>
         </div>
         <div className="bg-gradient-to-br from-amber-50 to-yellow-100 rounded-xl p-3 text-center">
           <div className="text-2xl font-bold text-amber-700">{totalDaysHeld.toLocaleString()}</div>
@@ -93,9 +94,14 @@ export function BillsModal({ isOpen, onClose, bills, onBillClick }: BillsModalPr
               <div className="flex-1 min-w-0">
                 <div className="flex justify-between items-start mb-1">
                   <span className="text-sm font-semibold text-slate-800 truncate pr-2">{bill.title}</span>
-                  <span className={`tag ${severityBgColors[bill.severity]}`}>
-                    {bill.severity}
-                  </span>
+                  <div className="flex gap-1">
+                    {bill.isResolved && (
+                      <span className="tag bg-green-100 text-green-700">Resolved</span>
+                    )}
+                    <span className={`tag ${severityBgColors[bill.severity]}`}>
+                      {bill.severity}
+                    </span>
+                  </div>
                 </div>
                 <div className="text-xs text-slate-500 mb-2">{bill.state} • {bill.governor}</div>
                 <div className="flex items-center gap-3">

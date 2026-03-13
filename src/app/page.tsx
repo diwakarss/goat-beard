@@ -285,11 +285,10 @@ export default function Home() {
     return allRankedGovernors.slice(0, 5);
   }, [allRankedGovernors]);
 
-  // Bills in limbo (ongoing withholding incidents)
-  // All bills in limbo (for modal)
+  // All withholding incidents (both pending and resolved)
   const allBillsInLimbo = useMemo(() => {
     return [...incidents]
-      .filter(inc => inc.date_end === null && inc.transgression_type === 'withholding_assent')
+      .filter(inc => inc.transgression_type === 'withholding_assent')
       .sort((a, b) => b.duration_days - a.duration_days)
       .map(inc => {
         const gov = governors.find(g => g.id === inc.governor_id);
@@ -300,7 +299,8 @@ export default function Home() {
           state: state?.name || inc.state,
           governor: gov?.name || 'Unknown',
           daysHeld: inc.duration_days,
-          severity: severityToCategory(inc.severity_unified)
+          severity: severityToCategory(inc.severity_unified),
+          isResolved: inc.date_end !== null
         };
       });
   }, [incidents, governors, states]);
