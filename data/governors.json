@@ -78,7 +78,7 @@
     "name": "C.V. Ananda Bose",
     "state": "WB",
     "tenure_start": "2022-11-18",
-    "tenure_end": null,
+    "tenure_end": "2026-03-05",
     "appointing_authority": "Modi Government (BJP)",
     "party_affiliation": "IAS (Former)",
     "prior_postings": [],
@@ -308,8 +308,96 @@
     "tenure_start": "2021-09-08",
     "tenure_end": null,
     "party_affiliation": "BJP",
-    "prior_office": "Union Minister for Social Justice and Empowerment",
-    "appointing_president": "Ram Nath Kovind",
-    "note": "Former Union Cabinet Minister"
+    "prior_postings": [],
+    "next_postings": [],
+    "appointing_authority": "Modi Government (BJP)"
+  },
+  {
+    "id": "gov-vs-ml-2015",
+    "name": "V. Shanmuganathan",
+    "state": "ML",
+    "tenure_start": "2015-05-24",
+    "tenure_end": "2017-01-25",
+    "appointing_authority": "Modi Government (BJP)",
+    "party_affiliation": "RSS/BJP",
+    "prior_postings": [],
+    "next_postings": []
+  },
+  {
+    "id": "gov-rl-ap-1983",
+    "name": "Ram Lal",
+    "state": "AP",
+    "tenure_start": "1983-08-01",
+    "tenure_end": "1984-08-29",
+    "appointing_authority": "Indira Gandhi Government (Congress)",
+    "party_affiliation": "Congress",
+    "prior_postings": ["Himachal Pradesh CM"],
+    "next_postings": []
+  },
+  {
+    "id": "gov-dv-wb-1967",
+    "name": "Dharma Vira",
+    "state": "WB",
+    "tenure_start": "1967-03-07",
+    "tenure_end": "1969-09-01",
+    "appointing_authority": "Indira Gandhi Government (Congress)",
+    "party_affiliation": "ICS",
+    "prior_postings": ["Punjab Governor"],
+    "next_postings": []
+  },
+  {
+    "id": "gov-ndt-ap-2007",
+    "name": "Narayan Dutt Tiwari",
+    "state": "AP",
+    "tenure_start": "2007-08-19",
+    "tenure_end": "2009-12-27",
+    "appointing_authority": "UPA Government (Congress)",
+    "party_affiliation": "Congress",
+    "prior_postings": ["Uttarakhand CM", "UP CM"],
+    "next_postings": []
+  },
+  {
+    "id": "gov-scj-goa-2004",
+    "name": "S.C. Jamir",
+    "state": "GA",
+    "tenure_start": "2004-11-09",
+    "tenure_end": "2006-11-17",
+    "appointing_authority": "UPA Government (Congress)",
+    "party_affiliation": "Congress",
+    "prior_postings": ["Nagaland CM"],
+    "next_postings": ["Maharashtra Governor"]
+  },
+  {
+    "id": "gov-pepsu-ys-1948",
+    "name": "Yadavindra Singh",
+    "state": "PEPSU",
+    "tenure_start": "1948-07-15",
+    "tenure_end": "1956-11-01",
+    "appointing_authority": "Nehru Government (Congress)",
+    "party_affiliation": "Royal",
+    "prior_postings": ["Maharaja of Patiala"],
+    "next_postings": []
+  },
+  {
+    "id": "gov-dcp-pb-1967",
+    "name": "D.C. Pavate",
+    "state": "PB",
+    "tenure_start": "1967-05-01",
+    "tenure_end": "1973-05-01",
+    "appointing_authority": "Indira Gandhi Government (Congress)",
+    "party_affiliation": "Academic/ICS",
+    "prior_postings": ["Vice-Chancellor Karnataka University"],
+    "next_postings": []
+  },
+  {
+    "id": "gov-bnc-hr-1967",
+    "name": "Birendra Narayan Chakravorty",
+    "state": "HR",
+    "tenure_start": "1967-09-15",
+    "tenure_end": "1976-08-14",
+    "appointing_authority": "Indira Gandhi Government (Congress)",
+    "party_affiliation": "ICS",
+    "prior_postings": [],
+    "next_postings": []
   }
 ]
