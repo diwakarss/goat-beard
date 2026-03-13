@@ -13,6 +13,7 @@ import { IncidentsTable } from '@/components/IncidentsTable';
 import { DashboardFooter } from '@/components/DashboardFooter';
 import { GovernorDetail } from '@/components/GovernorDetail';
 import { BeardBoard } from '@/components/BeardBoard';
+import { BillsModal } from '@/components/BillsModal';
 import { IncidentDetail } from '@/components/IncidentDetail';
 import { StateDetail } from '@/components/StateDetail';
 import {
@@ -125,6 +126,7 @@ export default function Home() {
   const [selectedIncidentId, setSelectedIncidentId] = useState<string | null>(null);
   const [selectedStateCode, setSelectedStateCode] = useState<string | null>(null);
   const [isBeardBoardOpen, setIsBeardBoardOpen] = useState(false);
+  const [isBillsModalOpen, setIsBillsModalOpen] = useState(false);
 
   // Load real data
   const governors = getGovernors();
@@ -227,7 +229,7 @@ export default function Home() {
   }, []);
 
   const handleViewAllBills = useCallback(() => {
-    alert('Full bills list coming soon.\n\nThis will show all pending bills awaiting assent.');
+    setIsBillsModalOpen(true);
   }, []);
 
   const handleViewAllIncidents = useCallback(() => {
@@ -242,6 +244,7 @@ export default function Home() {
   const closeIncidentModal = useCallback(() => setSelectedIncidentId(null), []);
   const closeStateModal = useCallback(() => setSelectedStateCode(null), []);
   const closeBeardBoard = useCallback(() => setIsBeardBoardOpen(false), []);
+  const closeBillsModal = useCallback(() => setIsBillsModalOpen(false), []);
 
   // Transform data for components - full list for BeardBoard modal
   const allRankedGovernors = useMemo(() => {
@@ -283,11 +286,11 @@ export default function Home() {
   }, [allRankedGovernors]);
 
   // Bills in limbo (ongoing withholding incidents)
-  const billsInLimbo = useMemo(() => {
+  // All bills in limbo (for modal)
+  const allBillsInLimbo = useMemo(() => {
     return [...incidents]
       .filter(inc => inc.date_end === null && inc.transgression_type === 'withholding_assent')
       .sort((a, b) => b.duration_days - a.duration_days)
-      .slice(0, 5)
       .map(inc => {
         const gov = governors.find(g => g.id === inc.governor_id);
         const state = states.find(s => s.code === inc.state);
@@ -301,6 +304,11 @@ export default function Home() {
         };
       });
   }, [incidents, governors, states]);
+
+  // Top 5 for the dashboard card
+  const billsInLimbo = useMemo(() => {
+    return allBillsInLimbo.slice(0, 5);
+  }, [allBillsInLimbo]);
 
   // State heat map data
   const stateData = useMemo(() => {
@@ -604,6 +612,16 @@ export default function Home() {
         onGovernorClick={(governor) => {
           closeBeardBoard();
           handleGovernorClick(governor);
+        }}
+      />
+
+      <BillsModal
+        isOpen={isBillsModalOpen}
+        onClose={closeBillsModal}
+        bills={allBillsInLimbo}
+        onBillClick={(bill) => {
+          closeBillsModal();
+          handleBillClick(bill);
         }}
       />
     </div>
