@@ -112,7 +112,7 @@ export default function Home() {
   const [searchQuery, setSearchQuery] = useState('');
   const [stateFilter, setStateFilter] = useState('');
   const [typeFilter, setTypeFilter] = useState('');
-  const [dateRange, setDateRange] = useState({ start: 2019, end: 2026 });
+  const [dateRange, setDateRange] = useState({ start: 1950, end: 2026 });
 
   // Date range change handler
   const handleDateRangeChange = useCallback((start: number, end: number) => {
