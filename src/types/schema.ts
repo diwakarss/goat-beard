@@ -13,15 +13,38 @@ export type StateCode =
   | 'UP' | 'UK' | 'WB';
 
 /**
- * Types of constitutional transgressions committed by governors.
+ * Types of transgressions committed by governors.
+ * Includes both constitutional violations and criminal/misconduct incidents.
  */
-export type TransgressionType = 
-  | 'withholding_assent' 
-  | 'delay' 
-  | 'overreach' 
-  | 'dissolution' 
-  | 'failure_to_countersign' 
+export type TransgressionType =
+  // Constitutional transgressions
+  | 'withholding_assent'
+  | 'delay'
+  | 'overreach'
+  | 'dissolution'
+  | 'failure_to_countersign'
+  // Criminal/misconduct categories
+  | 'corruption'           // Bribery, kickbacks, abuse of office for financial gain
+  | 'sexual_misconduct'    // Harassment, assault allegations
+  | 'criminal_charges'     // CBI/ED cases, chargesheeted
+  | 'abuse_of_power'       // Partisan actions, controversial appointments, irregular conduct
   | 'other';
+
+/**
+ * Category of the incident - constitutional violation vs criminal/misconduct.
+ */
+export type IncidentCategory = 'constitutional' | 'criminal' | 'misconduct';
+
+/**
+ * Status of criminal case if applicable.
+ */
+export type CaseStatus =
+  | 'alleged'
+  | 'under_investigation'
+  | 'chargesheeted'
+  | 'convicted'
+  | 'acquitted'
+  | 'withdrawn';
 
 /**
  * Status of data verification for an incident.
@@ -108,6 +131,11 @@ export interface Incident {
   readonly transgression_type: TransgressionType;
   readonly duration_days: number;
 
+  /**
+   * Category of incident: constitutional violation or criminal/misconduct.
+   */
+  readonly category: IncidentCategory;
+
   // Incident narrative
   /**
    * Short title describing the incident (e.g., "NEET Exemption Bill Withheld")
@@ -121,7 +149,37 @@ export interface Incident {
    * Name of the bill or legislation involved, if applicable.
    */
   readonly bill_name?: string;
-  readonly constitutional_articles: readonly number[];
+
+  // Legal references - constitutional OR criminal
+  /**
+   * Constitutional articles violated (optional for criminal/misconduct incidents).
+   */
+  readonly constitutional_articles?: readonly number[];
+  /**
+   * IPC/BNS sections or other criminal law references.
+   */
+  readonly criminal_sections?: readonly string[];
+  /**
+   * Court case number or FIR reference.
+   */
+  readonly case_number?: string;
+  /**
+   * Investigating agency (CBI, ED, State Police, etc.).
+   */
+  readonly investigating_agency?: string;
+  /**
+   * Status of criminal case if applicable.
+   */
+  readonly case_status?: CaseStatus;
+  /**
+   * Whether Article 361 immunity was claimed or is relevant.
+   */
+  readonly immunity_claimed?: boolean;
+  /**
+   * Whether the governor resigned due to this incident.
+   */
+  readonly resigned_over_incident?: boolean;
+
   readonly sc_precedents: readonly string[];
   readonly escalation_level: EscalationLevel;
   readonly sources: readonly Source[];

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Modal } from './Modal';
-import type { Incident, Governor, ArticleMetadata } from '@/types/schema';
+import type { Incident, Governor, ArticleMetadata, IncidentCategory } from '@/types/schema';
 
 interface IncidentDetailProps {
   isOpen: boolean;
@@ -25,14 +25,29 @@ function formatDate(dateStr: string): string {
 
 function formatTransgressionType(type: string): string {
   const labels: Record<string, string> = {
+    // Constitutional
     withholding_assent: 'Withholding Assent',
     delay: 'Delay Tactics',
     overreach: 'Constitutional Overreach',
     dissolution: 'Dissolution',
     failure_to_countersign: 'Failure to Countersign',
+    // Criminal/Misconduct
+    corruption: 'Corruption',
+    sexual_misconduct: 'Sexual Misconduct',
+    criminal_charges: 'Criminal Charges',
+    abuse_of_power: 'Abuse of Power',
     other: 'Other'
   };
   return labels[type] || type;
+}
+
+function formatCategory(category: string): { label: string; color: string } {
+  const categories: Record<string, { label: string; color: string }> = {
+    constitutional: { label: 'Constitutional', color: 'bg-indigo-100 text-indigo-700' },
+    criminal: { label: 'Criminal', color: 'bg-red-100 text-red-700' },
+    misconduct: { label: 'Misconduct', color: 'bg-orange-100 text-orange-700' }
+  };
+  return categories[category] || { label: category, color: 'bg-slate-100 text-slate-700' };
 }
 
 function formatEra(era: string): string {
@@ -72,8 +87,10 @@ export function IncidentDetail({
   if (!incident) return null;
 
   const relevantArticles = articles.filter(art =>
-    incident.constitutional_articles.includes(art.number)
+    incident.constitutional_articles?.includes(art.number) ?? false
   );
+  const categoryInfo = formatCategory(incident.category);
+  const isCriminalOrMisconduct = incident.category === 'criminal' || incident.category === 'misconduct';
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={incident.title} size="xl">
@@ -82,7 +99,10 @@ export function IncidentDetail({
         <div className="flex items-start justify-between mb-4">
           <div className="flex-1">
             <div className="flex items-center gap-3 mb-2 flex-wrap">
-              <span className="tag bg-indigo-100 text-indigo-700">
+              <span className={`tag ${categoryInfo.color}`}>
+                {categoryInfo.label}
+              </span>
+              <span className="tag bg-slate-100 text-slate-700">
                 {formatTransgressionType(incident.transgression_type)}
               </span>
               <span className={`tag ${statusColors[incident.incident_status]}`}>
@@ -203,29 +223,78 @@ export function IncidentDetail({
         </p>
       </div>
 
-      {/* Constitutional Articles */}
-      <div className="mb-6">
-        <h4 className="text-sm font-bold text-slate-700 mb-3">Constitutional Articles Invoked</h4>
-        <div className="space-y-2">
-          {relevantArticles.length > 0 ? (
-            relevantArticles.map((article) => (
-              <div key={article.number} className="p-3 bg-slate-50 rounded-xl">
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="tag bg-indigo-100 text-indigo-700 font-mono">Art. {article.number}</span>
-                  <span className="font-semibold text-slate-800">{article.title}</span>
+      {/* Criminal/Misconduct Details - only show for non-constitutional incidents */}
+      {isCriminalOrMisconduct && (
+        <div className="mb-6">
+          <h4 className="text-sm font-bold text-slate-700 mb-3">Case Details</h4>
+          <div className="grid grid-cols-2 gap-4">
+            {incident.criminal_sections && incident.criminal_sections.length > 0 && (
+              <div className="p-3 bg-red-50 rounded-xl">
+                <div className="text-xs text-red-600 mb-1">Legal Sections</div>
+                <div className="flex flex-wrap gap-1">
+                  {incident.criminal_sections.map((section, idx) => (
+                    <span key={idx} className="tag bg-red-100 text-red-700 font-mono text-xs">
+                      {section}
+                    </span>
+                  ))}
                 </div>
-                <p className="text-sm text-slate-600">{article.description}</p>
               </div>
-            ))
-          ) : (
-            incident.constitutional_articles.map((num) => (
-              <span key={num} className="tag bg-indigo-100 text-indigo-700 font-mono mr-2">
-                Art. {num}
-              </span>
-            ))
-          )}
+            )}
+            {incident.investigating_agency && (
+              <div className="p-3 bg-slate-50 rounded-xl">
+                <div className="text-xs text-slate-500 mb-1">Investigating Agency</div>
+                <div className="font-medium text-slate-800">{incident.investigating_agency}</div>
+              </div>
+            )}
+            {incident.case_status && (
+              <div className="p-3 bg-slate-50 rounded-xl">
+                <div className="text-xs text-slate-500 mb-1">Case Status</div>
+                <div className="font-medium text-slate-800 capitalize">{incident.case_status.replace('_', ' ')}</div>
+              </div>
+            )}
+            {incident.case_number && (
+              <div className="p-3 bg-slate-50 rounded-xl">
+                <div className="text-xs text-slate-500 mb-1">Case Number</div>
+                <div className="font-medium text-slate-800 font-mono text-sm">{incident.case_number}</div>
+              </div>
+            )}
+          </div>
+          <div className="flex gap-4 mt-3">
+            {incident.immunity_claimed && (
+              <span className="tag bg-purple-100 text-purple-700">Art. 361 Immunity Claimed</span>
+            )}
+            {incident.resigned_over_incident && (
+              <span className="tag bg-amber-100 text-amber-700">Resigned</span>
+            )}
+          </div>
         </div>
-      </div>
+      )}
+
+      {/* Constitutional Articles - only show if there are any */}
+      {incident.constitutional_articles && incident.constitutional_articles.length > 0 && (
+        <div className="mb-6">
+          <h4 className="text-sm font-bold text-slate-700 mb-3">Constitutional Articles Invoked</h4>
+          <div className="space-y-2">
+            {relevantArticles.length > 0 ? (
+              relevantArticles.map((article) => (
+                <div key={article.number} className="p-3 bg-slate-50 rounded-xl">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="tag bg-indigo-100 text-indigo-700 font-mono">Art. {article.number}</span>
+                    <span className="font-semibold text-slate-800">{article.title}</span>
+                  </div>
+                  <p className="text-sm text-slate-600">{article.description}</p>
+                </div>
+              ))
+            ) : (
+              incident.constitutional_articles.map((num) => (
+                <span key={num} className="tag bg-indigo-100 text-indigo-700 font-mono mr-2">
+                  Art. {num}
+                </span>
+              ))
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Responses */}
       {(incident.raj_bhavan_response || incident.legislative_pushback) && (
