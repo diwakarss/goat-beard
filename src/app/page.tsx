@@ -578,10 +578,7 @@ export default function Home() {
       </main>
 
       {/* Footer */}
-      <DashboardFooter
-        dataSources="The Hindu, Indian Express, Deccan Chronicle"
-        lastUpdated="March 2024"
-      />
+      <DashboardFooter />
 
       {/* Detail Modals */}
       <GovernorDetail
