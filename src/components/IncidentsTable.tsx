@@ -27,10 +27,13 @@ interface IncidentsTableProps {
   totalCount: number;
   stateOptions: string[];
   typeOptions: string[];
+  articleOptions?: string[];
   onSearch?: (query: string) => void;
   onStateFilter?: (state: string) => void;
   onTypeFilter?: (type: string) => void;
+  onArticleFilter?: (article: string) => void;
   onIncidentClick?: (id: string) => void;
+  articleFilter?: string;
 }
 
 export function IncidentsTable({
@@ -38,10 +41,13 @@ export function IncidentsTable({
   totalCount,
   stateOptions,
   typeOptions,
+  articleOptions = [],
   onSearch,
   onStateFilter,
   onTypeFilter,
+  onArticleFilter,
   onIncidentClick,
+  articleFilter = '',
 }: IncidentsTableProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 5;
@@ -74,6 +80,16 @@ export function IncidentsTable({
             <option value="">All Types</option>
             {typeOptions.map((type) => (
               <option key={type} value={type}>{type}</option>
+            ))}
+          </select>
+          <select
+            value={articleFilter}
+            onChange={(e) => onArticleFilter?.(e.target.value)}
+            className="text-sm px-3 py-1.5 bg-white/60 border border-slate-200 rounded-lg cursor-pointer"
+          >
+            <option value="">All Articles</option>
+            {articleOptions.map((art) => (
+              <option key={art} value={art}>Art. {art}</option>
             ))}
           </select>
         </div>

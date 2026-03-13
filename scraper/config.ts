@@ -52,6 +52,18 @@ export const sources: SourceConfig[] = [
     maxPagesPerCrawl: 100,
     rateLimit: 1,
   },
+  {
+    id: 'deccanherald',
+    name: 'Deccan Herald',
+    baseUrl: 'https://www.deccanherald.com',
+    archivePattern: '/india/*',
+    articleSelector: 'a[href*="/india/"]',
+    contentSelector: '.article-content, .story-element-text',
+    titleSelector: 'h1',
+    dateSelector: '.date, time[datetime]',
+    maxPagesPerCrawl: 100,
+    rateLimit: 1,
+  },
 ];
 
 export function getSourceById(id: string): SourceConfig | undefined {

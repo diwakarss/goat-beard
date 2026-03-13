@@ -190,12 +190,12 @@ export function StateDetail({
                       />
                     ))}
                   </div>
-                  <div className="flex-1">
-                    <div className="text-sm font-medium text-slate-800">
-                      {formatTransgressionType(incident.transgression_type)}
+                  <div className="flex-1 min-w-0">
+                    <div className="text-sm font-medium text-slate-800 truncate">
+                      {incident.title}
                     </div>
                     <div className="text-xs text-slate-500">
-                      {formatDate(incident.date_start)} • {gov?.name} • {incident.duration_days}d
+                      {formatTransgressionType(incident.transgression_type)} • {formatDate(incident.date_start)} • {gov?.name} • {incident.duration_days}d
                     </div>
                   </div>
                   {incident.date_end === null && (

@@ -5,14 +5,24 @@
     "description": "Provides that the Governor acts on the aid and advice of the Council of Ministers, except where constitutional discretion is explicitly allowed."
   },
   {
+    "number": 164,
+    "title": "Other provisions as to Ministers",
+    "description": "Covers the terms, salaries, and conditions of service of Ministers in states, including collective responsibility to the Legislative Assembly."
+  },
+  {
     "number": 168,
     "title": "Constitution of Legislatures in States",
     "description": "Defines the constitutional structure of state legislatures and positions the Governor within that structure."
   },
   {
-    "number": 172,
-    "title": "Duration of State Legislatures",
-    "description": "Sets the normal five-year term of a Legislative Assembly unless dissolved sooner in accordance with the Constitution."
+    "number": 174,
+    "title": "Sessions of the State Legislature, prorogation and dissolution",
+    "description": "Empowers the Governor to summon, prorogue, and dissolve the State Legislative Assembly. Requires sessions to be held within six months of the previous session."
+  },
+  {
+    "number": 176,
+    "title": "Special address by the Governor",
+    "description": "Requires the Governor to address the Legislature at the first session after each general election and at the commencement of the first session of each year."
   },
   {
     "number": 200,
@@ -23,5 +33,10 @@
     "number": 356,
     "title": "Failure of Constitutional Machinery in States",
     "description": "Allows President's Rule where governance cannot be carried on according to the Constitution, based in part on a Governor's report."
+  },
+  {
+    "number": 370,
+    "title": "Temporary provisions with respect to the State of Jammu and Kashmir",
+    "description": "Granted special autonomous status to Jammu and Kashmir. Was abrogated in 2019, ending the state's special constitutional provisions."
   }
 ]
