@@ -1474,6 +1474,53 @@
     "legislative_pushback": "CM publicly accused Governor of overstepping constitutional role"
   },
   {
+    "id": "inc-035",
+    "governor_id": "gov-blp-pb",
+    "state": "PB",
+    "date_start": "2024-01-15",
+    "date_end": "2024-02-03",
+    "transgression_type": "withholding_assent",
+    "duration_days": 19,
+    "title": "Punjab Governor Resigns Amid Bills Impasse",
+    "bill_name": "Sikh Gurdwaras Amendment Bill, University Laws Amendment Bill, Police Amendment Bill",
+    "description": "Governor Banwarilal Purohit reserved three key bills for the President's consideration - the Sikh Gurdwaras (Amendment) Bill 2023, Punjab Universities Laws (Amendment) Bill 2023, and Punjab Police (Amendment) Bill 2023. After facing SC criticism in November 2023, he resigned in February 2024 citing personal reasons, amid ongoing impasse with the AAP government.",
+    "constitutional_articles": [
+      200,
+      201
+    ],
+    "escalation_level": 3,
+    "sources": [
+      {
+        "url": "https://www.tribuneindia.com/news/punjab/purohit-reserves-three-bills-for-presidents-consideration-569411",
+        "outlet": "The Tribune",
+        "title": "Purohit reserves three Bills for President's consideration",
+        "date_published": "2024-01-15",
+        "tier": "primary",
+        "credibility_score": 0.9
+      },
+      {
+        "url": "https://organiser.org/2024/02/03/219896/bharat/punjab-governor-banwarilal-purohit-resigns-amidst-impasse-with-aap-government-in-the-state/",
+        "outlet": "Organiser",
+        "title": "Punjab Governor Banwarilal Purohit resigns amidst impasse with AAP Government",
+        "date_published": "2024-02-03",
+        "tier": "secondary",
+        "credibility_score": 0.75
+      }
+    ],
+    "verification_status": "confirmed",
+    "incident_status": "resolved",
+    "confidence_score": 0.9,
+    "data_completeness_score": 0.85,
+    "era": "post_2014",
+    "raj_bhavan_response": "Reserved contentious bills for President; resigned citing personal reasons",
+    "legislative_pushback": "AAP government publicly criticized delays",
+    "severity_constitutional": 1.2,
+    "severity_salience": 1.3,
+    "severity_unified": 1.24,
+    "sc_precedents": [],
+    "notes": "Governor resigned amid controversy; succeeded by Gulab Chand Kataria"
+  },
+  {
     "id": "inc-002",
     "governor_id": "gov-rnr-tn",
     "state": "TN",
@@ -1519,5 +1566,272 @@
     "era": "post_2014",
     "raj_bhavan_response": "Governor's office claimed address was delivered; released modified version",
     "legislative_pushback": "Assembly Speaker ruled address not delivered; DMK condemned as constitutional violation"
+  },
+  {
+    "id": "inc-033",
+    "governor_id": "gov-rnr-tn",
+    "state": "TN",
+    "date_start": "2024-03-15",
+    "date_end": "2025-04-08",
+    "transgression_type": "withholding_assent",
+    "duration_days": 389,
+    "title": "Tamil Nadu 10 Bills Supreme Court Case",
+    "bill_name": "University VC Appointment Bills (10 Bills)",
+    "description": "Governor R.N. Ravi withheld assent to 10 bills passed by the Tamil Nadu Legislative Assembly between January 2020 and April 2023, primarily dealing with university Vice Chancellor appointments. The bills would transfer VC appointment powers from the Governor to the state government. After years of inaction, the state filed a petition in the Supreme Court in November 2024. On April 8, 2025, the Supreme Court declared the Governor's inaction 'illegal' and 'erroneous', deeming the bills as assented.",
+    "constitutional_articles": [
+      200,
+      163
+    ],
+    "escalation_level": 4,
+    "sources": [
+      {
+        "url": "https://www.scobserver.in/cases/pendency-of-bills-before-tamil-nadu-governor-the-state-of-tamil-nadu-v-governor-of-tamil-nadu/",
+        "outlet": "Supreme Court Observer",
+        "title": "Pendency of bills before Tamil Nadu Governor",
+        "date_published": "2025-04-08",
+        "tier": "primary",
+        "credibility_score": 0.95
+      },
+      {
+        "url": "https://en.wikipedia.org/wiki/State_of_Tamil_Nadu_v._Governor_of_Tamil_Nadu",
+        "outlet": "Wikipedia",
+        "title": "State of Tamil Nadu v. Governor of Tamil Nadu",
+        "date_published": "2025-04-08",
+        "tier": "secondary",
+        "credibility_score": 0.85
+      }
+    ],
+    "verification_status": "confirmed",
+    "incident_status": "resolved",
+    "confidence_score": 0.95,
+    "data_completeness_score": 0.9,
+    "era": "post_2014",
+    "raj_bhavan_response": "Governor claimed constitutional discretion and reserved bills for President",
+    "legislative_pushback": "State moved Supreme Court in November 2024, won landmark judgment",
+    "severity_constitutional": 1.8,
+    "severity_salience": 1.6,
+    "severity_unified": 1.72,
+    "sc_precedents": [
+      "State of Tamil Nadu v. Governor of Tamil Nadu (2025)"
+    ],
+    "notes": "Landmark Supreme Court judgment establishing timelines for gubernatorial assent"
+  },
+  {
+    "id": "inc-034",
+    "governor_id": "gov-amk-kl",
+    "state": "KL",
+    "date_start": "2024-03-23",
+    "date_end": "2025-07-25",
+    "transgression_type": "withholding_assent",
+    "duration_days": 489,
+    "title": "Kerala 8 Bills Pending Before Governor",
+    "bill_name": "Various State Bills (8 Bills)",
+    "description": "Kerala government approached the Supreme Court against Governor Arif Mohammed Khan over eight bills pending with him for up to three years. The Supreme Court criticized the Governor asking 'Why is Governor sitting on bills for two years?' The case was later withdrawn after the Tamil Nadu judgment made it infructuous.",
+    "constitutional_articles": [
+      200,
+      163
+    ],
+    "escalation_level": 3,
+    "sources": [
+      {
+        "url": "https://www.scobserver.in/cases/pendency-of-bills-before-kerala-governor/",
+        "outlet": "Supreme Court Observer",
+        "title": "Pendency of bills before the Governor of Kerala",
+        "date_published": "2024-03-23",
+        "tier": "primary",
+        "credibility_score": 0.95
+      },
+      {
+        "url": "https://www.livelaw.in/top-stories/kerala-governor-supreme-court-arif-mohammed-khan-pending-bills-243257",
+        "outlet": "Live Law",
+        "title": "SC Criticises Kerala Governor Arif Mohammed Khan",
+        "date_published": "2024-03-23",
+        "tier": "primary",
+        "credibility_score": 0.9
+      }
+    ],
+    "verification_status": "confirmed",
+    "incident_status": "resolved",
+    "confidence_score": 0.9,
+    "data_completeness_score": 0.85,
+    "era": "post_2014",
+    "raj_bhavan_response": "Governor cited need for review and consultations",
+    "legislative_pushback": "State filed SC petition; withdrew after TN judgment",
+    "severity_constitutional": 1.5,
+    "severity_salience": 1.4,
+    "severity_unified": 1.46,
+    "sc_precedents": [],
+    "notes": "Case became infructuous after TN judgment; Governor later signed some bills"
+  },
+  {
+    "id": "inc-038",
+    "governor_id": "gov-cvab-wb",
+    "state": "WB",
+    "date_start": "2024-06-01",
+    "date_end": "2026-03-05",
+    "transgression_type": "withholding_assent",
+    "duration_days": 643,
+    "title": "West Bengal 23 Bills Pending Before Governor",
+    "bill_name": "Various State Bills (23 Bills from 2016-2025)",
+    "description": "West Bengal Assembly Speaker Biman Banerjee raised concerns that 23 bills passed by the state assembly between 2016 and 2025 were still awaiting approval at Raj Bhavan. Additionally, 11 bills from 2024-2025 were reserved for the President. Governor C.V. Ananda Bose resigned on March 5, 2026 before the state assembly elections.",
+    "constitutional_articles": [
+      200,
+      201
+    ],
+    "escalation_level": 3,
+    "sources": [
+      {
+        "url": "https://udaipurkiran.in/prests/",
+        "outlet": "Udaipur Kiran",
+        "title": "Speaker Raises Concern Over 23 Pending Bills After Supreme Court Verdict",
+        "date_published": "2025-04-15",
+        "tier": "secondary",
+        "credibility_score": 0.7
+      },
+      {
+        "url": "https://www.devdiscourse.com/article/headlines/3014907-west-bengal-moves-supreme-court-against-governor-for-withholding-assent-to-eight-bills",
+        "outlet": "Devdiscourse",
+        "title": "West Bengal Moves Supreme Court Against Governor for Withholding Assent to Eight Bills",
+        "date_published": "2024-06-01",
+        "tier": "secondary",
+        "credibility_score": 0.75
+      }
+    ],
+    "verification_status": "confirmed",
+    "incident_status": "resolved",
+    "confidence_score": 0.85,
+    "data_completeness_score": 0.75,
+    "era": "post_2014",
+    "raj_bhavan_response": "Reserved several bills for President; maintained constitutional position",
+    "legislative_pushback": "State moved SC against Governor; Speaker raised concerns publicly",
+    "severity_constitutional": 1.5,
+    "severity_salience": 1.3,
+    "severity_unified": 1.42,
+    "sc_precedents": [],
+    "notes": "Governor resigned March 2026 before state elections"
+  },
+  {
+    "id": "inc-036",
+    "governor_id": "gov-tcg-ka",
+    "state": "KA",
+    "date_start": "2024-12-01",
+    "date_end": null,
+    "transgression_type": "withholding_assent",
+    "duration_days": 103,
+    "title": "Karnataka RDPR University VC Amendment Bill Returned",
+    "bill_name": "Karnataka State Rural Development and Panchayat Raj University (Amendment) Bill, 2024",
+    "description": "Governor Thaawarchand Gehlot returned the RDPR University Amendment Bill seeking clarifications. The bill would transfer Vice Chancellor appointment powers from the Governor to the state government. The Governor set a one-month deadline for the government to invite applications for the VC post, threatening to do it himself otherwise.",
+    "constitutional_articles": [
+      200,
+      163
+    ],
+    "escalation_level": 2,
+    "sources": [
+      {
+        "url": "https://www.deccanherald.com/india/karnataka/governor-returns-two-more-bills-asks-govt-to-rethink-3425228",
+        "outlet": "Deccan Herald",
+        "title": "Karnataka Governor Thaawarchand Gehlot returns two more bills",
+        "date_published": "2025-02-15",
+        "tier": "primary",
+        "credibility_score": 0.9
+      },
+      {
+        "url": "https://www.udayavani.com/english-news/karnataka-guv-sets-1-month-deadline-for-govt-to-invite-applications-for-rdpr-university-vc",
+        "outlet": "Udayavani",
+        "title": "Karnataka Guv sets 1 month deadline for RDPR University VC",
+        "date_published": "2025-02-20",
+        "tier": "primary",
+        "credibility_score": 0.85
+      }
+    ],
+    "verification_status": "confirmed",
+    "incident_status": "contested",
+    "confidence_score": 0.85,
+    "data_completeness_score": 0.8,
+    "era": "post_2014",
+    "raj_bhavan_response": "Sought clarifications; set deadline for government action",
+    "legislative_pushback": "Congress government passed bill through both houses",
+    "severity_constitutional": 1.0,
+    "severity_salience": 1.2,
+    "severity_unified": 1.08,
+    "sc_precedents": [],
+    "notes": "Ongoing dispute over VC appointment powers"
+  },
+  {
+    "id": "inc-039",
+    "governor_id": "gov-rnr-tn",
+    "state": "TN",
+    "date_start": "2025-01-06",
+    "date_end": "2025-01-20",
+    "transgression_type": "overreach",
+    "duration_days": 14,
+    "title": "Tamil Nadu Assembly Address Controversy 2025",
+    "description": "Governor R.N. Ravi's address to the Tamil Nadu Legislative Assembly sparked controversy when portions were omitted or modified. This continued the pattern of confrontation between the Governor and the DMK state government.",
+    "constitutional_articles": [
+      176,
+      163
+    ],
+    "escalation_level": 2,
+    "sources": [
+      {
+        "url": "https://www.theweek.in/news/india/2025/04/08/explained-the-10-bills-on-which-tamil-nadu-governor-rnravi-faced-supreme-court-setback.html",
+        "outlet": "The Week",
+        "title": "The 10 bills on which Tamil Nadu Governor R.N.Ravi faced Supreme Court setback",
+        "date_published": "2025-04-08",
+        "tier": "primary",
+        "credibility_score": 0.85
+      }
+    ],
+    "verification_status": "partial",
+    "incident_status": "resolved",
+    "confidence_score": 0.75,
+    "data_completeness_score": 0.6,
+    "era": "post_2014",
+    "raj_bhavan_response": "Governor maintained constitutional position on address content",
+    "legislative_pushback": "DMK legislators staged protests",
+    "severity_constitutional": 1.0,
+    "severity_salience": 1.2,
+    "severity_unified": 1.08,
+    "sc_precedents": [],
+    "notes": "Annual pattern of confrontation during Assembly addresses"
+  },
+  {
+    "id": "inc-037",
+    "governor_id": "gov-tcg-ka",
+    "state": "KA",
+    "date_start": "2025-05-10",
+    "date_end": null,
+    "transgression_type": "withholding_assent",
+    "duration_days": 307,
+    "title": "Karnataka Cooperative Bills Withheld",
+    "bill_name": "Karnataka Co-Operative Societies (Amendment) Bill 2024, Karnataka Souharda Sahakari (Amendment) Bill 2024",
+    "description": "Governor Thaawarchand Gehlot withheld assent to two cooperative bills and referred contentious reforms to the President. This is part of ongoing tensions between the Congress state government and the Governor over legislative matters.",
+    "constitutional_articles": [
+      200,
+      201
+    ],
+    "escalation_level": 2,
+    "sources": [
+      {
+        "url": "https://organiser.org/2025/05/16/292606/bharat/karnataka-governor-withholds-assent-to-cooperative-bills-refers-contentious-reforms-to-president/",
+        "outlet": "Organiser",
+        "title": "Karnataka: Governor withholds assent to cooperative bills",
+        "date_published": "2025-05-16",
+        "tier": "secondary",
+        "credibility_score": 0.75
+      }
+    ],
+    "verification_status": "confirmed",
+    "incident_status": "contested",
+    "confidence_score": 0.8,
+    "data_completeness_score": 0.7,
+    "era": "post_2014",
+    "raj_bhavan_response": "Reserved bills for President's consideration",
+    "legislative_pushback": "State government criticized delay",
+    "severity_constitutional": 1.0,
+    "severity_salience": 1.0,
+    "severity_unified": 1.0,
+    "sc_precedents": [],
+    "notes": "Part of ongoing Karnataka Governor-Government tensions"
   }
 ]
