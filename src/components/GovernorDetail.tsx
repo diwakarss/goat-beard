@@ -38,12 +38,13 @@ const beardNames: Record<BeardLevel, BeardName> = {
 };
 
 // Uses total severity to match ranking logic in page.tsx
+// Thresholds tuned for better distribution across governors
 function severityToBeardLevel(totalSeverity: number): BeardLevel {
-  if (totalSeverity < 1.0) return 0;  // Clean Chin
-  if (totalSeverity < 2.0) return 1;  // Wisp
-  if (totalSeverity < 3.5) return 2;  // Tuft
-  if (totalSeverity < 5.0) return 3;  // Billy Beard
-  return 4;                            // Knee-Dragger
+  if (totalSeverity < 0.7) return 0;  // Clean Chin - almost no issues
+  if (totalSeverity < 1.3) return 1;  // Wisp - minimal transgressions
+  if (totalSeverity < 2.0) return 2;  // Tuft - moderate misconduct
+  if (totalSeverity < 3.5) return 3;  // Billy Beard - significant problems
+  return 4;                            // Knee-Dragger - severe offenders
 }
 
 // Map beard levels to goat icons
@@ -73,11 +74,17 @@ function formatDate(dateStr: string): string {
 
 function formatTransgressionType(type: string): string {
   const labels: Record<string, string> = {
+    // Constitutional
     withholding_assent: 'Withholding Assent',
     delay: 'Delay Tactics',
     overreach: 'Constitutional Overreach',
     dissolution: 'Dissolution',
     failure_to_countersign: 'Failure to Countersign',
+    // Criminal/Misconduct
+    corruption: 'Corruption',
+    sexual_misconduct: 'Sexual Misconduct',
+    criminal_charges: 'Criminal Charges',
+    abuse_of_power: 'Abuse of Power',
     other: 'Other'
   };
   return labels[type] || type;
@@ -237,7 +244,7 @@ export function GovernorDetail({
                     {formatTransgressionType(incident.transgression_type)}
                   </div>
                   <div className="text-xs text-slate-500">
-                    {formatDate(incident.date_start)} • {incident.duration_days} days • Art. {incident.constitutional_articles.join(', ')}
+                    {formatDate(incident.date_start)} • {incident.duration_days} days{(incident.constitutional_articles ?? []).length > 0 && ` • Art. ${incident.constitutional_articles!.join(', ')}`}
                   </div>
                 </div>
                 <span className={`tag ${incident.verification_status === 'confirmed' ? 'bg-green-100 text-green-700' : incident.verification_status === 'partial' ? 'bg-yellow-100 text-yellow-700' : 'bg-red-100 text-red-700'}`}>

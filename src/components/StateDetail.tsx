@@ -23,11 +23,17 @@ function formatDate(dateStr: string): string {
 
 function formatTransgressionType(type: string): string {
   const labels: Record<string, string> = {
+    // Constitutional
     withholding_assent: 'Withholding',
     delay: 'Delay',
     overreach: 'Overreach',
     dissolution: 'Dissolution',
     failure_to_countersign: 'Countersign',
+    // Criminal/Misconduct
+    corruption: 'Corruption',
+    sexual_misconduct: 'Misconduct',
+    criminal_charges: 'Criminal',
+    abuse_of_power: 'Abuse',
     other: 'Other'
   };
   return labels[type] || type;
@@ -36,12 +42,13 @@ function formatTransgressionType(type: string): string {
 const severityDotColors = ['bg-slate-300', 'bg-yellow-500', 'bg-orange-500', 'bg-red-500'];
 
 // Uses total severity to match ranking logic
+// Thresholds tuned for better distribution across governors
 function severityToBeardLevel(totalSeverity: number): BeardLevel {
-  if (totalSeverity < 1.0) return 0;
-  if (totalSeverity < 2.0) return 1;
-  if (totalSeverity < 3.5) return 2;
-  if (totalSeverity < 5.0) return 3;
-  return 4;
+  if (totalSeverity < 0.7) return 0;  // Clean Chin
+  if (totalSeverity < 1.3) return 1;  // Wisp
+  if (totalSeverity < 2.0) return 2;  // Tuft
+  if (totalSeverity < 3.5) return 3;  // Billy Beard
+  return 4;                            // Knee-Dragger
 }
 
 const goatIcons: Record<BeardLevel, string> = {
