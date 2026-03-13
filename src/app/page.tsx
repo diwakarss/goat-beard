@@ -30,13 +30,14 @@ import {
 } from '@/lib/data';
 import type { BeardLevel, BeardName, TransgressionType } from '@/types/schema';
 
-// Helper to convert severity_unified to beard level (0-4)
-function severityToBeardLevel(severity: number): BeardLevel {
-  if (severity < 0.6) return 0;
-  if (severity < 1.0) return 1;
-  if (severity < 1.3) return 2;
-  if (severity < 1.6) return 3;
-  return 4;
+// Helper to convert total severity to beard level (0-4)
+// Uses cumulative severity score to reflect accumulated misconduct
+function severityToBeardLevel(totalSeverity: number): BeardLevel {
+  if (totalSeverity < 1.0) return 0;  // Clean Chin
+  if (totalSeverity < 2.0) return 1;  // Wisp
+  if (totalSeverity < 3.5) return 2;  // Tuft
+  if (totalSeverity < 5.0) return 3;  // Billy Beard
+  return 4;                            // Knee-Dragger
 }
 
 // Helper to get beard name from level
@@ -269,7 +270,7 @@ export default function Home() {
         const severities = governorSeverity.get(gov.id) || [];
         const totalSeverity = severities.reduce((a, b) => a + b, 0);
         const avgSeverity = severities.length > 0 ? totalSeverity / severities.length : 0;
-        const beardLevel = severityToBeardLevel(avgSeverity);
+        const beardLevel = severityToBeardLevel(totalSeverity);
         const state = states.find(s => s.code === gov.state);
 
         return {
