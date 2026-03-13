@@ -11,9 +11,13 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "crawl": "npx tsx scripts/crawl.ts",
+    "collect": "npx tsx scripts/collect.ts",
     "extract": "npx tsx scripts/extract-hq.ts",
     "merge": "npx tsx scripts/merge.ts",
-    "staging:status": "npx tsx scripts/merge.ts --status"
+    "staging:status": "npx tsx scripts/merge.ts --status",
+    "archive:crawl": "npx tsx scripts/crawl-archives.ts",
+    "archive:import": "npx tsx scripts/import-archive-sources.ts",
+    "historical:merge": "npx tsx scripts/merge-historical.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.78.0",

@@ -1,0 +1,134 @@
+{
+  "status": "error",
+  "timestamp": "2026-03-12T17:59:12Z",
+  "run_id": "20260312T175912Z",
+  "project_root": "/Users/b2sell/claude-projects/projects/goat-beard",
+  "phase_dir": "/Users/b2sell/claude-projects/projects/goat-beard/.planning/phases/01-requirements",
+  "phase_label": "01-requirements",
+  "phase_number": "1",
+  "plan_path": "/Users/b2sell/claude-projects/projects/goat-beard/.planning/phases/01-requirements/planning/versions/v001/PLAN.md",
+  "execution_manifest": "/Users/b2sell/claude-projects/projects/goat-beard/.planning/phases/01-requirements/execution/runs/20260311T174011Z/execution-manifest.json",
+  "test_scope": "/Users/b2sell/claude-projects/projects/goat-beard",
+  "security_scope": "/Users/b2sell/claude-projects/projects/goat-beard",
+  "security_model": "sonnet",
+  "security_profile": "baseline",
+  "security_timeout_seconds": 600,
+  "artifact_parity_enforced": true,
+  "dry_run": false,
+  "incremental": false,
+  "quick_mode": true,
+  "gates": {
+    "plan_vs_build": {
+      "gate": "plan_vs_build",
+      "passed": true,
+      "reason": "Plan tasks are present in execution results and all completed successfully.",
+      "plan_path": "/Users/b2sell/claude-projects/projects/goat-beard/.planning/phases/01-requirements/planning/versions/v001/PLAN.md",
+      "execution_manifest": "/Users/b2sell/claude-projects/projects/goat-beard/.planning/phases/01-requirements/execution/runs/20260311T174011Z/execution-manifest.json",
+      "plan_task_count": 17,
+      "manifest_task_count": 17,
+      "task_result_count": 17,
+      "missing_in_manifest": [],
+      "missing_results": [],
+      "failing_tasks": [],
+      "overall_status": "ok",
+      "planned_file_count": 2,
+      "planned_files": [
+        "/Users/b2sell/claude-projects/projects/goat-beard/src/lib/__tests__/severity.test.ts",
+        "/Users/b2sell/claude-projects/projects/goat-beard/src/lib/__tests__/data.test.ts"
+      ],
+      "missing_planned_files": [],
+      "artifact_parity_enforced": true
+    },
+    "tests": {
+      "gate": "tests",
+      "passed": false,
+      "reason": "\u23af\u23af\u23af\u23af\u23af\u23af\u23af Failed Tests 2 \u23af\u23af\u23af\u23af\u23af\u23af\u23af\n\n FAIL  src/lib/__tests__/data.test.ts > data loader validation > loads metadata collections correctly\nAssertionError: expected [ { id: 'gov-amk-kl', \u2026(8) }, \u2026(6) ] to have a length of +0 but got 7\n\n- Expected\n+ Received\n\n- 0\n+ 7\n\n \u276f src/lib/__tests__/data.test.ts:25:28\n     23|     expect(getEras()).toHaveLength(5);\n     24|     expect(getPrecedents()).toHaveLength(3);\n     25|     expect(getGovernors()).toHaveLength(0);\n       |                            ^\n     26|     expect(getIncidents()).toHaveLength(0);\n     27|   });\n\n\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af[1/2]\u23af\n\n FAIL  src/lib/__tests__/data.test.ts > data loader validation > aggregation functions (empty data) > returns empty collections for empty seed data\nAssertionError: expected 6 to be +0 // Object.is equality\n\n- Expected\n+ Received\n\n- 0\n+ 6\n\n \u276f src/lib/__tests__/data.test.ts:69:46\n     67|   describe('aggregation functions (empty data)', () => {\n     68|     it('returns empty collections for empty seed data', () => {\n     69|       expect(getIncidentCountByState().size).toBe(0);\n       |                                              ^\n     70|       expect(getIncidentCountByGovernor().size).toBe(0);\n     71|       expect(getAverageSeverityByState().size).toBe(0);\n\n\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af[2/2]\u23af",
+      "status": "failed",
+      "return_code": 1,
+      "command": [
+        "/opt/homebrew/Cellar/python@3.14/3.14.2/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+        "/Users/b2sell/claude-projects/.nalan/scripts/run-tests.py",
+        "--scope",
+        "/Users/b2sell/claude-projects/projects/goat-beard",
+        "--coverage-threshold",
+        "80",
+        "--json"
+      ],
+      "runner": "vitest",
+      "test_scope": "/Users/b2sell/claude-projects/projects/goat-beard",
+      "coverage_threshold": 80,
+      "coverage_met": null,
+      "test_results": {
+        "passed": 0,
+        "failed": 0,
+        "skipped": 0,
+        "total": 0,
+        "coverage_percent": null,
+        "duration_ms": null
+      },
+      "stdout": "{\n  \"runner\": \"vitest\",\n  \"command\": \"npx vitest run\",\n  \"scope\": \"/Users/b2sell/claude-projects/projects/goat-beard\",\n  \"status\": \"failed\",\n  \"test_results\": {\n    \"passed\": 0,\n    \"failed\": 0,\n    \"skipped\": 0,\n    \"total\": 0,\n    \"coverage_percent\": null,\n    \"duration_ms\": null\n  },\n  \"coverage_threshold\": 80,\n  \"coverage_met\": null,\n  \"return_code\": 1,\n  \"stdout\": \"\\n RUN  v4.0.18 /Users/b2sell/claude-projects/projects/goat-beard\\n\\n \\u2713 src/lib/__tests__/severity.test.ts (61 tests) 7ms\\n \\u276f src/lib/__tests__/data.test.ts (7 tests | 2 failed) 8ms\\n     \\u00d7 loads metadata collections correctly 5ms\\n       \\u2713 finds states by code 0ms\\n       \\u2713 finds articles by number 0ms\\n       \\u2713 finds eras by id 0ms\\n       \\u2713 finds precedents by id 0ms\\n       \\u2713 filters states by UT status 0ms\\n       \\u00d7 returns empty collections for empty seed data 1ms\\n\\n Test Files  1 failed | 1 passed (2)\\n      Tests  2 failed | 66 passed (68)\\n   Start at  23:29:14\\n   Duration  211ms (transform 82ms, setup 0ms, import 105ms, tests 14ms, environment 0ms)\\n\\n\",\n  \"stderr\": \"\\n\\u23af\\u23af\\u23af\\u23af\\u23af\\u23af\\u23af Failed Tests 2 \\u23af\\u23af\\u23af\\u23af\\u23af\\u23af\\u23af\\n\\n FAIL  src/lib/__tests__/data.test.ts > data loader validation > loads metadata collections correctly\\nAssertionError: expected [ { id: 'gov-amk-kl', \\u2026(8) }, \\u2026(6) ] to have a length of +0 but got 7\\n\\n- Expected\\n+ Received\\n\\n- 0\\n+ 7\\n\\n \\u276f src/lib/__tests__/data.test.ts:25:28\\n     23|     expect(getEras()).toHaveLength(5);\\n     24|     expect(getPrecedents()).toHaveLength(3);\\n     25|     expect(getGovernors()).toHaveLength(0);\\n       |                            ^\\n     26|     expect(getIncidents()).toHaveLength(0);\\n     27|   });\\n\\n\\u23af\\u23af\\u23af\\u23af\\u23af\\u23af\\u23af\\u23af\\u23af\\u23af\\u23af\\u23af\\u23af\\u23af\\u23af\\u23af\\u23af\\u23af\\u23af\\u23af\\u23af\\u23af\\u23af\\u23af[1/2]\\u23af\\n\\n FAIL  src/lib/__tests__/data.test.ts > data loader validation > aggregation functions (empty data) > returns empty collections for empty seed data\\nAssertionError: expected 6 to be +0 // Object.is equality\\n\\n- Expected\\n+ Received\\n\\n- 0\\n+ 6\\n\\n \\u276f src/lib/__tests__/data.test.ts:69:46\\n     67|   describe('aggregation functions (empty data)', () => {\\n     68|     it('returns empty collections for empty seed data', () => {\\n     69|       expect(getIncidentCountByState().size).toBe(0);\\n       |                                              ^\\n     70|       expect(getIncidentCountByGovernor().size).toBe(0);\\n     71|       expect(getAverageSeverityByState().size).toBe(0);\\n\\n\\u23af\\u23af\\u23af\\u23af\\u23af\\u23af\\u23af\\u23af\\u23af\\u23af\\u23af\\u23af\\u23af\\u23af\\u23af\\u23af\\u23af\\u23af\\u23af\\u23af\\u23af\\u23af\\u23af\\u23af[2/2]\\u23af\\n\\n\"\n}\n",
+      "stderr": ""
+    }
+  },
+  "gate_order": [
+    "plan_vs_build",
+    "tests",
+    "security",
+    "secret_scan",
+    "coverage_audit",
+    "react_quality",
+    "dep_freshness",
+    "manual_confirmation",
+    "repo_stability"
+  ],
+  "stopped_at": "tests",
+  "next_action": "Fix test failures and rerun /nalan:verify.",
+  "artifacts": {
+    "run_dir": "/Users/b2sell/claude-projects/projects/goat-beard/.planning/phases/01-requirements/verify/runs/20260312T175912Z",
+    "run_summary": "/Users/b2sell/claude-projects/projects/goat-beard/.planning/phases/01-requirements/verify/runs/20260312T175912Z/VERIFICATION.md",
+    "verify_summary": "/Users/b2sell/claude-projects/projects/goat-beard/.planning/phases/01-requirements/verify/VERIFICATION.md",
+    "phase_summary": "/Users/b2sell/claude-projects/projects/goat-beard/.planning/phases/01-requirements/verify/VERIFICATION.md",
+    "plan_check": "/Users/b2sell/claude-projects/projects/goat-beard/.planning/phases/01-requirements/verify/PLAN-BUILD-CHECK.md"
+  },
+  "lock": {
+    "path": "/Users/b2sell/claude-projects/projects/goat-beard/.planning/phases/01-requirements/verify/.verify.lock",
+    "acquired": true,
+    "owner": {
+      "run_id": "20260312T175912Z",
+      "pid": 87296,
+      "started_at": "2026-03-12T17:59:12Z"
+    },
+    "stale_after_seconds": 900,
+    "stale_recovered": null,
+    "released": {
+      "released": true,
+      "path": "/Users/b2sell/claude-projects/projects/goat-beard/.planning/phases/01-requirements/verify/.verify.lock",
+      "released_at": "2026-03-12T17:59:14Z"
+    }
+  },
+  "runtime": {
+    "python": "/opt/homebrew/Cellar/python@3.14/3.14.2/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+    "python_resolved": "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "python_source": "sys.executable",
+    "python_project": false,
+    "preflight_required": false,
+    "preflight_passed": true,
+    "required_modules": [
+      "pytest",
+      "packaging",
+      "pygments"
+    ],
+    "missing_modules": [],
+    "candidates": [
+      {
+        "python": "/opt/homebrew/Cellar/python@3.14/3.14.2/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+        "source": "sys.executable",
+        "ok": true,
+        "command_ok": true,
+        "missing_modules": [],
+        "error": null
+      }
+    ],
+    "error": null
+  }
+}

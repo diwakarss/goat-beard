@@ -8,7 +8,6 @@ import { IndiaMap } from '@/components/IndiaMap';
 import { TransgressionDonut } from '@/components/TransgressionDonut';
 import { ArticlesChart } from '@/components/ArticlesChart';
 import { TrendSparkline } from '@/components/TrendSparkline';
-import { IncidentStream } from '@/components/IncidentStream';
 import { IncidentsTable } from '@/components/IncidentsTable';
 import { DashboardFooter } from '@/components/DashboardFooter';
 import { GovernorDetail } from '@/components/GovernorDetail';
@@ -100,20 +99,12 @@ function getStateColor(severity: number): string {
   return 'bg-green-100 text-green-700';
 }
 
-// Get gradient colors for incident cards
-function getCardGradient(severity: number): { bgGradient: string; borderColor: string } {
-  if (severity >= 1.6) return { bgGradient: 'from-rose-50 to-pink-100', borderColor: 'border-rose-200/50' };
-  if (severity >= 1.3) return { bgGradient: 'from-orange-50 to-amber-100', borderColor: 'border-orange-200/50' };
-  if (severity >= 0.9) return { bgGradient: 'from-amber-50 to-yellow-100', borderColor: 'border-amber-200/50' };
-  return { bgGradient: 'from-emerald-50 to-green-100', borderColor: 'border-emerald-200/50' };
-}
-
 export default function Home() {
   // Filter states
-  const [activeFilter, setActiveFilter] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [stateFilter, setStateFilter] = useState('');
   const [typeFilter, setTypeFilter] = useState('');
+  const [articleFilter, setArticleFilter] = useState('');
   const [dateRange, setDateRange] = useState({ start: 1950, end: 2026 });
 
   // Date range change handler
@@ -215,9 +206,26 @@ export default function Home() {
   }, []);
 
   const handleTransgressionClick = useCallback((type: string) => {
-    setActiveFilter(type === 'withholding_assent' ? 'Withholding' :
-                   type === 'delay' ? 'Delay' :
-                   type === 'overreach' ? 'Overreach' : 'All');
+    const label = formatTransgressionType(type as TransgressionType);
+    setTypeFilter(label);
+    // Scroll to incidents table
+    setTimeout(() => {
+      const tableSection = document.getElementById('incidents-table');
+      if (tableSection) {
+        tableSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 100);
+  }, []);
+
+  const handleArticleClick = useCallback((articleNumber: string) => {
+    setArticleFilter(articleNumber);
+    // Scroll to incidents table
+    setTimeout(() => {
+      const tableSection = document.getElementById('incidents-table');
+      if (tableSection) {
+        tableSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 100);
   }, []);
 
   const handleIncidentClick = useCallback((id: string) => {
@@ -369,45 +377,10 @@ export default function Home() {
 
     return Array.from(counts.entries())
       .map(([number, count]) => ({ number: String(number), count }))
-      .sort((a, b) => b.count - a.count)
-      .slice(0, 4);
+      .sort((a, b) => b.count - a.count);
   }, [incidents]);
 
-  // Incident stream cards (filtered by activeFilter)
-  const incidentCards = useMemo(() => {
-    const filterMap: Record<string, TransgressionType | null> = {
-      'All': null,
-      'Withholding': 'withholding_assent',
-      'Delay': 'delay',
-      'Overreach': 'overreach'
-    };
-    const filterType = filterMap[activeFilter];
-
-    return [...incidents]
-      .filter(inc => !filterType || inc.transgression_type === filterType)
-      .sort((a, b) => new Date(b.date_start).getTime() - new Date(a.date_start).getTime())
-      .slice(0, 6)
-      .map(inc => {
-        const gov = governors.find(g => g.id === inc.governor_id);
-        const state = states.find(s => s.code === inc.state);
-        const { bgGradient, borderColor } = getCardGradient(inc.severity_unified);
-
-        return {
-          id: inc.id,
-          date: formatDate(inc.date_start),
-          title: inc.title,
-          state: state?.name || inc.state,
-          type: formatTransgressionType(inc.transgression_type),
-          governor: gov?.name || 'Unknown',
-          severity: inc.escalation_level as 1 | 2 | 3 | 4,
-          metric: inc.duration_days > 1 ? `${inc.duration_days}d` : `Art.${inc.constitutional_articles[0]}`,
-          bgGradient,
-          borderColor
-        };
-      });
-  }, [incidents, governors, states, activeFilter]);
-
-  // Table incidents (filtered by search, state, type)
+  // Table incidents (filtered by search, state, type, article)
   const tableIncidents = useMemo(() => {
     return [...incidents]
       .filter(inc => {
@@ -422,8 +395,7 @@ export default function Home() {
             inc.bill_name,
             gov?.name,
             state?.name,
-            formatTransgressionType(inc.transgression_type),
-            inc.constitutional_articles.map(a => `Art. ${a}`).join(' ')
+            formatTransgressionType(inc.transgression_type)
           ].filter(Boolean).join(' ').toLowerCase();
           if (!searchable.includes(query)) return false;
         }
@@ -435,6 +407,10 @@ export default function Home() {
         // Type filter
         if (typeFilter) {
           if (formatTransgressionType(inc.transgression_type) !== typeFilter) return false;
+        }
+        // Article filter - exact match on any article in the array
+        if (articleFilter) {
+          if (!inc.constitutional_articles.includes(Number(articleFilter))) return false;
         }
         return true;
       })
@@ -452,13 +428,13 @@ export default function Home() {
           stateColor: getStateColor(inc.severity_unified),
           governor: gov?.name || 'Unknown',
           type: getShortType(inc.transgression_type),
-          article: `Art. ${inc.constitutional_articles[0]}`,
+          article: inc.constitutional_articles.map(a => `Art. ${a}`).join(', '),
           severity: inc.escalation_level as 1 | 2 | 3 | 4,
           status: (inc.verification_status === 'confirmed' ? 'Verified' :
                    inc.verification_status === 'partial' ? 'Partial' : 'Unverified') as 'Verified' | 'Partial' | 'Unverified'
         };
       });
-  }, [incidents, governors, states, searchQuery, stateFilter, typeFilter]);
+  }, [incidents, governors, states, searchQuery, stateFilter, typeFilter, articleFilter]);
 
   // Unique states and types for filters
   const uniqueStates = useMemo(() => {
@@ -472,14 +448,41 @@ export default function Home() {
     return [...new Set(incidents.map(inc => formatTransgressionType(inc.transgression_type)))].sort();
   }, [incidents]);
 
-  // Calculate year-over-year change
-  const trendChange = useMemo(() => {
-    const currentYear = new Date().getFullYear();
-    const thisYear = incidents.filter(inc => new Date(inc.date_start).getFullYear() === currentYear - 1).length;
-    const lastYear = incidents.filter(inc => new Date(inc.date_start).getFullYear() === currentYear - 2).length;
-    if (lastYear === 0) return 0;
-    return Math.round(((thisYear - lastYear) / lastYear) * 100);
+  const uniqueArticles = useMemo(() => {
+    const articleSet = new Set<number>();
+    incidents.forEach(inc => {
+      inc.constitutional_articles.forEach(art => articleSet.add(art));
+    });
+    return [...articleSet].sort((a, b) => a - b).map(String);
   }, [incidents]);
+
+  // Calculate yearly incident counts for trend chart
+  const yearlyIncidentData = useMemo(() => {
+    const countByYear = new Map<number, number>();
+    incidents.forEach(inc => {
+      const year = new Date(inc.date_start).getFullYear();
+      countByYear.set(year, (countByYear.get(year) || 0) + 1);
+    });
+    return Array.from(countByYear.entries())
+      .map(([year, count]) => ({ year, count }))
+      .sort((a, b) => a.year - b.year);
+  }, [incidents]);
+
+  // Calculate year-over-year change based on filtered data
+  const { trendChange, comparedYear } = useMemo(() => {
+    if (yearlyIncidentData.length < 2) {
+      return { trendChange: 0, comparedYear: dateRange.end - 1 };
+    }
+    // Use last two years with data
+    const sorted = [...yearlyIncidentData].sort((a, b) => b.year - a.year);
+    const latest = sorted[0];
+    const previous = sorted[1];
+    if (!previous || previous.count === 0) {
+      return { trendChange: 0, comparedYear: previous?.year || dateRange.end - 1 };
+    }
+    const change = Math.round(((latest.count - previous.count) / previous.count) * 100);
+    return { trendChange: change, comparedYear: previous.year };
+  }, [yearlyIncidentData, dateRange.end]);
 
   return (
     <div className="min-h-screen">
@@ -527,20 +530,15 @@ export default function Home() {
 
         {/* Row 2: Deeper analysis (2 columns) */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 [&>*]:h-[180px]">
-          <TrendSparkline changePercent={trendChange} comparedTo={String(new Date().getFullYear() - 2)} />
-          <ArticlesChart articles={articleCounts} />
+          <TrendSparkline
+            changePercent={trendChange}
+            comparedTo={String(comparedYear)}
+            yearlyData={yearlyIncidentData}
+            startYear={dateRange.start}
+            endYear={dateRange.end}
+          />
+          <ArticlesChart articles={articleCounts} onArticleClick={handleArticleClick} />
         </div>
-
-        {/* Row 2: Incident Stream (Full Width) */}
-        <IncidentStream
-          incidents={incidentCards}
-          totalCount={incidents.length}
-          activeFilter={activeFilter}
-          filters={['All', 'Withholding', 'Delay', 'Overreach']}
-          onFilterChange={setActiveFilter}
-          onIncidentClick={handleIncidentClick}
-          onViewAll={handleViewAllIncidents}
-        />
 
         {/* Row 3: Data Table (Full Width) */}
         <div id="incidents-table">
@@ -549,10 +547,13 @@ export default function Home() {
             totalCount={incidents.length}
             stateOptions={uniqueStates}
             typeOptions={uniqueTypes}
+            articleOptions={uniqueArticles}
             onSearch={setSearchQuery}
             onStateFilter={setStateFilter}
             onTypeFilter={setTypeFilter}
+            onArticleFilter={setArticleFilter}
             onIncidentClick={handleIncidentClick}
+            articleFilter={articleFilter}
           />
         </div>
       </main>

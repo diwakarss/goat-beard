@@ -1,0 +1,158 @@
+{
+  "status": "error",
+  "timestamp": "2026-03-12T17:57:01Z",
+  "run_id": "20260312T175701Z",
+  "project_root": "/Users/b2sell/claude-projects/projects/goat-beard",
+  "phase_dir": "/Users/b2sell/claude-projects/projects/goat-beard/.planning/phases/01-requirements",
+  "phase_label": "01-requirements",
+  "phase_number": "1",
+  "plan_path": "/Users/b2sell/claude-projects/projects/goat-beard/.planning/phases/01-requirements/planning/versions/v001/PLAN.md",
+  "execution_manifest": "/Users/b2sell/claude-projects/projects/goat-beard/.planning/phases/01-requirements/execution/runs/20260311T174011Z/execution-manifest.json",
+  "test_scope": "/Users/b2sell/claude-projects/projects/goat-beard",
+  "security_scope": "/Users/b2sell/claude-projects/projects/goat-beard",
+  "security_model": "sonnet",
+  "security_profile": "baseline",
+  "security_timeout_seconds": 600,
+  "artifact_parity_enforced": true,
+  "dry_run": false,
+  "incremental": false,
+  "quick_mode": false,
+  "gates": {
+    "plan_vs_build": {
+      "gate": "plan_vs_build",
+      "passed": false,
+      "reason": "Execution overall_status is 'canceled' | Missing tasks in execution manifest: 4.1, 4.2, 4.3, 4.4, 4.5 | Missing task results: 3.5, 4.1, 4.2, 4.3, 4.4, 4.5 | Failing task statuses: 1.1(quality_failed), 1.2(quality_failed), 1.3(quality_failed), 1.4(quality_failed), 2.2(quality_failed), 2.3(quality_failed), 3.1(quality_failed), 3.4(quality_failed)",
+      "plan_path": "/Users/b2sell/claude-projects/projects/goat-beard/.planning/phases/01-requirements/planning/versions/v001/PLAN.md",
+      "execution_manifest": "/Users/b2sell/claude-projects/projects/goat-beard/.planning/phases/01-requirements/execution/runs/20260311T174011Z/execution-manifest.json",
+      "plan_task_count": 17,
+      "manifest_task_count": 12,
+      "task_result_count": 11,
+      "missing_in_manifest": [
+        "4.1",
+        "4.2",
+        "4.3",
+        "4.4",
+        "4.5"
+      ],
+      "missing_results": [
+        "3.5",
+        "4.1",
+        "4.2",
+        "4.3",
+        "4.4",
+        "4.5"
+      ],
+      "failing_tasks": [
+        {
+          "task_id": "1.1",
+          "status": "quality_failed",
+          "reason": "task_not_ok"
+        },
+        {
+          "task_id": "1.2",
+          "status": "quality_failed",
+          "reason": "task_not_ok"
+        },
+        {
+          "task_id": "1.3",
+          "status": "quality_failed",
+          "reason": "task_not_ok"
+        },
+        {
+          "task_id": "1.4",
+          "status": "quality_failed",
+          "reason": "task_not_ok"
+        },
+        {
+          "task_id": "2.2",
+          "status": "quality_failed",
+          "reason": "task_not_ok"
+        },
+        {
+          "task_id": "2.3",
+          "status": "quality_failed",
+          "reason": "task_not_ok"
+        },
+        {
+          "task_id": "3.1",
+          "status": "quality_failed",
+          "reason": "task_not_ok"
+        },
+        {
+          "task_id": "3.4",
+          "status": "quality_failed",
+          "reason": "task_not_ok"
+        }
+      ],
+      "overall_status": "canceled",
+      "planned_file_count": 2,
+      "planned_files": [
+        "/Users/b2sell/claude-projects/projects/goat-beard/src/lib/__tests__/severity.test.ts",
+        "/Users/b2sell/claude-projects/projects/goat-beard/src/lib/__tests__/data.test.ts"
+      ],
+      "missing_planned_files": [],
+      "artifact_parity_enforced": true
+    }
+  },
+  "gate_order": [
+    "plan_vs_build",
+    "tests",
+    "security",
+    "secret_scan",
+    "coverage_audit",
+    "react_quality",
+    "dep_freshness",
+    "manual_confirmation",
+    "repo_stability"
+  ],
+  "stopped_at": "plan_vs_build",
+  "next_action": "Fix execution/plan mismatch, then rerun /nalan:verify.",
+  "artifacts": {
+    "run_dir": "/Users/b2sell/claude-projects/projects/goat-beard/.planning/phases/01-requirements/verify/runs/20260312T175701Z",
+    "run_summary": "/Users/b2sell/claude-projects/projects/goat-beard/.planning/phases/01-requirements/verify/runs/20260312T175701Z/VERIFICATION.md",
+    "verify_summary": "/Users/b2sell/claude-projects/projects/goat-beard/.planning/phases/01-requirements/verify/VERIFICATION.md",
+    "phase_summary": "/Users/b2sell/claude-projects/projects/goat-beard/.planning/phases/01-requirements/verify/VERIFICATION.md",
+    "plan_check": "/Users/b2sell/claude-projects/projects/goat-beard/.planning/phases/01-requirements/verify/PLAN-BUILD-CHECK.md"
+  },
+  "lock": {
+    "path": "/Users/b2sell/claude-projects/projects/goat-beard/.planning/phases/01-requirements/verify/.verify.lock",
+    "acquired": true,
+    "owner": {
+      "run_id": "20260312T175701Z",
+      "pid": 86588,
+      "started_at": "2026-03-12T17:57:01Z"
+    },
+    "stale_after_seconds": 900,
+    "stale_recovered": null,
+    "released": {
+      "released": true,
+      "path": "/Users/b2sell/claude-projects/projects/goat-beard/.planning/phases/01-requirements/verify/.verify.lock",
+      "released_at": "2026-03-12T17:57:01Z"
+    }
+  },
+  "runtime": {
+    "python": "/opt/homebrew/Cellar/python@3.14/3.14.2/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+    "python_resolved": "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "python_source": "sys.executable",
+    "python_project": false,
+    "preflight_required": false,
+    "preflight_passed": true,
+    "required_modules": [
+      "pytest",
+      "packaging",
+      "pygments"
+    ],
+    "missing_modules": [],
+    "candidates": [
+      {
+        "python": "/opt/homebrew/Cellar/python@3.14/3.14.2/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+        "source": "sys.executable",
+        "ok": true,
+        "command_ok": true,
+        "missing_modules": [],
+        "error": null
+      }
+    ],
+    "error": null
+  }
+}

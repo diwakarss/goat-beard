@@ -18,7 +18,7 @@ export function ArticlesChart({ articles, onArticleClick }: ArticlesChartProps) 
   return (
     <div className="card p-4 h-full flex flex-col">
       <h2 className="text-sm font-bold text-slate-700 mb-3">Articles Invoked</h2>
-      <div className="flex-1 flex flex-col justify-center space-y-2">
+      <div className="flex-1 overflow-y-auto space-y-1.5">
         {articles.map((article) => (
           <button
             key={article.number}
@@ -26,7 +26,7 @@ export function ArticlesChart({ articles, onArticleClick }: ArticlesChartProps) 
             className="flex items-center gap-2 cursor-pointer hover:bg-indigo-50/50 p-1 rounded-lg w-full transition-colors"
           >
             <span className="text-xs text-slate-500 w-14 font-medium">Art. {article.number}</span>
-            <div className="flex-1 h-4 bg-slate-100 rounded-full overflow-hidden">
+            <div className="flex-1 h-3 bg-slate-100 rounded-full overflow-hidden">
               <div
                 className="h-full bg-gradient-to-r from-indigo-400 to-indigo-500 rounded-full"
                 style={{ width: `${(article.count / maxCount) * 100}%` }}
