@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 
 interface TransgressionType {
   type: string;
@@ -17,8 +17,10 @@ interface TransgressionDonutProps {
 }
 
 export function TransgressionDonut({ total, types, onTypeClick }: TransgressionDonutProps) {
+  const [hoveredSegment, setHoveredSegment] = useState<TransgressionType | null>(null);
+
   // Calculate stroke dash arrays for donut segments
-  const circumference = 2 * Math.PI * 35; // radius = 35
+  const circumference = 2 * Math.PI * 38; // radius = 38 (slightly larger)
 
   // Pre-calculate segments with proper offsets
   const validTypes = types.filter(t => t.percentage > 0 && t.color);
@@ -32,47 +34,53 @@ export function TransgressionDonut({ total, types, onTypeClick }: TransgressionD
   }
 
   return (
-    <div className="card p-4 h-full flex flex-col">
-      <h2 className="text-sm font-bold text-slate-700 mb-3">By Type</h2>
-      <div className="flex-1 flex items-center justify-center gap-6">
-        {/* Donut chart */}
-        <div className="relative flex-shrink-0">
-          <svg viewBox="0 0 100 100" width="120" height="120">
-            <circle cx="50" cy="50" r="35" fill="none" stroke="#E2E8F0" strokeWidth="15" />
+    <div className="card p-3 h-full flex flex-col">
+      <h2 className="text-sm font-bold text-slate-700 mb-1">By Type</h2>
+      <div className="flex-1 flex items-center justify-center">
+        {/* Donut chart - fills available space */}
+        <div className="relative w-full h-full flex items-center justify-center">
+          <svg viewBox="0 0 100 100" className="w-full h-full" style={{ maxWidth: '240px', maxHeight: '240px' }}>
+            <circle cx="50" cy="50" r="38" fill="none" stroke="#E2E8F0" strokeWidth="12" />
             {segments.map((seg) => (
               <circle
                 key={seg.type}
                 cx="50"
                 cy="50"
-                r="35"
+                r="38"
                 fill="none"
                 stroke={seg.color}
-                strokeWidth="15"
+                strokeWidth={hoveredSegment?.type === seg.type ? "14" : "12"}
                 strokeDasharray={`${seg.dashArray} ${circumference}`}
                 strokeDashoffset={seg.offset}
                 transform="rotate(-90 50 50)"
-                className="cursor-pointer"
+                className="cursor-pointer transition-all duration-150"
+                style={{ opacity: hoveredSegment && hoveredSegment.type !== seg.type ? 0.5 : 1 }}
                 onClick={() => onTypeClick?.(seg.type)}
+                onMouseEnter={() => setHoveredSegment(seg)}
+                onMouseLeave={() => setHoveredSegment(null)}
               />
             ))}
-            <text x="50" y="54" textAnchor="middle" className="fill-slate-800 text-xl font-mono font-bold">
-              {total}
-            </text>
+            {/* Center content - shows total or hovered segment info */}
+            {hoveredSegment ? (
+              <>
+                <text x="50" y="47" textAnchor="middle" fontSize="7" fontWeight="600" className="fill-slate-800">
+                  {hoveredSegment.label}
+                </text>
+                <text x="50" y="58" textAnchor="middle" fontSize="10" fontWeight="700" fontFamily="monospace" className="fill-slate-600">
+                  {hoveredSegment.percentage}%
+                </text>
+              </>
+            ) : (
+              <>
+                <text x="50" y="47" textAnchor="middle" fontSize="5" fontWeight="500" letterSpacing="0.5" className="fill-slate-400 uppercase">
+                  Total
+                </text>
+                <text x="50" y="58" textAnchor="middle" fontSize="12" fontWeight="700" fontFamily="monospace" className="fill-slate-800">
+                  {total}
+                </text>
+              </>
+            )}
           </svg>
-        </div>
-        {/* Legend */}
-        <div className="text-xs space-y-2">
-          {types.map((t) => (
-            <button
-              key={t.type}
-              onClick={() => onTypeClick?.(t.type)}
-              className={`flex items-center gap-2 cursor-pointer ${t.hoverBg} px-2 py-1 rounded-lg w-full transition-colors`}
-            >
-              <span className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: t.color }}></span>
-              <span className="text-slate-600">{t.label}</span>
-              <span className="ml-auto font-mono text-slate-800 font-semibold">{t.percentage}%</span>
-            </button>
-          ))}
         </div>
       </div>
     </div>

@@ -31,13 +31,13 @@ import {
 import type { BeardLevel, BeardName, TransgressionType } from '@/types/schema';
 
 // Helper to convert total severity to beard level (0-4)
-// Uses cumulative severity score to reflect accumulated misconduct
+// Thresholds tuned for better distribution across governors
 function severityToBeardLevel(totalSeverity: number): BeardLevel {
-  if (totalSeverity < 1.0) return 0;  // Clean Chin
-  if (totalSeverity < 2.0) return 1;  // Wisp
-  if (totalSeverity < 3.5) return 2;  // Tuft
-  if (totalSeverity < 5.0) return 3;  // Billy Beard
-  return 4;                            // Knee-Dragger
+  if (totalSeverity < 0.7) return 0;  // Clean Chin - almost no issues
+  if (totalSeverity < 1.3) return 1;  // Wisp - minimal transgressions
+  if (totalSeverity < 2.0) return 2;  // Tuft - moderate misconduct
+  if (totalSeverity < 3.5) return 3;  // Billy Beard - significant problems
+  return 4;                            // Knee-Dragger - severe offenders
 }
 
 // Helper to get beard name from level
@@ -69,11 +69,17 @@ function formatDate(dateStr: string): string {
 // Format transgression type for display
 function formatTransgressionType(type: TransgressionType): string {
   const labels: Record<TransgressionType, string> = {
+    // Constitutional
     withholding_assent: 'Withholding Assent',
     delay: 'Delay Tactics',
     overreach: 'Constitutional Overreach',
     dissolution: 'Dissolution',
     failure_to_countersign: 'Failure to Countersign',
+    // Criminal/Misconduct
+    corruption: 'Corruption',
+    sexual_misconduct: 'Sexual Misconduct',
+    criminal_charges: 'Criminal Charges',
+    abuse_of_power: 'Abuse of Power',
     other: 'Other'
   };
   return labels[type];
@@ -82,11 +88,17 @@ function formatTransgressionType(type: TransgressionType): string {
 // Get short label for transgression type
 function getShortType(type: TransgressionType): string {
   const shorts: Record<TransgressionType, string> = {
+    // Constitutional
     withholding_assent: 'Withholding',
     delay: 'Delay',
     overreach: 'Overreach',
     dissolution: 'Dissolution',
     failure_to_countersign: 'Countersign',
+    // Criminal/Misconduct
+    corruption: 'Corruption',
+    sexual_misconduct: 'Misconduct',
+    criminal_charges: 'Criminal',
+    abuse_of_power: 'Abuse',
     other: 'Other'
   };
   return shorts[type];
@@ -349,11 +361,17 @@ export default function Home() {
 
     const total = incidents.length;
     const typeConfig: Record<string, { color: string; hoverBg: string }> = {
+      // Constitutional
       withholding_assent: { color: '#6366F1', hoverBg: 'hover:bg-indigo-50' },
       delay: { color: '#F97316', hoverBg: 'hover:bg-orange-50' },
       overreach: { color: '#DC2626', hoverBg: 'hover:bg-red-50' },
       dissolution: { color: '#EAB308', hoverBg: 'hover:bg-yellow-50' },
       failure_to_countersign: { color: '#8B5CF6', hoverBg: 'hover:bg-violet-50' },
+      // Criminal/Misconduct
+      corruption: { color: '#059669', hoverBg: 'hover:bg-emerald-50' },
+      sexual_misconduct: { color: '#DB2777', hoverBg: 'hover:bg-pink-50' },
+      criminal_charges: { color: '#7C3AED', hoverBg: 'hover:bg-purple-50' },
+      abuse_of_power: { color: '#0891B2', hoverBg: 'hover:bg-cyan-50' },
       other: { color: '#64748B', hoverBg: 'hover:bg-slate-50' }
     };
 
@@ -371,7 +389,7 @@ export default function Home() {
   const articleCounts = useMemo(() => {
     const counts = new Map<number, number>();
     incidents.forEach(inc => {
-      inc.constitutional_articles.forEach(art => {
+      (inc.constitutional_articles ?? []).forEach(art => {
         counts.set(art, (counts.get(art) || 0) + 1);
       });
     });
@@ -411,7 +429,7 @@ export default function Home() {
         }
         // Article filter - exact match on any article in the array
         if (articleFilter) {
-          if (!inc.constitutional_articles.includes(Number(articleFilter))) return false;
+          if (!(inc.constitutional_articles ?? []).includes(Number(articleFilter))) return false;
         }
         return true;
       })
@@ -429,7 +447,7 @@ export default function Home() {
           stateColor: getStateColor(inc.severity_unified),
           governor: gov?.name || 'Unknown',
           type: getShortType(inc.transgression_type),
-          article: inc.constitutional_articles.map(a => `Art. ${a}`).join(', '),
+          article: (inc.constitutional_articles ?? []).map(a => `Art. ${a}`).join(', ') || '—',
           severity: inc.escalation_level as 1 | 2 | 3 | 4,
           status: (inc.verification_status === 'confirmed' ? 'Verified' :
                    inc.verification_status === 'partial' ? 'Partial' : 'Unverified') as 'Verified' | 'Partial' | 'Unverified'
@@ -452,7 +470,7 @@ export default function Home() {
   const uniqueArticles = useMemo(() => {
     const articleSet = new Set<number>();
     incidents.forEach(inc => {
-      inc.constitutional_articles.forEach(art => articleSet.add(art));
+      (inc.constitutional_articles ?? []).forEach(art => articleSet.add(art));
     });
     return [...articleSet].sort((a, b) => a - b).map(String);
   }, [incidents]);

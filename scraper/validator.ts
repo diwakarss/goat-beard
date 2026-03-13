@@ -120,6 +120,7 @@ export function validateAndEnrich(extracted: ExtractedIncident): StagedIncident 
       date_start: raw.date_start,
       date_end: raw.date_end,
       transgression_type: transgressionType,
+      category: 'constitutional', // Default category for scraped incidents
       duration_days: durationDays,
       title: raw.title,
       description: raw.description,
