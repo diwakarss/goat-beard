@@ -300,5 +300,16 @@
       "Union Minister"
     ],
     "next_postings": []
+  },
+  {
+    "id": "gov-tcg-ka",
+    "name": "Thaawarchand Gehlot",
+    "state": "KA",
+    "tenure_start": "2021-09-08",
+    "tenure_end": null,
+    "party_affiliation": "BJP",
+    "prior_office": "Union Minister for Social Justice and Empowerment",
+    "appointing_president": "Ram Nath Kovind",
+    "note": "Former Union Cabinet Minister"
   }
 ]
