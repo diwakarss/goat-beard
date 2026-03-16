@@ -138,7 +138,6 @@ export function DashboardHeader({
 
         {/* Timeline Slider */}
         <div className="flex items-center gap-2">
-          <span className="text-xs text-slate-500 font-medium w-10">{MIN_YEAR}</span>
           {/* Track with handles - uses clamp to keep icons within bounds */}
           <div
             ref={trackRef}
@@ -176,8 +175,7 @@ export function DashboardHeader({
               <img src="/goat-slider.png" alt="End" className="w-auto h-10 drop-shadow-lg" />
             </div>
           </div>
-          <span className="text-xs text-slate-500 font-medium w-10 text-right">{MAX_YEAR}</span>
-          <div className="text-xs text-indigo-600 font-semibold bg-indigo-50 px-2 py-1 rounded-lg min-w-[80px] text-center">
+          <div className="text-xs text-indigo-600 font-semibold bg-indigo-50 px-2 py-1 rounded-lg min-w-[80px] text-center flex-shrink-0">
             {dateRange.start}–{dateRange.end}
           </div>
         </div>
