@@ -196,18 +196,18 @@ export function IncidentDetail({
       </div>
 
       {/* Timeline & Duration */}
-      <div className="grid grid-cols-2 gap-4 mb-6">
-        <div className="bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-xl p-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-6">
+        <div className="bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-xl p-3 sm:p-4">
           <h4 className="text-xs font-semibold text-indigo-600 mb-2">TIMELINE</h4>
           <div className="space-y-2">
             <div>
               <span className="text-xs text-slate-500">Started:</span>
-              <p className="font-medium text-slate-800">{formatDate(incident.date_start)}</p>
+              <p className="font-medium text-slate-800 text-sm sm:text-base">{formatDate(incident.date_start)}</p>
             </div>
             {incident.date_end ? (
               <div>
                 <span className="text-xs text-slate-500">Ended:</span>
-                <p className="font-medium text-slate-800">{formatDate(incident.date_end)}</p>
+                <p className="font-medium text-slate-800 text-sm sm:text-base">{formatDate(incident.date_end)}</p>
               </div>
             ) : (
               <div>
@@ -216,9 +216,9 @@ export function IncidentDetail({
             )}
           </div>
         </div>
-        <div className="bg-gradient-to-br from-orange-50 to-amber-100 rounded-xl p-4">
+        <div className="bg-gradient-to-br from-orange-50 to-amber-100 rounded-xl p-3 sm:p-4">
           <h4 className="text-xs font-semibold text-orange-600 mb-2">DURATION</h4>
-          <div className="text-3xl font-bold text-orange-700 mb-1">{incident.duration_days}</div>
+          <div className="text-2xl sm:text-3xl font-bold text-orange-700 mb-1">{incident.duration_days}</div>
           <div className="text-sm text-orange-600">days {incident.date_end ? '' : 'and counting'}</div>
         </div>
       </div>
@@ -226,10 +226,10 @@ export function IncidentDetail({
       {/* Severity Scores */}
       <div className="mb-6">
         <h4 className="text-sm font-bold text-slate-700 mb-3">Severity Analysis</h4>
-        <div className="grid grid-cols-3 gap-3">
-          <div className="p-3 bg-slate-50 rounded-xl">
-            <div className="text-xs text-slate-500 mb-1">Constitutional</div>
-            <div className="text-xl font-bold text-slate-800">{incident.severity_constitutional.toFixed(2)}</div>
+        <div className="grid grid-cols-3 gap-2 sm:gap-3">
+          <div className="p-2 sm:p-3 bg-slate-50 rounded-xl overflow-hidden">
+            <div className="text-[10px] sm:text-xs text-slate-500 mb-1 truncate">Constitutional</div>
+            <div className="text-lg sm:text-xl font-bold text-slate-800">{incident.severity_constitutional.toFixed(1)}</div>
             <div className="h-1.5 bg-slate-200 rounded-full mt-2">
               <div
                 className="h-full bg-indigo-500 rounded-full"
@@ -237,9 +237,9 @@ export function IncidentDetail({
               />
             </div>
           </div>
-          <div className="p-3 bg-slate-50 rounded-xl">
-            <div className="text-xs text-slate-500 mb-1">Public Salience</div>
-            <div className="text-xl font-bold text-slate-800">{incident.severity_salience.toFixed(2)}</div>
+          <div className="p-2 sm:p-3 bg-slate-50 rounded-xl overflow-hidden">
+            <div className="text-[10px] sm:text-xs text-slate-500 mb-1 truncate">Salience</div>
+            <div className="text-lg sm:text-xl font-bold text-slate-800">{incident.severity_salience.toFixed(1)}</div>
             <div className="h-1.5 bg-slate-200 rounded-full mt-2">
               <div
                 className="h-full bg-orange-500 rounded-full"
@@ -247,9 +247,9 @@ export function IncidentDetail({
               />
             </div>
           </div>
-          <div className="p-3 bg-gradient-to-br from-red-50 to-rose-100 rounded-xl">
-            <div className="text-xs text-red-600 mb-1">Unified Score</div>
-            <div className="text-xl font-bold text-red-700">{incident.severity_unified.toFixed(2)}</div>
+          <div className="p-2 sm:p-3 bg-gradient-to-br from-red-50 to-rose-100 rounded-xl overflow-hidden">
+            <div className="text-[10px] sm:text-xs text-red-600 mb-1 truncate">Unified</div>
+            <div className="text-lg sm:text-xl font-bold text-red-700">{incident.severity_unified.toFixed(1)}</div>
             <div className="h-1.5 bg-red-200 rounded-full mt-2">
               <div
                 className="h-full bg-red-500 rounded-full"
@@ -258,7 +258,7 @@ export function IncidentDetail({
             </div>
           </div>
         </div>
-        <p className="text-xs text-slate-500 mt-2">
+        <p className="text-[10px] sm:text-xs text-slate-500 mt-2">
           Formula: (Constitutional × 0.7) + (Salience × 0.3) = Unified
         </p>
       </div>
@@ -387,24 +387,24 @@ export function IncidentDetail({
       </div>
 
       {/* Data Quality */}
-      <div className="p-4 bg-slate-50 rounded-xl">
+      <div className="p-3 sm:p-4 bg-slate-50 rounded-xl">
         <h4 className="text-xs font-semibold text-slate-600 mb-3">DATA QUALITY</h4>
-        <div className="grid grid-cols-4 gap-4 text-sm">
-          <div>
-            <span className="text-slate-500">Confidence:</span>
-            <p className="font-medium text-slate-700">{Math.round(incident.confidence_score * 100)}%</p>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 text-sm">
+          <div className="overflow-hidden">
+            <span className="text-slate-500 text-xs">Confidence:</span>
+            <p className="font-medium text-slate-700 truncate">{Math.round(incident.confidence_score * 100)}%</p>
           </div>
-          <div>
-            <span className="text-slate-500">Completeness:</span>
-            <p className="font-medium text-slate-700">{Math.round(incident.data_completeness_score * 100)}%</p>
+          <div className="overflow-hidden">
+            <span className="text-slate-500 text-xs">Completeness:</span>
+            <p className="font-medium text-slate-700 truncate">{Math.round(incident.data_completeness_score * 100)}%</p>
           </div>
-          <div>
-            <span className="text-slate-500">Era:</span>
-            <p className="font-medium text-slate-700">{formatEra(incident.era)}</p>
+          <div className="overflow-hidden">
+            <span className="text-slate-500 text-xs">Era:</span>
+            <p className="font-medium text-slate-700 text-xs sm:text-sm truncate">{formatEra(incident.era)}</p>
           </div>
-          <div>
-            <span className="text-slate-500">Contradictions:</span>
-            <p className="font-medium text-slate-700">{incident.contradiction_flag ? 'Yes' : 'None'}</p>
+          <div className="overflow-hidden">
+            <span className="text-slate-500 text-xs">Contradictions:</span>
+            <p className="font-medium text-slate-700 truncate">{incident.contradiction_flag ? 'Yes' : 'None'}</p>
           </div>
         </div>
         {incident.last_verified_at && (
