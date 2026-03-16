@@ -110,7 +110,7 @@ export function DashboardHeader({
             <h1 className="text-lg font-bold text-slate-800">Goat Beard Governors</h1>
           </div>
 
-          {/* Centered Quote */}
+          {/* Centered Quote - hidden on mobile, shown inline on larger screens */}
           <blockquote className="quote-text text-base text-slate-600 hidden lg:block text-center flex-1 italic">
             &ldquo;A goat&apos;s beard is as worthless as a state&apos;s governor.&rdquo; <span className="text-slate-400 not-italic">— Aringar Anna</span>
           </blockquote>
@@ -136,8 +136,14 @@ export function DashboardHeader({
           </div>
         </div>
 
+        {/* Mobile Quote - shown only on small screens */}
+        <blockquote className="quote-text text-xs text-slate-500 text-center italic mb-2 lg:hidden">
+          &ldquo;A goat&apos;s beard is as worthless as a state&apos;s governor.&rdquo; <span className="text-slate-400 not-italic">— Aringar Anna</span>
+        </blockquote>
+
         {/* Timeline Slider */}
         <div className="flex items-center gap-2">
+          <span className="text-xs text-slate-500 font-medium w-10 flex-shrink-0">{MIN_YEAR}</span>
           {/* Track with handles - uses clamp to keep icons within bounds */}
           <div
             ref={trackRef}
@@ -175,9 +181,7 @@ export function DashboardHeader({
               <img src="/goat-slider.png" alt="End" className="w-auto h-10 drop-shadow-lg" />
             </div>
           </div>
-          <div className="text-xs text-indigo-600 font-semibold bg-indigo-50 px-2 py-1 rounded-lg min-w-[80px] text-center flex-shrink-0">
-            {dateRange.start}–{dateRange.end}
-          </div>
+          <span className="text-xs text-slate-500 font-medium w-10 text-right flex-shrink-0">{MAX_YEAR}</span>
         </div>
       </div>
     </header>
