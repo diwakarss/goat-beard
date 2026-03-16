@@ -117,29 +117,32 @@ export function GovernorDetail({
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Governor Profile" size="lg">
       {/* Header Card */}
-      <div className="bg-gradient-to-br from-slate-50 to-slate-100 rounded-xl p-5 mb-6">
-        <div className="flex items-start gap-4">
-          <div className="relative">
-            <div className={`w-16 h-16 rounded-full bg-gradient-to-br ${avatarGradients[beardLevel]} flex items-center justify-center overflow-hidden`}>
-              <img src={goatIcons[beardLevel]} alt="" className="w-14 h-14 object-contain" />
+      <div className="bg-gradient-to-br from-slate-50 to-slate-100 rounded-xl p-4 sm:p-5 mb-6">
+        <div className="flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-4">
+          {/* Avatar + Name row on mobile */}
+          <div className="flex items-start gap-3 sm:gap-4 min-w-0">
+            <div className="flex-shrink-0">
+              <div className={`w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br ${avatarGradients[beardLevel]} flex items-center justify-center overflow-hidden`}>
+                <img src={goatIcons[beardLevel]} alt="" className="w-12 h-12 sm:w-14 sm:h-14 object-contain" />
+              </div>
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="flex flex-wrap items-center gap-2 mb-1">
+                <h3 className="text-lg sm:text-xl font-bold text-slate-800 break-words">{governor.name}</h3>
+                <span className={`tag text-xs ${beardBgColors[beardLevel]}`}>{beardNames[beardLevel]}</span>
+              </div>
+              <p className="text-sm sm:text-base text-slate-600 mb-1 sm:mb-2">Governor of {stateName}</p>
+              <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm text-slate-500">
+                <span>Since {formatDate(governor.tenure_start)}</span>
+                {governor.tenure_end && (
+                  <span>Until {formatDate(governor.tenure_end)}</span>
+                )}
+              </div>
             </div>
           </div>
-          <div className="flex-1">
-            <div className="flex items-center gap-3 mb-1">
-              <h3 className="text-xl font-bold text-slate-800">{governor.name}</h3>
-              <span className={`tag ${beardBgColors[beardLevel]}`}>{beardNames[beardLevel]}</span>
-            </div>
-            <p className="text-slate-600 mb-2">Governor of {stateName}</p>
-            <div className="flex items-center gap-4 text-sm text-slate-500">
-              <span>Since {formatDate(governor.tenure_start)}</span>
-              {governor.tenure_end && (
-                <span>Until {formatDate(governor.tenure_end)}</span>
-              )}
-            </div>
-          </div>
-          {/* Beard Meter */}
-          <div className="text-right">
-            <div className={`beard-meter ${beardColors[beardLevel]} justify-end`}>
+          {/* Beard Meter - moves below on mobile */}
+          <div className="flex sm:flex-col items-center sm:items-end gap-2 sm:gap-0 mt-2 sm:mt-0 flex-shrink-0">
+            <div className={`beard-meter ${beardColors[beardLevel]} justify-end flex gap-1`}>
               {[0, 1, 2, 3].map((i) => (
                 <div
                   key={i}
@@ -147,7 +150,7 @@ export function GovernorDetail({
                 />
               ))}
             </div>
-            <p className="text-xs text-slate-500 mt-1">Severity Score</p>
+            <p className="text-xs text-slate-500 sm:mt-1">Severity Score</p>
           </div>
         </div>
       </div>
