@@ -153,28 +153,28 @@ export function GovernorDetail({
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-5 gap-3 mb-6">
-        <div className="bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-xl p-3 text-center">
-          <div className="text-2xl font-bold text-indigo-700">{incidents.length}</div>
-          <div className="text-xs text-indigo-600 font-medium">Incidents</div>
+      <div className="grid grid-cols-3 sm:grid-cols-5 gap-2 sm:gap-3 mb-6">
+        <div className="bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-xl p-2 sm:p-3 text-center overflow-hidden">
+          <div className="text-lg sm:text-2xl font-bold text-indigo-700 truncate">{incidents.length}</div>
+          <div className="text-[10px] sm:text-xs text-indigo-600 font-medium truncate">Incidents</div>
         </div>
-        <div className="bg-gradient-to-br from-red-50 to-rose-100 rounded-xl p-3 text-center">
-          <div className="text-2xl font-bold text-red-700">{totalSeverity.toFixed(2)}</div>
-          <div className="text-xs text-red-600 font-medium">Total Severity</div>
+        <div className="bg-gradient-to-br from-red-50 to-rose-100 rounded-xl p-2 sm:p-3 text-center overflow-hidden">
+          <div className="text-lg sm:text-2xl font-bold text-red-700 truncate">{totalSeverity.toFixed(1)}</div>
+          <div className="text-[10px] sm:text-xs text-red-600 font-medium truncate">Total Sev</div>
         </div>
-        <div className="bg-gradient-to-br from-orange-50 to-amber-100 rounded-xl p-3 text-center">
-          <div className="text-2xl font-bold text-orange-700">{avgSeverity.toFixed(2)}</div>
-          <div className="text-xs text-orange-600 font-medium">Avg Severity</div>
+        <div className="bg-gradient-to-br from-orange-50 to-amber-100 rounded-xl p-2 sm:p-3 text-center overflow-hidden">
+          <div className="text-lg sm:text-2xl font-bold text-orange-700 truncate">{avgSeverity.toFixed(1)}</div>
+          <div className="text-[10px] sm:text-xs text-orange-600 font-medium truncate">Avg Sev</div>
         </div>
-        <div className="bg-gradient-to-br from-amber-50 to-yellow-100 rounded-xl p-3 text-center">
-          <div className="text-2xl font-bold text-amber-700">{totalDays}</div>
-          <div className="text-xs text-amber-600 font-medium">Total Days</div>
+        <div className="bg-gradient-to-br from-amber-50 to-yellow-100 rounded-xl p-2 sm:p-3 text-center overflow-hidden">
+          <div className="text-lg sm:text-2xl font-bold text-amber-700 truncate">{totalDays}</div>
+          <div className="text-[10px] sm:text-xs text-amber-600 font-medium truncate">Days</div>
         </div>
-        <div className="bg-gradient-to-br from-violet-50 to-purple-100 rounded-xl p-3 text-center">
-          <div className="text-2xl font-bold text-violet-700">
+        <div className="bg-gradient-to-br from-violet-50 to-purple-100 rounded-xl p-2 sm:p-3 text-center overflow-hidden">
+          <div className="text-lg sm:text-2xl font-bold text-violet-700 truncate">
             {incidents.filter(inc => inc.verification_status === 'confirmed').length}
           </div>
-          <div className="text-xs text-violet-600 font-medium">Verified</div>
+          <div className="text-[10px] sm:text-xs text-violet-600 font-medium truncate">Verified</div>
         </div>
       </div>
 
@@ -239,12 +239,12 @@ export function GovernorDetail({
                     />
                   ))}
                 </div>
-                <div className="flex-1">
-                  <div className="text-sm font-medium text-slate-800">
-                    {formatTransgressionType(incident.transgression_type)}
+                <div className="flex-1 min-w-0">
+                  <div className="text-sm font-medium text-slate-800 truncate">
+                    {incident.title}
                   </div>
-                  <div className="text-xs text-slate-500">
-                    {formatDate(incident.date_start)} • {incident.duration_days} days{(incident.constitutional_articles ?? []).length > 0 && ` • Art. ${incident.constitutional_articles!.join(', ')}`}
+                  <div className="text-xs text-slate-500 truncate">
+                    {formatTransgressionType(incident.transgression_type)} • {formatDate(incident.date_start)} • {incident.duration_days}d
                   </div>
                 </div>
                 <span className={`tag ${incident.verification_status === 'confirmed' ? 'bg-green-100 text-green-700' : incident.verification_status === 'partial' ? 'bg-yellow-100 text-yellow-700' : 'bg-red-100 text-red-700'}`}>

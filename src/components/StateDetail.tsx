@@ -140,22 +140,22 @@ export function StateDetail({
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-4 gap-3 mb-6">
-        <div className="bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-xl p-3 text-center">
-          <div className="text-2xl font-bold text-indigo-700">{incidents.length}</div>
-          <div className="text-xs text-indigo-600 font-medium">Total Incidents</div>
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 mb-6">
+        <div className="bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-xl p-2 sm:p-3 text-center overflow-hidden">
+          <div className="text-lg sm:text-2xl font-bold text-indigo-700 truncate">{incidents.length}</div>
+          <div className="text-[10px] sm:text-xs text-indigo-600 font-medium truncate">Incidents</div>
         </div>
-        <div className="bg-gradient-to-br from-orange-50 to-amber-100 rounded-xl p-3 text-center">
-          <div className="text-2xl font-bold text-orange-700">{totalDays}</div>
-          <div className="text-xs text-orange-600 font-medium">Total Days</div>
+        <div className="bg-gradient-to-br from-orange-50 to-amber-100 rounded-xl p-2 sm:p-3 text-center overflow-hidden">
+          <div className="text-lg sm:text-2xl font-bold text-orange-700 truncate">{totalDays}</div>
+          <div className="text-[10px] sm:text-xs text-orange-600 font-medium truncate">Days</div>
         </div>
-        <div className="bg-gradient-to-br from-red-50 to-rose-100 rounded-xl p-3 text-center">
-          <div className="text-2xl font-bold text-red-700">{avgSeverity.toFixed(2)}</div>
-          <div className="text-xs text-red-600 font-medium">Avg Severity</div>
+        <div className="bg-gradient-to-br from-red-50 to-rose-100 rounded-xl p-2 sm:p-3 text-center overflow-hidden">
+          <div className="text-lg sm:text-2xl font-bold text-red-700 truncate">{avgSeverity.toFixed(1)}</div>
+          <div className="text-[10px] sm:text-xs text-red-600 font-medium truncate">Avg Sev</div>
         </div>
-        <div className="bg-gradient-to-br from-violet-50 to-purple-100 rounded-xl p-3 text-center">
-          <div className="text-2xl font-bold text-violet-700">{stateGovernors.length}</div>
-          <div className="text-xs text-violet-600 font-medium">Governors</div>
+        <div className="bg-gradient-to-br from-violet-50 to-purple-100 rounded-xl p-2 sm:p-3 text-center overflow-hidden">
+          <div className="text-lg sm:text-2xl font-bold text-violet-700 truncate">{stateGovernors.length}</div>
+          <div className="text-[10px] sm:text-xs text-violet-600 font-medium truncate">Governors</div>
         </div>
       </div>
 

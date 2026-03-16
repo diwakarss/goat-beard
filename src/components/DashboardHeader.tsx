@@ -116,20 +116,20 @@ export function DashboardHeader({
           </blockquote>
 
           {/* Inline KPIs */}
-          <div className="flex items-center gap-6">
-            <button className="text-center cursor-pointer hover:bg-indigo-50 px-3 py-1 rounded-lg transition-colors">
-              <div className="kpi-number text-xl font-semibold text-slate-800">{incidents}</div>
-              <div className="text-[10px] text-slate-500 uppercase tracking-wide font-semibold">Incidents</div>
+          <div className="flex items-center gap-4 sm:gap-6">
+            <button className="text-center cursor-pointer hover:bg-indigo-50 px-2 sm:px-3 py-1 rounded-lg transition-colors">
+              <div className="kpi-number text-lg sm:text-xl font-semibold text-slate-800">{incidents}</div>
+              <div className="text-[9px] sm:text-[10px] text-slate-500 uppercase tracking-wide font-semibold">Incidents</div>
             </button>
-            <button className="text-center cursor-pointer hover:bg-indigo-50 px-3 py-1 rounded-lg transition-colors">
-              <div className="kpi-number text-xl font-semibold text-slate-800">{governors}</div>
-              <div className="text-[10px] text-slate-500 uppercase tracking-wide font-semibold">Governors</div>
+            <button className="text-center cursor-pointer hover:bg-indigo-50 px-2 sm:px-3 py-1 rounded-lg transition-colors">
+              <div className="kpi-number text-lg sm:text-xl font-semibold text-slate-800">{governors}</div>
+              <div className="text-[9px] sm:text-[10px] text-slate-500 uppercase tracking-wide font-semibold">Governors</div>
             </button>
-            <button className="text-center cursor-pointer hover:bg-indigo-50 px-3 py-1 rounded-lg transition-colors">
-              <div className="kpi-number text-xl font-semibold text-slate-800">{states}</div>
-              <div className="text-[10px] text-slate-500 uppercase tracking-wide font-semibold">States</div>
+            <button className="text-center cursor-pointer hover:bg-indigo-50 px-2 sm:px-3 py-1 rounded-lg transition-colors">
+              <div className="kpi-number text-lg sm:text-xl font-semibold text-slate-800">{states}</div>
+              <div className="text-[9px] sm:text-[10px] text-slate-500 uppercase tracking-wide font-semibold">States</div>
             </button>
-            <button className="text-center cursor-pointer hover:bg-indigo-50 px-3 py-1 rounded-lg border-l border-slate-200 pl-6 transition-colors">
+            <button className="hidden sm:block text-center cursor-pointer hover:bg-indigo-50 px-3 py-1 rounded-lg border-l border-slate-200 pl-6 transition-colors">
               <div className="kpi-number text-xl font-semibold text-indigo-600">{avgDays}</div>
               <div className="text-[10px] text-slate-500 uppercase tracking-wide font-semibold">Avg Days</div>
             </button>
